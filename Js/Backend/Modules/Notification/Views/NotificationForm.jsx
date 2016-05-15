@@ -28,7 +28,19 @@ NotificationForm.defaultProps = {
             <Ui.Form.ApiContainer ui="myForm" {...formProps}>
 
                 <Ui.Panel.Panel>
-                    <Ui.Panel.Header title="Notification"/>
+                    <Ui.Panel.Header>
+
+                            <Ui.Grid.Row>
+                                <Ui.Grid.Col all={10}>
+                                    Notification
+                                </Ui.Grid.Col>
+                                <Ui.Grid.Col all={2}>
+                                    <Ui.Button type="primary" align="right" onClick={this.ui('notificationVariableModal:show')}>Save Changes</Ui.Button>
+                                    <Ui.Button type="default" align="right" onClick={this.ui('notificationVariableModal:show')}>Go Back</Ui.Button>
+                                </Ui.Grid.Col>
+                            </Ui.Grid.Row>
+
+                    </Ui.Panel.Header>
                     <Ui.Panel.Body>
 
                         <Ui.Tabs.Tabs ui="tabs">
