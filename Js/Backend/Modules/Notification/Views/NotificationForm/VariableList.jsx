@@ -1,13 +1,13 @@
 import Webiny from 'Webiny';
-import NotificationVariableModal from './NotificationVariableModal';
+import VariableModal from './VariableModal';
 const Ui = Webiny.Ui.Components;
 const Table = Ui.List.Table;
 
-class NotificationVariableList extends Webiny.Ui.View {
+class VariableList extends Webiny.Ui.View {
 
 }
 
-NotificationVariableList.defaultProps = {
+VariableList.defaultProps = {
 
     renderer() {
         const listProps = {
@@ -71,11 +71,11 @@ NotificationVariableList.defaultProps = {
                 </Ui.ViewSwitcher.View>
 
                 <Ui.ViewSwitcher.View view="variableModal" modal>
-                    {(showView, data) => <NotificationVariableModal {...{showView, data}} />}
+                    {(showView, data) => <VariableModal {...{showView, data}} />}
                 </Ui.ViewSwitcher.View>
             </Ui.ViewSwitcher.Container>
         );
     }
 };
 
-export default NotificationVariableList;
+export default VariableList;

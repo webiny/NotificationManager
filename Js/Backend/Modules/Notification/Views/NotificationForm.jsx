@@ -1,7 +1,7 @@
 import Webiny from 'Webiny';
-import NotificationVariableList from './NotificationForm/NotificationVariableList';
-import NotificationVariableModal from './NotificationForm/NotificationVariableModal';
-import NotificationSettingsForm from './NotificationForm/NotificationSettingsForm';
+import VariableList from './NotificationForm/VariableList';
+import SettingsForm from './NotificationForm/SettingsForm';
+import EmailForm from './NotificationForm/EmailForm';
 const Ui = Webiny.Ui.Components;
 
 
@@ -29,16 +29,15 @@ NotificationForm.defaultProps = {
 
                 <Ui.Panel.Panel>
                     <Ui.Panel.Header>
-
-                            <Ui.Grid.Row>
-                                <Ui.Grid.Col all={10}>
-                                    Notification
-                                </Ui.Grid.Col>
-                                <Ui.Grid.Col all={2}>
-                                    <Ui.Button type="primary" align="right" onClick={this.ui('notificationVariableModal:show')}>Save Changes</Ui.Button>
-                                    <Ui.Button type="default" align="right" onClick={this.ui('notificationVariableModal:show')}>Go Back</Ui.Button>
-                                </Ui.Grid.Col>
-                            </Ui.Grid.Row>
+                        <Ui.Grid.Row>
+                            <Ui.Grid.Col all={10}>
+                                Notification
+                            </Ui.Grid.Col>
+                            <Ui.Grid.Col all={2}>
+                                <Ui.Button type="primary" align="right" onClick={this.ui('notificationVariableModal:show')}>Save Changes</Ui.Button>
+                                <Ui.Button type="default" align="right" onClick={this.ui('notificationVariableModal:show')}>Go Back</Ui.Button>
+                            </Ui.Grid.Col>
+                        </Ui.Grid.Row>
 
                     </Ui.Panel.Header>
                     <Ui.Panel.Body>
@@ -46,36 +45,17 @@ NotificationForm.defaultProps = {
                         <Ui.Tabs.Tabs ui="tabs">
 
                             <Ui.Tabs.Tab label="General" icon="icon-settings">
-                                <NotificationSettingsForm/>
+                                <SettingsForm layout={false} onInvalid={this.ui('tabs:selectTab', 0)}/>
                             </Ui.Tabs.Tab>
 
                             <Ui.Tabs.Tab label="Email content" icon="icon-doc-text">
-                                <Ui.Form.Form layout={false}>
-                                    <fields>
-                                        <Ui.Grid.Row>
-                                            <Ui.Grid.Col all={6}>
-
-                                                <Ui.Form.Fieldset title="About"/>
-
-                                                <Ui.Input label="Name" name="name" validate="required" />
-
-
-                                            </Ui.Grid.Col>
-
-                                        </Ui.Grid.Row>
-
-                                    </fields>
-
-                                    <actions>
-                                        <Ui.Button type="default" onClick={this.ui('myForm:cancel')} label="Cancel"/>
-                                        <Ui.Button type="secondary" onClick={this.ui('myForm:reset')} label="Reset"/>
-                                        <Ui.Button type="primary" onClick={this.ui('myForm:submit')} label="Submit"/>
-                                    </actions>
-                                </Ui.Form.Form>
+                                <EmailForm layout={false} onInvalid={this.ui('tabs:selectTab', 1)}/>
                             </Ui.Tabs.Tab>
+
                             <Ui.Tabs.Tab label="Variables" icon="icon-menu">
-                                <NotificationVariableList/>
+                                <VariableList/>
                             </Ui.Tabs.Tab>
+
                         </Ui.Tabs.Tabs>
                     </Ui.Panel.Body>
                 </Ui.Panel.Panel>

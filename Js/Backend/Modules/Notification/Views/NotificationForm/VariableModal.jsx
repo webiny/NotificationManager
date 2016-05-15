@@ -1,9 +1,8 @@
 import Webiny from 'Webiny';
-//import NotificationVariableForm from './NotificationVariableForm';
 
 const Ui = Webiny.Ui.Components;
 
-class NotificationVariableModal extends Webiny.Ui.ModalComponent {
+class VariableModal extends Webiny.Ui.ModalComponent {
 
     constructor(props) {
         super(props);
@@ -100,4 +99,4 @@ class NotificationVariableModal extends Webiny.Ui.ModalComponent {
     }
 }
 
-export default NotificationVariableModal;
+export default VariableModal;
