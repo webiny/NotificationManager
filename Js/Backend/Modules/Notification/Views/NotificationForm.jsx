@@ -71,38 +71,14 @@ NotificationForm.defaultProps = {
                                         <Ui.Button type="secondary" onClick={this.ui('myForm:reset')} label="Reset"/>
                                         <Ui.Button type="primary" onClick={this.ui('myForm:submit')} label="Submit"/>
                                     </actions>
-
                                 </Ui.Form.Form>
-
                             </Ui.Tabs.Tab>
-
                             <Ui.Tabs.Tab label="Variables" icon="icon-menu">
-                                <Ui.Alert title="About">
-                                    This is a list of variables that you can use in your notification content.
-                                    The list also defines the data source from where the variable value will be pulled.
-                                </Ui.Alert>
-
-                                <h2>
-                                    <Ui.Grid.Row>
-                                        <Ui.Grid.Col all={10}>
-                                            Variables
-                                        </Ui.Grid.Col>
-                                        <Ui.Grid.Col all={2}>
-                                            <Ui.Button type="primary" align="right" onClick={this.ui('notificationVariableModal:show')}>Create new Variable</Ui.Button>
-                                            <NotificationVariableModal ui="notificationVariableModal"/>
-                                        </Ui.Grid.Col>
-                                    </Ui.Grid.Row>
-                                </h2>
-
                                 <NotificationVariableList/>
-
                             </Ui.Tabs.Tab>
-
                         </Ui.Tabs.Tabs>
-
                     </Ui.Panel.Body>
                 </Ui.Panel.Panel>
-
             </Ui.Form.ApiContainer>
         );
     }
