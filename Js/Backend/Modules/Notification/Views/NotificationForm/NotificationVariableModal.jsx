@@ -10,20 +10,12 @@ class NotificationVariableModal extends Webiny.Ui.ModalComponent {
     }
 
     render() {
-        console.log(this.props.data);
-
         const formProps = {
             ui: 'variableForm',
             api: '/entities/notification-manager/notification-variable',
             fields: '*',
             defaultModel: _.merge({}, {notification: Webiny.Router.getParams('id')}, this.props.data),
-            onSubmitSuccess: () => {
-                //this.props.showView('variableList');
-                //this.ui('variableList').loadData();
-                //this.ui('notificationVariableEditModal').hide();
-                this.ui('variableList:loadData')();
-                this.hide();
-            }
+            onSubmitSuccess: this.props.showView('variableList')
         };
 
         const entitySelect = {
@@ -84,15 +76,15 @@ class NotificationVariableModal extends Webiny.Ui.ModalComponent {
 
                         <Ui.Form.Form layout={false}>
                             <fields>
-                                <Ui.Input label="Variable Name" name="key" validate="required" />
+                                <Ui.Input label="Variable Name" name="key" validate="required"/>
 
                                 <Ui.Select {...entitySelect}/>
 
                                 <Ui.Select {...attributeSelect}/>
 
-                                <Ui.Input label="Description" name="description" />
+                                <Ui.Input label="Description" name="description"/>
 
-                                <Ui.Hidden name="notification" />
+                                <Ui.Hidden name="notification"/>
 
                             </fields>
                         </Ui.Form.Form>

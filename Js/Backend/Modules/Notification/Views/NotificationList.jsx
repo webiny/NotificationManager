@@ -12,8 +12,6 @@ class NotificationList extends Webiny.Ui.View {
 NotificationList.defaultProps = {
 
     renderer() {
-
-
         return (
             <Ui.Grid.Row>
                 <Ui.Grid.Col all={12}>
@@ -23,8 +21,10 @@ NotificationList.defaultProps = {
                                 Notifications
                             </Ui.Grid.Col>
                             <Ui.Grid.Col all={2}>
-                                <Ui.Button type="primary" align="right" onClick={this.ui('notificationCreateNewModal:show')}>Create new Notification</Ui.Button>
-                                <NotificationCreateNewModal ui="notificationCreateNewModal" />
+                                <Ui.Button type="primary" align="right" onClick={this.ui('notificationCreateNewModal:show')}>
+                                    Create new Notification
+                                </Ui.Button>
+                                <NotificationCreateNewModal ui="notificationCreateNewModal"/>
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
                     </h2>
