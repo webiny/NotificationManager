@@ -11,6 +11,7 @@ NotificationVariableList.defaultProps = {
 
     renderer() {
         const listProps = {
+            ui: 'variableList',
             api: '/entities/notification-manager/notification-variables',
             defaultQuery: {notification: Webiny.Router.getParams('id'), '_sort': 'key'},
             fields: '*',
@@ -19,12 +20,14 @@ NotificationVariableList.defaultProps = {
         };
 
         return (
-            <variable-list>
-                <Ui.List.ApiContainer ui="variableList" {...listProps}>
-                    <Table.Table>
-                        <Table.Row>
-                            <Table.Field name="key" align="left" label="Variable Name" sort="key">
-                                <Table.FieldRenderer>
+            <Ui.ViewSwitcher.Container>
+                <Ui.ViewSwitcher.View view="variableList" defaultView>
+                 {(showView, data) =>
+                     <Ui.List.ApiContainer {...listProps}>
+                         <Table.Table>
+                             <Table.Row>
+                                 <Table.Field name="key" align="left" label="Variable Name" sort="key">
+                                     <Table.FieldRenderer>
 								{function renderer(data) {
                                     return (
                                         <td className={this.getTdClasses()}>
@@ -33,29 +36,25 @@ NotificationVariableList.defaultProps = {
                                             <span>{data.description}</span>
                                         </td>
                                     );
-                                }}
-                                </Table.FieldRenderer>
-                            </Table.Field>
-                            <Table.Field name="entity" align="left" label="Entity" sort="entity"/>
-                            <Table.Field name="attribute" align="left" label="Attribute" sort="attribute"/>
-                            <Table.Actions>
-                                <Ui.List.Table.ModalAction label="Edit">
-									{(data, actions, modalActions) => {
-                                        return (
-                                            <NotificationVariableModal ui="notificationVariableEditModal" data={data}/>
-                                        );
-                                    }}
-                                </Ui.List.Table.ModalAction>
-                                <Table.DeleteAction/>
-                            </Table.Actions>
+                                }}</Table.FieldRenderer>
+                                 </Table.Field>
+                                 <Table.Field name="entity" align="left" label="Entity" sort="entity"/>
+                                 <Table.Field name="attribute" align="left" label="Attribute" sort="attribute"/>
+                                 <Table.Actions>
+                                     <Table.EditAction label="Edit" onClick={showView('variableModal')}/>
+                                     <Table.DeleteAction/>
+                                 </Table.Actions>
+                             </Table.Row>
+                             <Table.Empty/>
+                         </Table.Table>
+                     </Ui.List.ApiContainer>
+                     }
+                </Ui.ViewSwitcher.View>
 
-
-                        </Table.Row>
-                        <Table.Empty/>
-                    </Table.Table>
-                </Ui.List.ApiContainer>
-            </variable-list>
-
+                <Ui.ViewSwitcher.View view="variableModal" modal>
+                    {(showView, data) => <NotificationVariableModal {...{showView, data}} />}
+                </Ui.ViewSwitcher.View>
+            </Ui.ViewSwitcher.Container>
         );
     }
 };

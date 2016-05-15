@@ -10,14 +10,18 @@ class NotificationVariableModal extends Webiny.Ui.ModalComponent {
     }
 
     render() {
+        console.log(this.props.data);
+
         const formProps = {
             ui: 'variableForm',
             api: '/entities/notification-manager/notification-variable',
             fields: '*',
             defaultModel: _.merge({}, {notification: Webiny.Router.getParams('id')}, this.props.data),
             onSubmitSuccess: () => {
-                this.ui('variableList').loadData();
+                //this.props.showView('variableList');
+                //this.ui('variableList').loadData();
                 //this.ui('notificationVariableEditModal').hide();
+                this.ui('variableList:loadData')();
                 this.hide();
             }
         };
