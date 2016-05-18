@@ -14,7 +14,7 @@ class SettingsForm extends Ui.Form.Form {
 
                         <Ui.Textarea label="Description" name="description"/>
 
-                        <Ui.Textarea label="Labels" name="labels"/>
+                        <Ui.Tags label="Labels" name="labels" placeholder="Add Label" />
                     </Ui.Grid.Col>
 
                     <Ui.Grid.Col all={6}>

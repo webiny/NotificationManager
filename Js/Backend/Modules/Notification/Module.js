@@ -1,13 +1,16 @@
 import Webiny from 'Webiny';
 import Views from './Views/Views';
 
-class Module extends Webiny.Module {
+class Notification extends Webiny.Module {
 
     init() {
         const Menu = Webiny.Ui.Menu;
 
         this.registerMenus(
-            new Menu('Notifications', 'NotificationManager.Notifications', 'icon-website')
+            new Menu('Notifications', [
+                new Menu('Notifications', 'NotificationManager.Notifications', 'icon-settings'),
+                new Menu('Templates', 'NotificationManager.Templates', 'icon-settings')
+            ], 'icon-website')
         );
 
         this.registerRoutes(
@@ -17,4 +20,4 @@ class Module extends Webiny.Module {
     }
 }
 
-export default Module;
+export default Notification;

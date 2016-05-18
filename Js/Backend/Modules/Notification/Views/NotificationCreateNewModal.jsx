@@ -16,7 +16,6 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
                 if (val.getData('id')) {
                     Webiny.Router.goToRoute('NotificationManager.Notification.Edit', {id: val.getData('id')});
                 }
-                //this.ui('frequencySelect').prepareOptions();
                 this.hide();
             }
         };

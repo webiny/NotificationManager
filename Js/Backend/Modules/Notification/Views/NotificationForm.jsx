@@ -15,17 +15,14 @@ NotificationForm.defaultProps = {
             api: '/entities/notification-manager/notifications',
             fields: '*',
             connectToRouter: true,
-            onSubmitSuccess: 'NotificationManager.Notifications',
-            onCancel: () => Webiny.Router.goToRoute('NotificationManager.Notifications'),
-            onChangeName: (val, input) => {
-                console.log(input);
-            }
+            //onSubmitSuccess: 'NotificationManager.Notifications',
+            onCancel: () => Webiny.Router.goToRoute('NotificationManager.Notifications')
         };
 
 
         return (
 
-            <Ui.Form.ApiContainer ui="myForm" {...formProps}>
+            <Ui.Form.ApiContainer ui="notificationForm" {...formProps}>
 
                 <Ui.Panel.Panel>
                     <Ui.Panel.Header>
@@ -34,8 +31,8 @@ NotificationForm.defaultProps = {
                                 Notification
                             </Ui.Grid.Col>
                             <Ui.Grid.Col all={2}>
-                                <Ui.Button type="primary" align="right" onClick={this.ui('notificationVariableModal:show')}>Save Changes</Ui.Button>
-                                <Ui.Button type="default" align="right" onClick={this.ui('notificationVariableModal:show')}>Go Back</Ui.Button>
+                                <Ui.Button type="primary" align="right" onClick={this.ui('notificationForm:submit')}>Save Changes</Ui.Button>
+                                <Ui.Button type="default" align="right" onClick={this.ui('notificationForm:cancel')}>Go Back</Ui.Button>
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
 

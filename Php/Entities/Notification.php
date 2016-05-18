@@ -11,6 +11,8 @@ use Apps\Core\Php\DevTools\Entity\EntityAbstract;
  * @property string $title
  * @property string $description
  * @property string $slug
+ * @property array  $labels
+ * @property object $email
  *
  * @package Apps\Core\Php\Entities
  *
@@ -36,5 +38,7 @@ class Notification extends EntityAbstract
 
         $this->attr('description')->char()->setToArrayDefault();
         $this->attr('slug')->char()->setToArrayDefault();
+        $this->attr('labels')->arr()->setToArrayDefault();
+        $this->attr('email')->object()->setToArrayDefault();
     }
 }

@@ -3,6 +3,7 @@ namespace Apps\NotificationManager\Php\Entities;
 
 use Apps\Core\Php\DevTools\DevToolsTrait;
 use Apps\Core\Php\DevTools\Entity\EntityAbstract;
+use Webiny\Component\Entity\EntityException;
 
 /**
  * Class Jobs
@@ -40,8 +41,14 @@ class NotificationVariable extends EntityAbstract
 
     public function save()
     {
-        // $this
-        // throw exception ValidationException
+        // check that the give variable key doesn't already exist for the current notification
+        $result = $this->find(['key' => $this->key, 'notification' => $this->notification->id]);
+        if ($result->totalCount() > 0) {
+            $ex = new EntityException(EntityException::VALIDATION_FAILED, [1]);
+            $ex->setInvalidAttributes(['key' => sprintf('Given key "%s" already exists.', $this->key)]);
+            throw $ex;
+        }
+
         return parent::save();
     }
 }
