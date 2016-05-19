@@ -3,6 +3,17 @@ const Ui = Webiny.Ui.Components;
 
 class TemplateForm extends Webiny.Ui.View {
 
+    constructor(props) {
+        super(props);
+
+        this.bindMethods('previewTemplate');
+    }
+
+    previewTemplate() {
+        const myWindow = window.open("data:text/html," + encodeURIComponent(this.refs.templateContent.getValue()),
+            '_blank', 'width=800,height=600');
+        myWindow.focus();
+    }
 }
 
 TemplateForm.defaultProps = {
@@ -17,36 +28,71 @@ TemplateForm.defaultProps = {
         };
 
         return (
-            <Ui.Form.ApiContainer ui="myForm" {...formProps}>
-                <Ui.Form.Form>
-                    <fields>
+            <Ui.Form.ApiContainer ui="templateForm" {...formProps}>
+
+                <Ui.Panel.Panel>
+                    <Ui.Panel.Header>
                         <Ui.Grid.Row>
-                            <Ui.Grid.Col all={6}>
-
-                                <Ui.Form.Fieldset title="Template"/>
-
-                                <Ui.Input label="Name" name="name" validate="required"/>
-                                <Ui.CodeEditor label="Content" name="content" />
-
+                            <Ui.Grid.Col all={8}>
+                                Template
                             </Ui.Grid.Col>
-
-                            <Ui.Grid.Col all={6}>
-
-                                <Ui.Form.Fieldset title="System Tags"/>
-
+                            <Ui.Grid.Col all={4}>
+                                <Ui.Button type="primary" align="right" onClick={this.ui('templateForm:submit')}>Save Changes</Ui.Button>
+                                <Ui.Button type="secondary" align="right" onClick={this.previewTemplate}>Preview Template</Ui.Button>
+                                <Ui.Button type="default" align="right" onClick={this.ui('templateForm:cancel')}>Go Back</Ui.Button>
                             </Ui.Grid.Col>
+                        </Ui.Grid.Row>
 
-                            </Ui.Grid.Row>
+                    </Ui.Panel.Header>
 
-                    </fields>
+                    <Ui.Panel.Body>
 
-                    <actions>
-                        <Ui.Button type="default" onClick={this.ui('myForm:cancel')} label="Cancel"/>
-                        <Ui.Button type="secondary" onClick={this.ui('myForm:reset')} label="Reset"/>
-                        <Ui.Button type="primary" onClick={this.ui('myForm:submit')} label="Submit"/>
-                    </actions>
+                        <Ui.Form.Form layout={false}>
+                            <fields>
+                                <Ui.Grid.Row>
+                                    <Ui.Grid.Col all={6}>
 
-                </Ui.Form.Form>
+                                        <Ui.Form.Fieldset title="Template"/>
+
+                                        <Ui.Input label="Name" name="name" validate="required"/>
+                                        <Ui.CodeEditor label="Content" name="content" ref="templateContent" />
+
+                                    </Ui.Grid.Col>
+
+                                    <Ui.Grid.Col all={6}>
+
+                                        <Ui.Form.Fieldset title="System Tags"/>
+
+                                        <dl>
+                                            <dt>&#123;hostName&#125;</dt>
+                                            <dd>Website address,
+                                                <strong>www.demo.app</strong>
+                                            </dd>
+                                        </dl>
+
+                                        <dl>
+                                            <dt>&#123;content&#125;</dt>
+                                            <dd>Variable containing notification content.</dd>
+                                        </dl>
+
+                                        <dl>
+                                            <dt>Notification variables</dt>
+                                            <dd>Additionally you can include any of the variables that are available inside your
+                                                notification, that will be using this template.</dd>
+                                        </dl>
+
+
+                                    </Ui.Grid.Col>
+
+                                </Ui.Grid.Row>
+
+                            </fields>
+
+                        </Ui.Form.Form>
+
+                    </Ui.Panel.Body>
+
+                </Ui.Panel.Panel>
 
             </Ui.Form.ApiContainer>
         );
