@@ -12,6 +12,13 @@ class NotificationList extends Webiny.Ui.View {
 NotificationList.defaultProps = {
 
     renderer() {
+
+        const listProps = {
+            api: '/entities/notification-manager/notifications',
+            fields: 'title,description,slug,createdOn',
+            connectToRouter: true
+        };
+
         return (
             <Ui.Grid.Row>
                 <Ui.Grid.Col all={12}>
@@ -28,6 +35,40 @@ NotificationList.defaultProps = {
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
                     </h2>
+                </Ui.Grid.Col>
+                <Ui.Grid.Col all={12}>
+                    <Ui.List.ApiContainer ui="notificationList" {...listProps}>
+
+                        <Table.Table>
+                            <Table.Row>
+                                <Table.Field align="left" label="Title" sort="title">
+                                    <Table.FieldRenderer>
+                                        {function renderer(data) {
+                                            return (
+                                                <td className={this.getTdClasses()}>
+                                                    <strong>{data.title}</strong>
+                                                    <br/>
+                                                    {data.slug}
+                                                </td>
+                                            );
+                                        }}
+                                    </Table.FieldRenderer>
+                                </Table.Field>
+
+                                <Table.Field name="description" align="left" label="Description" sort="description"/>
+                                <Table.TimeAgoField name="createdOn" align="left" label="Created On" sort="createdOn"/>
+
+                                <Table.Actions>
+                                    <Table.EditAction route="NotificationManager.Notification.Edit"/>
+                                    <Table.DeleteAction/>
+                                </Table.Actions>
+                            </Table.Row>
+
+                            <Table.Empty/>
+                        </Table.Table>
+
+                        <Ui.List.Pagination/>
+                    </Ui.List.ApiContainer>
                 </Ui.Grid.Col>
 
             </Ui.Grid.Row>

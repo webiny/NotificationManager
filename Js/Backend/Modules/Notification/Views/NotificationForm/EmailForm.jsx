@@ -3,6 +3,17 @@ const Ui = Webiny.Ui.Components;
 
 class EmailForm extends Ui.Form.Form {
     renderFields() {
+
+        const templateSelect = {
+            ui: 'templateSelect',
+            api: '/entities/notification-manager/templates',
+            fields: 'name',
+            label: 'Template',
+            name: 'template',
+            placeholder: 'Select template',
+            allowClear: true
+        };
+
         return (
             <fields>
 
@@ -14,10 +25,12 @@ class EmailForm extends Ui.Form.Form {
 
                         <Ui.Input label="From Name" name="email.fromName" validate="required" />
 
+                        <Ui.Select {...templateSelect} validate="required" />
+
                     </Ui.Grid.Col>
 
                     <Ui.Grid.Col all={6}>
-                        <Ui.Textarea label="Content" name="email.content"/>
+                        <Ui.HtmlEditor label="Content" name="email.content"/>
                     </Ui.Grid.Col>
 
                 </Ui.Grid.Row>

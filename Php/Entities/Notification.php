@@ -21,7 +21,7 @@ class Notification extends EntityAbstract
 {
     use DevToolsTrait;
 
-    protected static $entityCollection = 'Notification';
+    protected static $entityCollection = 'NotificationManagerNotification';
     protected static $entityMask = '{title}';
 
     public function __construct()
@@ -40,5 +40,8 @@ class Notification extends EntityAbstract
         $this->attr('slug')->char()->setToArrayDefault();
         $this->attr('labels')->arr()->setToArrayDefault();
         $this->attr('email')->object()->setToArrayDefault();
+
+        $template = 'Apps\NotificationManager\Php\Entities\Template';
+        $this->attr('template')->many2one('Template')->setEntity($template);
     }
 }

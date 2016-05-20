@@ -23,8 +23,8 @@ TemplateForm.defaultProps = {
             api: '/entities/notification-manager/templates',
             fields: '*',
             connectToRouter: true,
-            //onSubmitSuccess: 'NotificationManager.Templates',
-            //onCancel: () => Webiny.Router.goToRoute('NotificationManager.Templates')
+            onSubmitSuccess: () => Webiny.Router.goToRoute('NotificationManager.Templates'),
+            onCancel: () => Webiny.Router.goToRoute('NotificationManager.Templates')
         };
 
         return (
@@ -33,10 +33,10 @@ TemplateForm.defaultProps = {
                 <Ui.Panel.Panel>
                     <Ui.Panel.Header>
                         <Ui.Grid.Row>
-                            <Ui.Grid.Col all={8}>
+                            <Ui.Grid.Col all={6}>
                                 Template
                             </Ui.Grid.Col>
-                            <Ui.Grid.Col all={4}>
+                            <Ui.Grid.Col all={6}>
                                 <Ui.Button type="primary" align="right" onClick={this.ui('templateForm:submit')}>Save Changes</Ui.Button>
                                 <Ui.Button type="secondary" align="right" onClick={this.previewTemplate}>Preview Template</Ui.Button>
                                 <Ui.Button type="default" align="right" onClick={this.ui('templateForm:cancel')}>Go Back</Ui.Button>
@@ -50,7 +50,7 @@ TemplateForm.defaultProps = {
                         <Ui.Form.Form layout={false}>
                             <fields>
                                 <Ui.Grid.Row>
-                                    <Ui.Grid.Col all={6}>
+                                    <Ui.Grid.Col all={8}>
 
                                         <Ui.Form.Fieldset title="Template"/>
 
@@ -59,7 +59,7 @@ TemplateForm.defaultProps = {
 
                                     </Ui.Grid.Col>
 
-                                    <Ui.Grid.Col all={6}>
+                                    <Ui.Grid.Col all={4}>
 
                                         <Ui.Form.Fieldset title="System Tags"/>
 

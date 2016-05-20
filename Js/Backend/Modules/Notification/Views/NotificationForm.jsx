@@ -13,12 +13,11 @@ NotificationForm.defaultProps = {
     renderer() {
         const formProps = {
             api: '/entities/notification-manager/notifications',
-            fields: '*',
+            fields: '*,template',
             connectToRouter: true,
-            //onSubmitSuccess: 'NotificationManager.Notifications',
+            onSubmitSuccess: () => Webiny.Router.goToRoute('NotificationManager.Notifications'),
             onCancel: () => Webiny.Router.goToRoute('NotificationManager.Notifications')
         };
-
 
         return (
 

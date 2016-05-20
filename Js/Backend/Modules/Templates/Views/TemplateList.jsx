@@ -11,6 +11,12 @@ class TemplateList extends Webiny.Ui.View {
 TemplateList.defaultProps = {
 
     renderer() {
+        const listProps = {
+            api: '/entities/notification-manager/templates',
+            fields: 'title,createdOn',
+            connectToRouter: true
+        };
+
         return (
             <Ui.Grid.Row>
                 <Ui.Grid.Col all={12}>
@@ -24,6 +30,26 @@ TemplateList.defaultProps = {
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
                     </h2>
+                </Ui.Grid.Col>
+                <Ui.Grid.Col all={12}>
+                    <Ui.List.ApiContainer ui="templateList" {...listProps}>
+
+                        <Table.Table>
+                            <Table.Row>
+                                <Table.Field name="name" align="left" label="Name" sort="name"/>
+                                <Table.TimeAgoField name="createdOn" align="left" label="Created On" sort="createdOn"/>
+
+                                <Table.Actions>
+                                    <Table.EditAction route="NotificationManager.Template.Edit"/>
+                                    <Table.DeleteAction/>
+                                </Table.Actions>
+                            </Table.Row>
+
+                            <Table.Empty/>
+                        </Table.Table>
+
+                        <Ui.List.Pagination/>
+                    </Ui.List.ApiContainer>
                 </Ui.Grid.Col>
 
             </Ui.Grid.Row>
