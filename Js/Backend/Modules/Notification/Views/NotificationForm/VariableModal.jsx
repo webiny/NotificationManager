@@ -14,7 +14,10 @@ class VariableModal extends Webiny.Ui.ModalComponent {
             api: '/entities/notification-manager/notification-variable',
             fields: '*',
             defaultModel: _.merge({}, {notification: Webiny.Router.getParams('id')}, this.props.data),
-            onSubmitSuccess: this.props.showView('variableList')
+            onSubmitSuccess: this.props.showView('variableList'),
+            onSuccessMessage: record => {
+                return <span>Variable <strong>{record.key}</strong> saved!</span>;
+            }
         };
 
         const entitySelect = {
@@ -71,24 +74,19 @@ class VariableModal extends Webiny.Ui.ModalComponent {
             <Ui.Modal.Dialog ref="dialog">
                 <Ui.Modal.Header title="New Notification"/>
                 <Ui.Modal.Body>
-                    <Ui.Form.ApiContainer {...formProps}>
-
-                        <Ui.Form.Form layout={false}>
-                            <fields>
-                                <Ui.Input label="Variable Name" name="key" validate="required"/>
-
-                                <Ui.Select {...entitySelect}/>
-
-                                <Ui.Select {...attributeSelect}/>
-
-                                <Ui.Input label="Description" name="description"/>
-
-                                <Ui.Hidden name="notification"/>
-
-                            </fields>
-                        </Ui.Form.Form>
-
-                    </Ui.Form.ApiContainer>
+                    <Ui.Form.Container {...formProps}>
+                        {() => (
+                            <Ui.Grid.Row>
+                                <Ui.Grid.Col all={12}>
+                                    <Ui.Input label="Variable Name" name="key" validate="required"/>
+                                    <Ui.Select {...entitySelect}/>
+                                    <Ui.Select {...attributeSelect}/>
+                                    <Ui.Input label="Description" name="description"/>
+                                    <Ui.Hidden name="notification"/>
+                                </Ui.Grid.Col>
+                            </Ui.Grid.Row>
+                        )}
+                    </Ui.Form.Container>
                 </Ui.Modal.Body>
                 <Ui.Modal.Footer>
                     <Ui.Button type="default" label="Close" onClick={this.hide}/>

@@ -42,7 +42,7 @@ class NotificationVariable extends EntityAbstract
     public function save()
     {
         // check that the give variable key doesn't already exist for the current notification
-        $result = $this->find(['key' => $this->key, 'notification' => $this->notification->id]);
+        $result = $this->find(['key' => $this->key, 'notification' => $this->notification->id, 'id' => ['$ne' => $this->id]]);
         if ($result->totalCount() > 0) {
             $ex = new EntityException(EntityException::VALIDATION_FAILED, [1]);
             $ex->setInvalidAttributes(['key' => sprintf('Given key "%s" already exists.', $this->key)]);

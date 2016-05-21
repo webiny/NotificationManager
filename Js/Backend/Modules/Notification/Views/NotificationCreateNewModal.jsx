@@ -24,20 +24,18 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
             <Ui.Modal.Dialog ref="dialog">
                 <Ui.Modal.Header title="New Notification"/>
                 <Ui.Modal.Body>
-                    <Ui.Form.ApiContainer {...formProps}>
-                        <Ui.Form.Form layout={false}>
-                            <fields>
-                                <Ui.Grid.Row>
-                                    <Ui.Grid.Col all={12}>
-                                        <Ui.Input label="Title" name="title" validate="required"/>
-                                    </Ui.Grid.Col>
-                                    <Ui.Grid.Col all={12}>
-                                        <Ui.Textarea label="Description" name="description"/>
-                                    </Ui.Grid.Col>
-                                </Ui.Grid.Row>
-                            </fields>
-                        </Ui.Form.Form>
-                    </Ui.Form.ApiContainer>
+                    <Ui.Form.Container {...formProps}>
+                        {() => (
+                            <Ui.Grid.Row>
+                                <Ui.Grid.Col all={12}>
+                                    <Ui.Input label="Title" name="title" validate="required"/>
+                                </Ui.Grid.Col>
+                                <Ui.Grid.Col all={12}>
+                                    <Ui.Textarea label="Description" name="description"/>
+                                </Ui.Grid.Col>
+                            </Ui.Grid.Row>
+                        )}
+                    </Ui.Form.Container>
                 </Ui.Modal.Body>
                 <Ui.Modal.Footer>
                     <Ui.Button type="secondary" label="Cancel" onClick={this.hide}/>
