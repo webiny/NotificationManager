@@ -18,7 +18,7 @@ class Template extends EntityAbstract
 {
     use DevToolsTrait;
 
-    protected static $entityCollection = 'Template';
+    protected static $entityCollection = 'NotificationManagerTemplate';
     protected static $entityMask = '{name}';
 
     public function __construct()

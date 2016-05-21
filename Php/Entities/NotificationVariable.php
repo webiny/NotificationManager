@@ -22,7 +22,7 @@ class NotificationVariable extends EntityAbstract
 {
     use DevToolsTrait;
 
-    protected static $entityCollection = 'NotificationVariable';
+    protected static $entityCollection = 'NotificationManagerVariable';
     protected static $entityMask = '{key}';
 
     public function __construct()
