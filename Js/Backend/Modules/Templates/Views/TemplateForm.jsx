@@ -9,8 +9,8 @@ class TemplateForm extends Webiny.Ui.View {
         this.bindMethods('previewTemplate');
     }
 
-    previewTemplate() {
-        const myWindow = window.open("data:text/html," + encodeURIComponent(this.refs.templateContent.getValue()),
+    previewTemplate(content) {
+        const myWindow = window.open("data:text/html," + encodeURIComponent(content),
             '_blank', 'width=800,height=600');
         myWindow.focus();
     }
@@ -19,7 +19,6 @@ class TemplateForm extends Webiny.Ui.View {
 TemplateForm.defaultProps = {
     renderer() {
         const formProps = {
-            title: 'Template',
             api: '/entities/notification-manager/templates',
             fields: '*',
             connectToRouter: true,
@@ -28,73 +27,68 @@ TemplateForm.defaultProps = {
         };
 
         return (
-            <Ui.Form.ApiContainer ui="templateForm" {...formProps}>
+            <Ui.Form.Container ui="templateForm" {...formProps}>
+                {(model, container) => (
+                    <Ui.Panel.Panel>
+                        <Ui.Panel.Header>
+                            <Ui.Grid.Row>
+                                <Ui.Grid.Col all={6}>
+                                    Template
+                                </Ui.Grid.Col>
+                                <Ui.Grid.Col all={6}>
+                                    <Ui.Button type="primary" align="right" onClick={container.submit}>Save Changes</Ui.Button>
+                                    <Ui.Button type="secondary" align="right" onClick={() => this.previewTemplate(model.content)}>Preview Template</Ui.Button>
+                                    <Ui.Button type="default" align="right" onClick={container.cancel}>Go Back</Ui.Button>
+                                </Ui.Grid.Col>
+                            </Ui.Grid.Row>
 
-                <Ui.Panel.Panel>
-                    <Ui.Panel.Header>
-                        <Ui.Grid.Row>
-                            <Ui.Grid.Col all={6}>
-                                Template
-                            </Ui.Grid.Col>
-                            <Ui.Grid.Col all={6}>
-                                <Ui.Button type="primary" align="right" onClick={this.ui('templateForm:submit')}>Save Changes</Ui.Button>
-                                <Ui.Button type="secondary" align="right" onClick={this.previewTemplate}>Preview Template</Ui.Button>
-                                <Ui.Button type="default" align="right" onClick={this.ui('templateForm:cancel')}>Go Back</Ui.Button>
-                            </Ui.Grid.Col>
-                        </Ui.Grid.Row>
+                        </Ui.Panel.Header>
 
-                    </Ui.Panel.Header>
+                        <Ui.Panel.Body>
 
-                    <Ui.Panel.Body>
+                            <Ui.Grid.Row>
+                                <Ui.Grid.Col all={8}>
 
-                        <Ui.Form.Form layout={false}>
-                            <fields>
-                                <Ui.Grid.Row>
-                                    <Ui.Grid.Col all={8}>
+                                    <Ui.Form.Fieldset title="Template"/>
 
-                                        <Ui.Form.Fieldset title="Template"/>
+                                    <Ui.Input label="Name" name="name" validate="required"/>
+                                    <Ui.CodeEditor label="Content" name="content"/>
 
-                                        <Ui.Input label="Name" name="name" validate="required"/>
-                                        <Ui.CodeEditor label="Content" name="content" ref="templateContent" />
+                                </Ui.Grid.Col>
 
-                                    </Ui.Grid.Col>
+                                <Ui.Grid.Col all={4}>
 
-                                    <Ui.Grid.Col all={4}>
+                                    <Ui.Form.Fieldset title="System Tags"/>
 
-                                        <Ui.Form.Fieldset title="System Tags"/>
+                                    <dl>
+                                        <dt>&#123;hostName&#125;</dt>
+                                        <dd>Website address,
+                                            <strong>www.demo.app</strong>
+                                        </dd>
+                                    </dl>
 
-                                        <dl>
-                                            <dt>&#123;hostName&#125;</dt>
-                                            <dd>Website address,
-                                                <strong>www.demo.app</strong>
-                                            </dd>
-                                        </dl>
+                                    <dl>
+                                        <dt>&#123;content&#125;</dt>
+                                        <dd>Variable containing notification content.</dd>
+                                    </dl>
 
-                                        <dl>
-                                            <dt>&#123;content&#125;</dt>
-                                            <dd>Variable containing notification content.</dd>
-                                        </dl>
-
-                                        <dl>
-                                            <dt>Notification variables</dt>
-                                            <dd>Additionally you can include any of the variables that are available inside your
-                                                notification, that will be using this template.</dd>
-                                        </dl>
+                                    <dl>
+                                        <dt>Notification variables</dt>
+                                        <dd>Additionally you can include any of the variables that are available inside your
+                                            notification, that will be using this template.
+                                        </dd>
+                                    </dl>
 
 
-                                    </Ui.Grid.Col>
+                                </Ui.Grid.Col>
 
-                                </Ui.Grid.Row>
+                            </Ui.Grid.Row>
 
-                            </fields>
+                        </Ui.Panel.Body>
 
-                        </Ui.Form.Form>
-
-                    </Ui.Panel.Body>
-
-                </Ui.Panel.Panel>
-
-            </Ui.Form.ApiContainer>
+                    </Ui.Panel.Panel>
+                )}
+            </Ui.Form.Container>
         );
     }
 };
