@@ -7,12 +7,13 @@ use Apps\Core\Php\DevTools\Entity\EntityAbstract;
 /**
  * Class Jobs
  *
- * @property string $id
- * @property string $title
- * @property string $description
- * @property string $slug
- * @property array  $labels
- * @property object $email
+ * @property string   $id
+ * @property string   $title
+ * @property string   $description
+ * @property string   $slug
+ * @property array    $labels
+ * @property object   $email
+ * @property Template $template
  *
  * @package Apps\Core\Php\Entities
  *
@@ -43,5 +44,17 @@ class Notification extends EntityAbstract
 
         $template = 'Apps\NotificationManager\Php\Entities\Template';
         $this->attr('template')->many2one('Template')->setEntity($template);
+
+
+        $this->api('get', 'preview/{notification}', function (Notification $notification) {
+            return $this->preview($notification);
+        });
+    }
+
+    public function preview(Notification $notification)
+    {
+        // get the template
+        $preview = str_replace('{content}', $notification->template->content, $notification->email->content);
+
     }
 }
