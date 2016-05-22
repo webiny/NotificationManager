@@ -2,13 +2,13 @@ import Webiny from 'Webiny';
 const Ui = Webiny.Ui.Components;
 const Table = Ui.List.Table;
 
-class TemplateList extends Webiny.Ui.View {
+class Details extends Webiny.Ui.View {
     constructor(props) {
         super(props);
     }
 }
 
-TemplateList.defaultProps = {
+Details.defaultProps = {
 
     renderer() {
         const listProps = {
@@ -57,4 +57,4 @@ TemplateList.defaultProps = {
     }
 };
 
-export default TemplateList;
+export default Details;

@@ -50,6 +50,13 @@ class NotificationStats extends AbstractService
     {
         $data = $this->wRequest()->getPayload();
 
+        // check if it's a subscription confirmation
+        if (!empty($data->Type) && $data->Type == 'SubscriptionConfirmation') {
+            // confirm the subscription
+            file_get_contents($data->SubscribeURL);
+            return;
+        }
+
         // extract message id
         if (empty($data->mail->messageId)) {
             throw new AppException('Payload is missing messageId');

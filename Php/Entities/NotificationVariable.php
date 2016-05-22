@@ -6,7 +6,7 @@ use Apps\Core\Php\DevTools\Entity\EntityAbstract;
 use Webiny\Component\Entity\EntityException;
 
 /**
- * Class Jobs
+ * Class NotificationVariable
  *
  * @property string $id
  * @property string $key

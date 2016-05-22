@@ -1,9 +1,31 @@
 import Webiny from 'Webiny';
 import VariableList from './NotificationForm/VariableList';
+import PreviewModal from './NotificationForm/PreviewModal';
 const Ui = Webiny.Ui.Components;
 
 
 class NotificationForm extends Webiny.Ui.View {
+
+    constructor(props) {
+        super(props);
+
+        this.bindMethods('sendTestEmail');
+    }
+
+    sendTestEmail(emailContent) {
+        const postBody = {
+            'email': Webiny.Model.get('User').email,
+            'content': emailContent
+        };
+        let api = new Webiny.Api.Endpoint('/entities/notification-manager/notifications');
+
+        // show modal box
+        this.ui('previewModal').show();
+        api.post('preview/' + Webiny.Router.getParams('id'), postBody).then(ar => {
+            // update status in the modalbox
+            this.ui('previewModal').setSuccess();
+        });
+    }
 
 }
 
@@ -33,11 +55,12 @@ NotificationForm.defaultProps = {
                     <Ui.Panel.Panel>
                         <Ui.Panel.Header>
                             <Ui.Grid.Row>
-                                <Ui.Grid.Col all={10}>
+                                <Ui.Grid.Col all={6}>
                                     Notification
                                 </Ui.Grid.Col>
-                                <Ui.Grid.Col all={2}>
+                                <Ui.Grid.Col all={6}>
                                     <Ui.Button type="primary" align="right" onClick={container.submit}>Save Changes</Ui.Button>
+                                    <Ui.Button type="secondary" align="right" onClick={() => this.sendTestEmail(model.email.content)}>Send Test Email</Ui.Button>
                                     <Ui.Button type="default" align="right" onClick={container.cancel}>Go Back</Ui.Button>
                                 </Ui.Grid.Col>
                             </Ui.Grid.Row>
@@ -75,6 +98,7 @@ NotificationForm.defaultProps = {
                                     <VariableList/>
                                 </Ui.Tabs.Tab>
                             </Ui.Tabs.Tabs>
+                            <PreviewModal ui="previewModal" />
                         </Ui.Panel.Body>
                     </Ui.Panel.Panel>
                 )}

@@ -5,7 +5,7 @@ use Apps\Core\Php\DevTools\DevToolsTrait;
 use Apps\Core\Php\DevTools\Entity\EntityAbstract;
 
 /**
- * Class Jobs
+ * Class Notification
  *
  * @property string   $id
  * @property string   $title
@@ -46,15 +46,19 @@ class Notification extends EntityAbstract
         $this->attr('template')->many2one('Template')->setEntity($template);
 
 
-        $this->api('get', 'preview/{notification}', function (Notification $notification) {
+        $this->api('post', 'preview/{notification}', function (Notification $notification) {
             return $this->preview($notification);
         });
     }
 
     public function preview(Notification $notification)
     {
-        // get the template
-        $preview = str_replace('{content}', $notification->template->content, $notification->email->content);
+        // we take the latest content from the post request
+        $content = $this->wRequest()->getRequestData()['content'];
 
+        // we take the template from the current notification
+        $content = str_replace('{_content_}', $content, $notification->template->content);
+
+        return ['email'=>$this->wRequest()->getRequestData()['content']];
     }
 }

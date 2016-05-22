@@ -61,14 +61,14 @@ TemplateForm.defaultProps = {
                                     <Ui.Form.Fieldset title="System Tags"/>
 
                                     <dl>
-                                        <dt>&#123;hostName&#125;</dt>
-                                        <dd>Website address,
-                                            <strong>www.demo.app</strong>
+                                        <dt>&#123;_hostName_&#125;</dt>
+                                        <dd>Website address,&nbsp;
+                                            <strong>{window.location.origin}</strong>
                                         </dd>
                                     </dl>
 
                                     <dl>
-                                        <dt>&#123;content&#125;</dt>
+                                        <dt>&#123;_content_&#125;</dt>
                                         <dd>Variable containing notification content.</dd>
                                     </dl>
 
