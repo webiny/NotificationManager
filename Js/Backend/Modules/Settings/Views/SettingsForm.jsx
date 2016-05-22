@@ -14,7 +14,9 @@ SettingsForm.defaultProps = {
             api: '/entities/core/settings',
             fields: '*',
             url: 'key',
-            id: 'notification-manager'
+            defaultModel: {
+                id: 'notification-manager'
+            }
         };
 
         return (
@@ -39,14 +41,14 @@ SettingsForm.defaultProps = {
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="SMTP Settings"/>
 
-                                            <Ui.Input label="Server Name" name="serverName" validate="required" />
-                                            <Ui.Input label="Username" name="username" validate="required" />
-                                            <Ui.Input label="Password" name="password" validate="required" type="password" />
+                                            <Ui.Input label="Server Name" name="serverName" validate="required"/>
+                                            <Ui.Input label="Username" name="username" validate="required"/>
+                                            <Ui.Input label="Password" name="password" validate="required" type="password"/>
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="AWS SNS Settings"/>
 
-                                            <dl class="dl-horizontal">
+                                            <dl className="dl-horizontal">
                                                 <dt>SNS Bounce Endpoint</dt>
                                                 <dd>
                                                     <pre>{window.location.origin}/api/services/notification-manager/feedback/email/bounce</pre>
@@ -79,9 +81,9 @@ SettingsForm.defaultProps = {
                                         </li>
                                         <li>Once you have your account go to
                                             <strong> Services </strong>
-                                        &gt;
-                                            <strong> Security & Identity </strong>
-                                        &gt;
+                                            &gt;
+                                            <strong> Security &amp; Identity </strong>
+                                            &gt;
                                             <strong> IAM </strong>
                                             .
                                         </li>
@@ -135,9 +137,9 @@ SettingsForm.defaultProps = {
                                     <ol>
                                         <li>In the top menu click
                                             <strong> Services </strong>
-                                        &gt;
+                                            &gt;
                                             <strong> Application Services </strong>
-                                        &gt;
+                                            &gt;
                                             <strong> SES </strong>
                                             .
                                         </li>
@@ -150,7 +152,7 @@ SettingsForm.defaultProps = {
                                         <li>
                                             Enter the mail address you from which you will send your emails.
                                             <br/>
-                                            <strong>  NOTE: </strong>
+                                            <strong> NOTE: </strong>
                                             You can verify multiple email addresses.
                                             <br/>
                                             Alternatively you can go to
@@ -204,9 +206,9 @@ SettingsForm.defaultProps = {
                                         <li>
                                             To setup SNS, in the top menu go to
                                             <strong> Services </strong>
-                                        &gt;
+                                            &gt;
                                             <strong> Mobile Services </strong>
-                                        &gt;
+                                            &gt;
                                             <strong> SNS </strong>
                                             .
                                         </li>
