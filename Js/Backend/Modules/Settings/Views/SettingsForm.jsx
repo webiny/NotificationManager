@@ -14,7 +14,9 @@ SettingsForm.defaultProps = {
             api: '/entities/core/settings',
             fields: '*',
             url: 'key',
-            id: 'notification-manager'
+            defaultModel: {
+                id: 'notification-manager'
+            }
         };
 
         return (
@@ -39,9 +41,9 @@ SettingsForm.defaultProps = {
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="SMTP Settings"/>
 
-                                            <Ui.Input label="Server Name" name="serverName" validate="required" />
-                                            <Ui.Input label="Username" name="username" validate="required" />
-                                            <Ui.Input label="Password" name="password" validate="required" type="password" />
+                                            <Ui.Input label="Server Name" name="settings.serverName" validate="required" />
+                                            <Ui.Input label="Username" name="settings.username" validate="required" />
+                                            <Ui.Input label="Password" name="settings.password" validate="required" type="password" />
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="AWS SNS Settings"/>
