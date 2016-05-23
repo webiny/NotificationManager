@@ -2,7 +2,7 @@ import Webiny from 'Webiny';
 
 const Ui = Webiny.Ui.Components;
 
-class VariableModal extends Webiny.Ui.ModalComponent {
+class EntityVariableModal extends Webiny.Ui.ModalComponent {
 
     constructor(props) {
         super(props);
@@ -10,13 +10,15 @@ class VariableModal extends Webiny.Ui.ModalComponent {
 
     render() {
         const formProps = {
-            ui: 'variableForm',
+            ui: 'entityVariableForm',
             api: '/entities/notification-manager/notification-variable',
             fields: '*',
-            defaultModel: _.merge({}, {notification: Webiny.Router.getParams('id')}, this.props.data),
+            defaultModel: _.merge({type: 'entity'}, {notification: Webiny.Router.getParams('id')}, this.props.data),
             onSubmitSuccess: this.props.showView('variableList'),
             onSuccessMessage: record => {
-                return <span>Variable <strong>{record.key}</strong> saved!</span>;
+                return <span>Variable
+                    <strong>{record.key}</strong>
+                    saved!</span>;
             }
         };
 
@@ -72,7 +74,7 @@ class VariableModal extends Webiny.Ui.ModalComponent {
         };
         return (
             <Ui.Modal.Dialog ref="dialog">
-                <Ui.Modal.Header title="New Notification"/>
+                <Ui.Modal.Header title="Entity Variable"/>
                 <Ui.Modal.Body>
                     <Ui.Form.Container {...formProps}>
                         {() => (
@@ -83,6 +85,7 @@ class VariableModal extends Webiny.Ui.ModalComponent {
                                     <Ui.Select {...attributeSelect}/>
                                     <Ui.Input label="Description" name="description"/>
                                     <Ui.Hidden name="notification"/>
+                                    <Ui.Hidden name="type"/>
                                 </Ui.Grid.Col>
                             </Ui.Grid.Row>
                         )}
@@ -90,11 +93,11 @@ class VariableModal extends Webiny.Ui.ModalComponent {
                 </Ui.Modal.Body>
                 <Ui.Modal.Footer>
                     <Ui.Button type="default" label="Close" onClick={this.hide}/>
-                    <Ui.Button type="primary" label="Save changes" onClick={this.ui('variableForm:submit')}/>
+                    <Ui.Button type="primary" label="Save changes" onClick={this.ui('entityVariableForm:submit')}/>
                 </Ui.Modal.Footer>
             </Ui.Modal.Dialog>
         );
     }
 }
 
-export default VariableModal;
+export default EntityVariableModal;

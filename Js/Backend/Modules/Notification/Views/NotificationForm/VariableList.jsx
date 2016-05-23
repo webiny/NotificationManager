@@ -1,5 +1,6 @@
 import Webiny from 'Webiny';
-import VariableModal from './VariableModal';
+import EntityVariableModal from './EntityVariableModal';
+import CustomVariableModal from './CustomVariableModal';
 const Ui = Webiny.Ui.Components;
 const Table = Ui.List.Table;
 
@@ -13,7 +14,7 @@ VariableList.defaultProps = {
         const listProps = {
             api: '/entities/notification-manager/notification-variables',
             query: {
-                notification: '@router:id',
+                notification: Webiny.Router.getParams('id'),
                 '_sort': 'key'
             },
             fields: '*',
@@ -35,8 +36,11 @@ VariableList.defaultProps = {
                                         Variables
                                     </Ui.Grid.Col>
                                     <Ui.Grid.Col all={2}>
-                                        <Ui.Button type="primary" align="right" onClick={showView('variableModal')}>
-                                            Create new Variable
+                                        <Ui.Button type="primary" align="right" onClick={showView('entityVariableModal')}>
+                                            Create new Entity Variable
+                                        </Ui.Button>
+                                        <Ui.Button type="primary" align="right" onClick={showView('customVariableModal')}>
+                                            Create new Custom Variable
                                         </Ui.Button>
                                     </Ui.Grid.Col>
                                 </Ui.Grid.Row>
@@ -59,7 +63,13 @@ VariableList.defaultProps = {
                                         <Table.Field name="entity" align="left" label="Entity" sort="entity"/>
                                         <Table.Field name="attribute" align="left" label="Attribute" sort="attribute"/>
                                         <Table.Actions>
-                                            <Table.EditAction label="Edit" onClick={showView('variableModal')}/>
+                                            <Table.EditAction label="Edit" onClick={(data) => {
+                                                if (data['type'] === 'entity') {
+                                                    showView('entityVariableModal')(data);
+                                                } else {
+                                                    showView('customVariableModal')(data);
+                                                }
+                                            }}/>
                                             <Table.DeleteAction/>
                                         </Table.Actions>
                                     </Table.Row>
@@ -70,9 +80,14 @@ VariableList.defaultProps = {
                     )}
                 </Ui.ViewSwitcher.View>
 
-                <Ui.ViewSwitcher.View view="variableModal" modal>
-                    {(showView, data) => <VariableModal {...{showView, data}} />}
+                <Ui.ViewSwitcher.View view="entityVariableModal" modal>
+                     {(showView, data) => <EntityVariableModal {...{showView, data}} />}
                 </Ui.ViewSwitcher.View>
+
+                <Ui.ViewSwitcher.View view="customVariableModal" modal>
+                     {(showView, data) => <CustomVariableModal {...{showView, data}} />}
+                </Ui.ViewSwitcher.View>
+
             </Ui.ViewSwitcher.Container>
         );
     }
