@@ -36,12 +36,11 @@ VariableList.defaultProps = {
                                         Variables
                                     </Ui.Grid.Col>
                                     <Ui.Grid.Col all={2}>
-                                        <Ui.Button type="primary" align="right" onClick={showView('entityVariableModal')}>
-                                            Create new Entity Variable
-                                        </Ui.Button>
-                                        <Ui.Button type="primary" align="right" onClick={showView('customVariableModal')}>
-                                            Create new Custom Variable
-                                        </Ui.Button>
+                                        <Ui.Dropdown.Dropdown title="Create Variable" align="right">
+                                            <Ui.Dropdown.Header title="Variable Type"/>
+                                            <Ui.Dropdown.Link onClick={showView('entityVariableModal')} title="Entity"/>
+                                            <Ui.Dropdown.Link onClick={showView('customVariableModal')} title="Custom"/>
+                                        </Ui.Dropdown.Dropdown>
                                     </Ui.Grid.Col>
                                 </Ui.Grid.Row>
                             </h2>
