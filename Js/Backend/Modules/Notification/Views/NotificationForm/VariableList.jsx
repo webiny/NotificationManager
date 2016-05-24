@@ -13,7 +13,7 @@ VariableList.defaultProps = {
         const listProps = {
             api: '/entities/notification-manager/notification-variables',
             query: {
-                notification: '@router:id',
+                notification: Webiny.Router.getParams('id'),
                 '_sort': 'key'
             },
             fields: '*',
@@ -29,6 +29,7 @@ VariableList.defaultProps = {
                                 This is a list of variables that you can use in your notification content.
                                 The list also defines the data source from where the variable value will be pulled.
                             </Ui.Alert>
+
                             <h2>
                                 <Ui.Grid.Row>
                                     <Ui.Grid.Col all={10}>
