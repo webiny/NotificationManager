@@ -1,5 +1,6 @@
 import Webiny from 'Webiny';
-import VariableModal from './VariableModal';
+import EntityVariableModal from './EntityVariableModal';
+import CustomVariableModal from './CustomVariableModal';
 const Ui = Webiny.Ui.Components;
 const Table = Ui.List.Table;
 
@@ -36,9 +37,11 @@ VariableList.defaultProps = {
                                         Variables
                                     </Ui.Grid.Col>
                                     <Ui.Grid.Col all={2}>
-                                        <Ui.Button type="primary" align="right" onClick={showView('variableModal')}>
-                                            Create new Variable
-                                        </Ui.Button>
+                                        <Ui.Dropdown.Dropdown title="Create Variable" align="right">
+                                            <Ui.Dropdown.Header title="Variable Type"/>
+                                            <Ui.Dropdown.Link onClick={showView('entityVariableModal')} title="Entity"/>
+                                            <Ui.Dropdown.Link onClick={showView('customVariableModal')} title="Custom"/>
+                                        </Ui.Dropdown.Dropdown>
                                     </Ui.Grid.Col>
                                 </Ui.Grid.Row>
                             </h2>
@@ -60,7 +63,13 @@ VariableList.defaultProps = {
                                         <Table.Field name="entity" align="left" label="Entity" sort="entity"/>
                                         <Table.Field name="attribute" align="left" label="Attribute" sort="attribute"/>
                                         <Table.Actions>
-                                            <Table.EditAction label="Edit" onClick={showView('variableModal')}/>
+                                            <Table.EditAction label="Edit" onClick={(data) => {
+                                                if (data['type'] === 'entity') {
+                                                    showView('entityVariableModal')(data);
+                                                } else {
+                                                    showView('customVariableModal')(data);
+                                                }
+                                            }}/>
                                             <Table.DeleteAction/>
                                         </Table.Actions>
                                     </Table.Row>
@@ -71,9 +80,14 @@ VariableList.defaultProps = {
                     )}
                 </Ui.ViewSwitcher.View>
 
-                <Ui.ViewSwitcher.View view="variableModal" modal>
-                    {(showView, data) => <VariableModal {...{showView, data}} />}
+                <Ui.ViewSwitcher.View view="entityVariableModal" modal>
+                     {(showView, data) => <EntityVariableModal {...{showView, data}} />}
                 </Ui.ViewSwitcher.View>
+
+                <Ui.ViewSwitcher.View view="customVariableModal" modal>
+                     {(showView, data) => <CustomVariableModal {...{showView, data}} />}
+                </Ui.ViewSwitcher.View>
+
             </Ui.ViewSwitcher.Container>
         );
     }
