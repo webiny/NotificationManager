@@ -30,6 +30,7 @@ VariableList.defaultProps = {
                                 This is a list of variables that you can use in your notification content.
                                 The list also defines the data source from where the variable value will be pulled.
                             </Ui.Alert>
+
                             <h2>
                                 <Ui.Grid.Row>
                                     <Ui.Grid.Col all={10}>
