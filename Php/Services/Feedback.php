@@ -5,15 +5,16 @@ use Apps\Core\Php\DevTools\DevToolsTrait;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
 use Apps\Core\Php\DevTools\Services\AbstractService;
 use Apps\NotificationManager\Php\Entities\EmailLog;
+use Apps\NotificationManager\Php\Lib\Notification;
 
 
-class NotificationStats extends AbstractService
+class Feedback extends AbstractService
 {
     use DevToolsTrait;
 
     function __construct()
     {
-        $this->api('get', 'email/mark-read/{emailLog}/1px.gif', function (EmailLog $emailLog) {
+        $this->api('get', 'email/mark-read/{emailLog}/1px', function (EmailLog $emailLog) {
             return $this->markRead($emailLog);
         });
 
@@ -27,6 +28,13 @@ class NotificationStats extends AbstractService
 
         $this->api('post', 'email/delivery', function () {
             return $this->parse();
+        });
+
+        $this->api('get', 'test', function ($test) {
+
+            //$notification = new Notification('test-11');
+            //$notification->setRecipient('slasherz999@gmail.com', 'Sven Al Hamad');
+
         });
     }
 

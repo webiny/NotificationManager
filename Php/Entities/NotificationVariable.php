@@ -14,6 +14,7 @@ use Webiny\Component\Entity\EntityException;
  * @property string $attribute
  * @property string $description
  * @property string $notification
+ * @property string $type
  *
  * @package Apps\Core\Php\Entities
  *
@@ -31,9 +32,10 @@ class NotificationVariable extends EntityAbstract
 
         $this->attr('key')->char()->setValidators('required')->setToArrayDefault();
 
-        $this->attr('entity')->char()->setValidators('required')->setToArrayDefault();
-        $this->attr('attribute')->char()->setValidators('required')->setToArrayDefault();
+        $this->attr('entity')->char()->setToArrayDefault();
+        $this->attr('attribute')->char()->setToArrayDefault();
         $this->attr('description')->char()->setToArrayDefault();
+        $this->attr('type')->char()->setToArrayDefault();
 
         $notification = '\Apps\NotificationManager\Php\Entities\Notification';
         $this->attr('notification')->many2one('Notification')->setEntity($notification)->setValidators('required');
@@ -42,7 +44,10 @@ class NotificationVariable extends EntityAbstract
     public function save()
     {
         // check that the give variable key doesn't already exist for the current notification
-        $result = $this->find(['key' => $this->key, 'notification' => $this->notification->id, 'id' => ['$ne' => $this->id]]);
+        $result = $this->find(['key'          => $this->key,
+                               'notification' => $this->notification->id,
+                               'id'           => ['$ne' => $this->id]
+        ]);
         if ($result->totalCount() > 0) {
             $ex = new EntityException(EntityException::VALIDATION_FAILED, [1]);
             $ex->setInvalidAttributes(['key' => sprintf('Given key "%s" already exists.', $this->key)]);

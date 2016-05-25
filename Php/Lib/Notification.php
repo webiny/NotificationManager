@@ -2,27 +2,214 @@
 
 namespace Apps\NotificationManager\Php\Lib;
 
+use Apps\Core\Php\DevTools\DevToolsTrait;
+use Apps\Core\Php\Entities\Setting;
+use Apps\NotificationManager\Php\Entities\EmailLog;
+use Apps\NotificationManager\Php\Entities\NotificationVariable;
+use Webiny\Component\Mailer\Mailer;
+use Webiny\Component\Mailer\MailerTrait;
+use Webiny\Component\Validation\ValidationTrait;
+use Webiny\Component\Validation\ValidationException;
+use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
+
+use Webiny\Component\Entity\EntityAbstract;
 
 class Notification
 {
-    public static function send($slug, $recipient, array $entities = [])
+    use ValidationTrait, DevToolsTrait, MailerTrait;
+
+    protected $slug;
+    protected $recipientEmail;
+    protected $recipientName;
+    protected $entities = [];
+    protected $customVars = [];
+    protected $emailContent;
+
+    /**
+     * @var NotificationEntity
+     */
+    protected $notification;
+
+
+    /**
+     * @param string $slug Notification slug.
+     */
+    public function __construct($slug)
     {
-        $emailNotification = new EmailNotification($slug);
+        $this->slug = $slug;
+    }
 
-        // check recipient details
-        $recipientName = '';
-        if (is_array($recipient)) {
-            $recipientEmail = $recipient[0];
-            if (isset($recipient[1])) {
-                $recipientName = $recipient[1];
-            }
-        } else {
-            $recipientEmail = $recipient;
+    /**
+     * @param string $email
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setRecipient($email, $name)
+    {
+        try {
+            self::validation()->validate($email, 'email');
+        } catch (ValidationException $e) {
+            new NotificationException(sprintf('Recipient email "%s" is invalid.', $email));
         }
-        $emailNotification->setRecipient($recipientEmail, $recipientName);
 
-        // get content and pass it to the parser
+        $this->recipientEmail = $email;
+        $this->recipientName = $name;
 
+        return $this;
+    }
 
+    /**
+     * @param EntityAbstract $entity
+     *
+     * @return $this
+     */
+    public function addEntity(EntityAbstract $entity)
+    {
+        $this->entities[get_class($entity)] = $entity;
+
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function addCustomVariable($name, $value)
+    {
+        $this->customVars[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Send the notification.
+     * If successful true is returned, otherwise false.
+     *
+     * @return bool
+     * @throws NotificationException
+     */
+    public function send()
+    {
+        /**
+         * @var NotificationEntity $notification
+         */
+        // load notification
+        $this->notification = NotificationEntity::findOne(['slug' => $this->slug]);
+        if (empty($this->notification)) {
+            new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
+        }
+
+        // combine the template and the content
+        $this->emailContent = str_replace(['{_content_}', '{_hostName_}'],
+            [$notification->email['content'], $this->wConfig()->get('Application.WebPath')],
+            $notification->template->content);
+
+        // parse variables
+        $this->parseVariables();
+
+        $mailer = $this->getMailer();
+        $msg = $mailer->getMessage();
+        $msg->setSubject($this->notification->email['subject'])
+            ->setBody($this->emailContent)
+            ->setTo([$this->recipientEmail, $this->recipientName]);
+
+        // start email log
+        $log = new EmailLog();
+        $log->content = $this->emailContent;
+        $log->email = $this->recipientEmail;
+        $log->notification = $this->notification->getId();
+        $log->subject = $this->notification->email['subject'];
+
+        // send the message and add the message to email log
+        try {
+            $result = $mailer->send($msg);
+            if ($result) {
+                $log->status = EmailLog::STATUS_SENT;
+                $log->messageId = $msg->getHeader('Message-ID');
+            } else {
+                $log->status = EmailLog::STATUS_ERROR;
+            }
+
+            $log->save();
+        } catch (\Exception $e) {
+            $log->status = EmailLog::STATUS_ERROR;
+            $log->save();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @throws NotificationException
+     */
+    private function parseVariables()
+    {
+        // load all variables required for this notification
+        $vars = NotificationVariable::find(['notification' => $this->notification->getId()]);
+        if ($vars->totalCount()) {
+            return;
+        }
+
+        // loop over variables and make sure all the variables are provided
+        foreach ($vars as $v) {
+            if ($v->type == 'entity') {
+                if (!isset($this->entities[$v->entity])) {
+                    throw new NotificationException(sprintf('Entity "%s", that is required by "%s" variable, is missing.',
+                        $v->entity, $v->key));
+                } else {
+                    // replace the value inside the content
+                    $this->emailContent = str_replace('{' . $v->key . '}',
+                        $this->entities[$v->entity]->getAttribute($v->attribute), $this->emailContent);
+                }
+            } else {
+                if (!isset($this->customVars[$v->key])) {
+                    throw new NotificationException(sprintf('Custom variable "%s" is missing.', $v->key));
+                } else {
+                    // replace the value inside the content
+                    $this->emailContent = str_replace('{' . $v->key . '}', $this->customVars[$v->key],
+                        $this->emailContent);
+                }
+            }
+        }
+    }
+
+    /**
+     * @return Mailer
+     * @throws NotificationException
+     * @throws \Webiny\Component\StdLib\Exception\Exception
+     */
+    private function getMailer()
+    {
+        // load the mailer settings
+        $settings = Setting::findOne(['key' => 'notification-manager']);
+        if (empty($settings)) {
+            throw new NotificationException(sprintf('Unable to load SMTP settings'));
+        }
+        $settings = $settings['settings'];
+
+        $config = [
+            'Sender'    => [
+                'Email' => $this->notification->email['fromAddress'],
+                'Name'  => $this->notification->email['fromName']
+            ],
+            'Transport' => [
+                'Type'       => 'smtp',
+                'Host'       => $settings['serverName'],
+                'Port'       => 465,
+                'Username'   => $settings['username'],
+                'Password'   => $settings['password'],
+                'Encryption' => 'ssl',
+                'AuthMode'   => 'login'
+            ]
+        ];
+
+        Mailer::setConfig(['Default' => $config]);
+
+        return $this->mailer('Default');
     }
 }
