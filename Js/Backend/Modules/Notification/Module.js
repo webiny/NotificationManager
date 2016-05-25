@@ -8,10 +8,7 @@ class Notification extends Webiny.Module {
 
         this.registerMenus(
             new Menu('Notifications', [
-                new Menu('Overview', 'NotificationManager.Overview'),
-                new Menu('Notifications', 'NotificationManager.Notifications'),
-                new Menu('Templates', 'NotificationManager.Templates'),
-                new Menu('Settings', 'NotificationManager.Settings')
+                new Menu('Notifications', 'NotificationManager.Notifications')
             ], 'icon-bell')
         );
 

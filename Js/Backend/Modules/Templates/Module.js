@@ -4,6 +4,14 @@ import Views from './Views/Views';
 class Template extends Webiny.Module {
 
     init() {
+        const Menu = Webiny.Ui.Menu;
+
+        this.registerMenus(
+            new Menu('Notifications', [
+                new Menu('Templates', 'NotificationManager.Templates')
+            ], 'icon-bell')
+        );
+
         this.registerRoutes(
             new Webiny.Route('NotificationManager.Templates', '/notification-manager/templates', Views.TemplateList, 'Notification Manager - Templates'),
             new Webiny.Route('NotificationManager.Template.Edit', '/notification-manager/template/:id', Views.TemplateForm, 'Notification Manager - Edit Template'),
