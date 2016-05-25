@@ -17,11 +17,12 @@ class NotificationForm extends Webiny.Ui.View {
             'email': Webiny.Model.get('User').email,
             'content': emailContent
         };
-        let api = new Webiny.Api.Endpoint('/entities/notification-manager/notifications');
+
+        const api = new Webiny.Api.Endpoint('/entities/notification-manager/notifications');
 
         // show modal box
         this.ui('previewModal').show();
-        api.post('preview/' + Webiny.Router.getParams('id'), postBody).then(ar => {
+        api.post('preview/' + Webiny.Router.getParams('id'), postBody).then(() => {
             // update status in the modalbox
             this.ui('previewModal').setSuccess();
         });

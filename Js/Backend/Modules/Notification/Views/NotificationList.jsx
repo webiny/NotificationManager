@@ -12,7 +12,6 @@ class NotificationList extends Webiny.Ui.View {
 NotificationList.defaultProps = {
 
     renderer() {
-
         const listProps = {
             api: '/entities/notification-manager/notifications',
             fields: 'title,description,slug,createdOn',

@@ -10,7 +10,7 @@ class TemplateForm extends Webiny.Ui.View {
     }
 
     previewTemplate(content) {
-        const myWindow = window.open("data:text/html," + encodeURIComponent(content),
+        const myWindow = window.open('data:text/html,' + encodeURIComponent(content),
             '_blank', 'width=800,height=600');
         myWindow.focus();
     }
