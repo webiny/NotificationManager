@@ -4,6 +4,7 @@ namespace Apps\NotificationManager\Php\Services;
 use Apps\Core\Php\DevTools\DevToolsTrait;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
 use Apps\Core\Php\DevTools\Services\AbstractService;
+use Apps\Core\Php\Entities\User;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Lib\Notification;
 
@@ -30,11 +31,19 @@ class Feedback extends AbstractService
             return $this->parse();
         });
 
-        $this->api('get', 'test', function ($test) {
+        $this->api('get', 'test', function () {
+            $user = User::findById('570e8e00ff587209205f1a81');
+            $notification = new Notification('test-11');
+            $result = $notification->setRecipient('slasherz999@gmail.com', 'Sven Al Hamad')
+                ->addEntity($user)
+                ->addCustomVariable('customTest', 'ovo je custom varijabla')
+                ->send();
 
-            //$notification = new Notification('test-11');
-            //$notification->setRecipient('slasherz999@gmail.com', 'Sven Al Hamad');
-
+            if($result){
+                die('message sent');
+            }else{
+                die('message not sent');
+            }
         });
     }
 

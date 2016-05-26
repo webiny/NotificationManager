@@ -6,6 +6,7 @@ use Apps\Core\Php\DevTools\DevToolsTrait;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\NotificationVariable;
+use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 use Webiny\Component\Mailer\MailerTrait;
 use Webiny\Component\Validation\ValidationTrait;
@@ -104,8 +105,8 @@ class Notification
 
         // combine the template and the content
         $this->emailContent = str_replace(['{_content_}', '{_hostName_}'],
-            [$notification->email['content'], $this->wConfig()->get('Application.WebPath')],
-            $notification->template->content);
+            [$this->notification->email['content'], $this->wConfig()->get('Application.WebPath')],
+            $this->notification->template->content);
 
         // parse variables
         $this->parseVariables();
@@ -114,7 +115,7 @@ class Notification
         $msg = $mailer->getMessage();
         $msg->setSubject($this->notification->email['subject'])
             ->setBody($this->emailContent)
-            ->setTo([$this->recipientEmail, $this->recipientName]);
+            ->setTo(new Email($this->recipientEmail, $this->recipientName));
 
         // start email log
         $log = new EmailLog();
@@ -131,11 +132,13 @@ class Notification
                 $log->messageId = $msg->getHeader('Message-ID');
             } else {
                 $log->status = EmailLog::STATUS_ERROR;
+                $log->log = print_r($mailer->getTransport()->getDebugLog(), true);
             }
 
             $log->save();
         } catch (\Exception $e) {
             $log->status = EmailLog::STATUS_ERROR;
+            $log->log = $e->getMessage();
             $log->save();
 
             return false;
@@ -150,8 +153,8 @@ class Notification
     private function parseVariables()
     {
         // load all variables required for this notification
-        $vars = NotificationVariable::find(['notification' => $this->notification->getId()]);
-        if ($vars->totalCount()) {
+        $vars = NotificationVariable::find(['notification' => $this->notification->id]);
+        if ($vars->totalCount() < 1) {
             return;
         }
 
@@ -164,7 +167,7 @@ class Notification
                 } else {
                     // replace the value inside the content
                     $this->emailContent = str_replace('{' . $v->key . '}',
-                        $this->entities[$v->entity]->getAttribute($v->attribute), $this->emailContent);
+                        $this->entities[$v->entity]->getAttribute($v->attribute)->getValue(), $this->emailContent);
                 }
             } else {
                 if (!isset($this->customVars[$v->key])) {
@@ -200,15 +203,16 @@ class Notification
             'Transport' => [
                 'Type'       => 'smtp',
                 'Host'       => $settings['serverName'],
-                'Port'       => 465,
+                'Port'       => 587,
                 'Username'   => $settings['username'],
                 'Password'   => $settings['password'],
-                'Encryption' => 'ssl',
+                'Encryption' => 'tls',
                 'AuthMode'   => 'login'
-            ]
+            ],
+            'Debug'     => true
         ];
 
-        Mailer::setConfig(['Default' => $config]);
+        Mailer::setConfig(\Webiny\Component\Config\Config::getInstance()->parseResource(['Default' => $config]));
 
         return $this->mailer('Default');
     }
