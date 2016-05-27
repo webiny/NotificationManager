@@ -5,6 +5,18 @@ const Table = Ui.List.Table;
 class List extends Webiny.Ui.View {
     constructor(props) {
         super(props);
+
+        this.bindMethods('showContent');
+    }
+
+    showContent(id) {
+        const myWindow = window.open('', '_blank', 'width=800,height=600');
+        const api = new Webiny.Api.Endpoint('/entities/notification-manager/email-log').setQuery({'_fields': 'content'});
+
+        api.get('/' + id).then((response) => {
+            myWindow.document.write(response.data.data.content);
+            myWindow.focus();
+        });
     }
 }
 
@@ -12,9 +24,8 @@ List.defaultProps = {
 
     renderer() {
         const listProps = {
-            api: '/entities/notification-manager/templates',
-            fields: 'name,createdOn',
-            connectToRouter: true
+            api: '/entities/notification-manager/email-log',
+            fields: 'id,status,email,name,subject,createdOn'
         };
 
         return (
@@ -22,11 +33,8 @@ List.defaultProps = {
                 <Ui.Grid.Col all={12}>
                     <h2>
                         <Ui.Grid.Row>
-                            <Ui.Grid.Col all={10}>
-                                Templates
-                            </Ui.Grid.Col>
-                            <Ui.Grid.Col all={2}>
-                                <Ui.Link type="primary" align="right" route="NotificationManager.Template.Create">Create new Templateb</Ui.Link>
+                            <Ui.Grid.Col all={12}>
+                                Overview
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
                     </h2>
@@ -36,13 +44,52 @@ List.defaultProps = {
 
                         <Table.Table>
                             <Table.Row>
-                                <Table.Field name="name" align="left" label="Name" sort="name"/>
+                                <Table.CaseField name="status" label="Status" align="left">
+                                    <case value={0}>
+                                        <Ui.Label type="default">Pending</Ui.Label>
+                                    </case>
+                                    <case value={1}>
+                                        <Ui.Label type="error">Error</Ui.Label>
+                                    </case>
+                                    <case value={2}>
+                                        <Ui.Label type="info">Sent</Ui.Label>
+                                    </case>
+                                    <case value={3}>
+                                        <Ui.Label type="success">Delivered</Ui.Label>
+                                    </case>
+                                    <case value={4}>
+                                        <Ui.Label type="error">Hard Bounce</Ui.Label>
+                                    </case>
+                                    <case value={5}>
+                                        <Ui.Label type="warning">Soft Bounce</Ui.Label>
+                                    </case>
+                                    <case value={6}>
+                                        <Ui.Label type="error">Complaint</Ui.Label>
+                                    </case>
+                                    <case value={7}>
+                                        <Ui.Label type="success">Read</Ui.Label>
+                                    </case>
+                                </Table.CaseField>
                                 <Table.TimeAgoField name="createdOn" align="left" label="Created On" sort="createdOn"/>
+                                <Table.Field name="email" align="left" label="Email" sort="email"/>
+                                <Table.Field name="subject" align="left" label="Subject" sort="subject"/>
 
-                                <Table.Actions>
-                                    <Table.EditAction route="NotificationManager.Template.Edit"/>
-                                    <Table.DeleteAction/>
-                                </Table.Actions>
+                                <Table.Field align="right">
+                                    <Table.FieldRenderer>
+                                        {(data, $this) => {
+                                            return (
+                                                <td className={$this.getTdClasses()}>
+                                                    <Ui.Button
+                                                        type="default"
+                                                        label="Show Content"
+                                                        onClick={() => this.showContent(data.id)}/>
+                                                </td>
+                                            );
+                                        }}
+                                    </Table.FieldRenderer>
+
+                                </Table.Field>
+
                             </Table.Row>
 
                             <Table.Empty/>

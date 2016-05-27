@@ -7,13 +7,14 @@ use Apps\Core\Php\DevTools\Entity\EntityAbstract;
 /**
  * Class EmailLog
  *
- * @property string  $id
- * @property string  $messageId
- * @property integer $status
- * @property string  $subject
- * @property string  $content
- * @property string  $email
- * @property string  $log
+ * @property string        $id
+ * @property string        $messageId
+ * @property integer       $status
+ * @property string        $subject
+ * @property string        $content
+ * @property string        $email
+ * @property string        $name
+ * @property string        $log
  * @property Notification  $notification
  *
  * @package Apps\Core\Php\Entities
@@ -23,6 +24,7 @@ class EmailLog extends EntityAbstract
 {
     use DevToolsTrait;
 
+    const STATUS_PENDING = '0';
     const STATUS_ERROR = '1';
     const STATUS_SENT = '2';
     const STATUS_DELIVERED = '3';
@@ -42,6 +44,7 @@ class EmailLog extends EntityAbstract
         $this->attr('subject')->char()->setToArrayDefault();
         $this->attr('content')->char();
         $this->attr('email')->char()->setToArrayDefault();
+        $this->attr('name')->char()->setToArrayDefault();
         $this->attr('log')->char();
 
         /*

@@ -44,6 +44,7 @@ SettingsForm.defaultProps = {
                                             <Ui.Input label="Server Name" name="settings.serverName" validate="required" />
                                             <Ui.Input label="Username" name="settings.username" validate="required" />
                                             <Ui.Input label="Password" name="settings.password" validate="required" type="password" />
+                                            <Ui.Input label="Send limit (emails per second)" name="settings.sendLimit" validate="required" />
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="AWS SNS Settings"/>

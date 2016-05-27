@@ -3,11 +3,8 @@
 namespace Apps\NotificationManager\Php\Lib;
 
 use Apps\Core\Php\DevTools\DevToolsTrait;
-use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\NotificationVariable;
-use Webiny\Component\Mailer\Email;
-use Webiny\Component\Mailer\Mailer;
 use Webiny\Component\Mailer\MailerTrait;
 use Webiny\Component\Validation\ValidationTrait;
 use Webiny\Component\Validation\ValidationException;
@@ -111,38 +108,8 @@ class Notification
         // parse variables
         $this->parseVariables();
 
-        $mailer = $this->getMailer();
-        $msg = $mailer->getMessage();
-        $msg->setSubject($this->notification->email['subject'])
-            ->setBody($this->emailContent)
-            ->setTo(new Email($this->recipientEmail, $this->recipientName));
-
-        // start email log
-        $log = new EmailLog();
-        $log->content = $this->emailContent;
-        $log->email = $this->recipientEmail;
-        $log->notification = $this->notification->getId();
-        $log->subject = $this->notification->email['subject'];
-
-        // send the message and add the message to email log
-        try {
-            $result = $mailer->send($msg);
-            if ($result) {
-                $log->status = EmailLog::STATUS_SENT;
-                $log->messageId = $msg->getHeader('Message-ID');
-            } else {
-                $log->status = EmailLog::STATUS_ERROR;
-                $log->log = print_r($mailer->getTransport()->getDebugLog(), true);
-            }
-
-            $log->save();
-        } catch (\Exception $e) {
-            $log->status = EmailLog::STATUS_ERROR;
-            $log->log = $e->getMessage();
-            $log->save();
-
-            return false;
-        }
+        // save the mail into the mail queue
+        $this->scheduleForSending();
 
         return true;
     }
@@ -181,39 +148,15 @@ class Notification
         }
     }
 
-    /**
-     * @return Mailer
-     * @throws NotificationException
-     * @throws \Webiny\Component\StdLib\Exception\Exception
-     */
-    private function getMailer()
+    public function scheduleForSending()
     {
-        // load the mailer settings
-        $settings = Setting::findOne(['key' => 'notification-manager']);
-        if (empty($settings)) {
-            throw new NotificationException(sprintf('Unable to load SMTP settings'));
-        }
-        $settings = $settings['settings'];
-
-        $config = [
-            'Sender'    => [
-                'Email' => $this->notification->email['fromAddress'],
-                'Name'  => $this->notification->email['fromName']
-            ],
-            'Transport' => [
-                'Type'       => 'smtp',
-                'Host'       => $settings['serverName'],
-                'Port'       => 587,
-                'Username'   => $settings['username'],
-                'Password'   => $settings['password'],
-                'Encryption' => 'tls',
-                'AuthMode'   => 'login'
-            ],
-            'Debug'     => true
-        ];
-
-        Mailer::setConfig(\Webiny\Component\Config\Config::getInstance()->parseResource(['Default' => $config]));
-
-        return $this->mailer('Default');
+        // start email log
+        $log = new EmailLog();
+        $log->content = $this->emailContent;
+        $log->email = $this->recipientEmail;
+        $log->name = $this->recipientName;
+        $log->notification = $this->notification->getId();
+        $log->subject = $this->notification->email['subject'];
+        $log->save();
     }
 }
