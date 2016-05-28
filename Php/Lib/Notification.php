@@ -100,9 +100,15 @@ class Notification
             new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
         }
 
+        // append tracker
+        $trackerPath = $this->wConfig()
+                            ->get('Application.ApiPath') . '/services/notification-manager/feedback/email/mark-read/{emailLog}/1px';
+        $tracker = '<img src="' . $trackerPath . '" style="border:none; width:1px; height:1px; position: absolute" />';
+        $this->emailContent = $this->notification->email['content'] . $tracker;
+
         // combine the template and the content
         $this->emailContent = str_replace(['{_content_}', '{_hostName_}'],
-            [$this->notification->email['content'], $this->wConfig()->get('Application.WebPath')],
+            [$this->emailContent, $this->wConfig()->get('Application.WebPath')],
             $this->notification->template->content);
 
         // parse variables
@@ -157,6 +163,10 @@ class Notification
         $log->name = $this->recipientName;
         $log->notification = $this->notification->getId();
         $log->subject = $this->notification->email['subject'];
+        $log->save();
+
+        // update the tracker with the email log id
+        $log->content = str_replace('{emailLog}', $log->id, $log->content);
         $log->save();
     }
 }

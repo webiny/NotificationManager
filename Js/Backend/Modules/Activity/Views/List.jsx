@@ -14,6 +14,10 @@ class List extends Webiny.Ui.View {
         const api = new Webiny.Api.Endpoint('/entities/notification-manager/email-log').setQuery({'_fields': 'content'});
 
         api.get('/' + id).then((response) => {
+            // tell to the feedback service not to mark email as read on the preview
+            response.data.data.content = response.data.data.content.replace(/\/1px/, '/1px?preview=true');
+
+            // show the preview window
             myWindow.document.write(response.data.data.content);
             myWindow.focus();
         });
@@ -34,7 +38,7 @@ List.defaultProps = {
                     <h2>
                         <Ui.Grid.Row>
                             <Ui.Grid.Col all={12}>
-                                Overview
+                                Activity
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
                     </h2>

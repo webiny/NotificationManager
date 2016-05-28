@@ -1,76 +1,99 @@
 <?php
 namespace Apps\NotificationManager\Php\Services;
 
+set_time_limit(0);
+
 use Apps\Core\Php\DevTools\DevToolsTrait;
 use Apps\Core\Php\DevTools\Services\AbstractService;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Entities\EmailLog;
-use Apps\NotificationManager\Php\Entities\Notification;
 use Apps\NotificationManager\Php\Lib\NotificationException;
 use Webiny\Component\Config\Config;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
+use Webiny\Component\Mailer\MailerTrait;
 
 class MailQueue extends AbstractService
 {
-    use DevToolsTrait;
+    use DevToolsTrait, MailerTrait;
 
     function __construct()
     {
         $this->api('get', 'send', function () {
-            // calculate the max amount of emails we can send in one minute (that's the cron frequency)
-            $settings = Setting::findOne(['key' => 'notification-manager']);
-            if (!$settings) {
-                throw new NotificationException('Settings sendLimit not defined.');
-            }
+            return $this->sendEmails();
+        });
+    }
 
-            $minuteLimit = $settings['settings']['sendLimit'] * 60;
-            $sleepTime = (1 / $settings['settings']['sendLimit']) * 1000000; // in microseconds
+    private function sendEmails()
+    {
+        // calculate the max amount of emails we can send in one minute (that's the cron frequency)
+        $settings = Setting::findOne(['key' => 'notification-manager']);
+        if (!$settings) {
+            throw new NotificationException('Settings sendLimit not defined.');
+        }
 
-            // get the max number of email we can send within 1 min limit
+        $minuteLimit = $settings['settings']['sendLimit'] * 60;
+        $sleepTime = (1 / $settings['settings']['sendLimit']) * 1000000; // in microseconds
+
+        // get the max number of email we can send within 1 min limit
+        // we want to keep the process active for the full minute, so we don't wait 60s to get the email
+        $numIterations = 3;
+        do {
             $emails = EmailLog::find(['status' => EmailLog::STATUS_PENDING], ['+createdOn'], $minuteLimit);
-            if ($emails->count() < 1) {
-                return false;
+            $count = $emails->count();
+            if ($count < 1) {
+                // sleep for 5 seconds
+                sleep(5);
+                $numIterations--;
+                if ($numIterations <= 0) {
+                    return 'Email queue was empty, no emails were sent.';
+                }
+            } else {
+                // update all those emails to status SENT, in case if another cron runs in meantime so we don't send some emails twice
+                // this can happen because we sleep between sending emails to stay within the send limit
+                foreach ($emails as $e) {
+                    //$e->status = EmailLog::STATUS_SENT;
+                    //$e->save();
+                }
             }
 
-            /**
-             * @var EmailLog $e
-             */
-            $emailLog = ['sent' => 0, 'errors' => 0];
-            foreach ($emails as $e) {
-                $notification = Notification::findById($e->notification);
+        } while ($count < 1 && $numIterations > 0);
 
-                $mailer = $this->getMailer($notification->email['fromAddress'], $notification->email['fromName']);
-                $msg = $mailer->getMessage();
-                $msg->setSubject($e->subject)->setBody($e->content)->setTo(new Email($e->email, $e->name));
+        /**
+         * @var EmailLog $e
+         */
+        $mailer = $this->getMailer();
+        $emailLog = ['sent' => 0, 'errors' => 0];
+        foreach ($emails as $e) {
+            $msg = $mailer->getMessage();
+            $msg->setFrom(new Email($e->notification->email['fromAddress'], $e->notification->email['fromName']));
+            $msg->setSubject($e->subject)->setBody($e->content)->setTo(new Email($e->email, $e->name));
 
-                try {
-                    $result = $mailer->send($msg);
-                    if ($result) {
-                        $e->status = EmailLog::STATUS_SENT;
-                        $e->messageId = $msg->getHeader('Message-ID');
-                        $emailLog['sent']++;
-                    } else {
-                        $e->status = EmailLog::STATUS_ERROR;
-                        $e->log = print_r($mailer->getTransport()->getDebugLog(), true);
-                        $emailLog['errors']++;
-                    }
-
-                    $e->save();
-                } catch (\Exception $ex) {
+            try {
+                $result = $mailer->send($msg);
+                if ($result) {
+                    $e->status = EmailLog::STATUS_SENT;
+                    $e->messageId = $msg->getHeader('Message-ID');
+                    $emailLog['sent']++;
+                } else {
                     $e->status = EmailLog::STATUS_ERROR;
-                    $e->log = $ex->getMessage();
-                    $e->save();
+                    $e->log = print_r($mailer->getTransport()->getDebugLog(), true);
                     $emailLog['errors']++;
                 }
 
-                // sleep
-                usleep($sleepTime);
+                $e->save();
+            } catch (\Exception $ex) {
+                $e->status = EmailLog::STATUS_ERROR;
+                $e->log = $ex->getMessage();
+                $e->save();
+                $emailLog['errors']++;
             }
 
-            return $emailLog;
+            // sleep
+            usleep($sleepTime);
+        }
 
-        });
+        return $emailLog;
     }
 
     /**
@@ -78,7 +101,7 @@ class MailQueue extends AbstractService
      * @throws NotificationException
      * @throws \Webiny\Component\StdLib\Exception\Exception
      */
-    private function getMailer($email, $name)
+    private function getMailer()
     {
         // load the mailer settings
         $settings = Setting::findOne(['key' => 'notification-manager']);
@@ -88,10 +111,6 @@ class MailQueue extends AbstractService
         $settings = $settings['settings'];
 
         $config = [
-            'Sender'    => [
-                'Email' => $email,
-                'Name'  => $name
-            ],
             'Transport' => [
                 'Type'       => 'smtp',
                 'Host'       => $settings['serverName'],

@@ -24,14 +24,14 @@ class EmailLog extends EntityAbstract
 {
     use DevToolsTrait;
 
-    const STATUS_PENDING = '0';
-    const STATUS_ERROR = '1';
-    const STATUS_SENT = '2';
-    const STATUS_DELIVERED = '3';
-    const STATUS_HARD_BOUNCE = '4';
-    const STATUS_SOFT_BOUNCE = '5';
-    const STATUS_COMPLAINT = '6';
-    const STATUS_READ = '7';
+    const STATUS_PENDING = 0;
+    const STATUS_ERROR = 1;
+    const STATUS_SENT = 2;
+    const STATUS_DELIVERED = 3;
+    const STATUS_HARD_BOUNCE = 4;
+    const STATUS_SOFT_BOUNCE = 5;
+    const STATUS_COMPLAINT = 6;
+    const STATUS_READ = 7;
 
     protected static $entityCollection = 'NotificationManagerEmailLog';
     protected static $entityMask = '{messageId}';

@@ -35,13 +35,13 @@ class Feedback extends AbstractService
             $user = User::findById('570e8e00ff587209205f1a81');
             $notification = new Notification('test-11');
             $result = $notification->setRecipient('slasherz999@gmail.com', 'Sven Al Hamad')
-                ->addEntity($user)
-                ->addCustomVariable('customTest', 'ovo je custom varijabla')
-                ->send();
+                                   ->addEntity($user)
+                                   ->addCustomVariable('customTest', 'ovo je custom varijabla')
+                                   ->send();
 
-            if($result){
+            if ($result) {
                 die('message sent');
-            }else{
+            } else {
                 die('message not sent');
             }
         });
@@ -50,12 +50,11 @@ class Feedback extends AbstractService
     public function markRead(EmailLog $emailLog)
     {
         // get current status to see if we need to update global stats for the notification entity
-        if ($emailLog->status != $emailLog::STATUS_READ) {
+        if ($emailLog->status != $emailLog::STATUS_READ && !$this->wRequest()->query('preview', false)) {
             $emailLog->notification->email['read'] = empty($emailLog->notification->email['read']) ? 1 : $emailLog->notification->email['read'] + 1;
+            $emailLog->status = $emailLog::STATUS_READ;
+            $emailLog->save();
         }
-
-        $emailLog->status = $emailLog::STATUS_READ;
-        $emailLog->save();
 
         // return 1px transparent gif
         header('Content-Type: image/gif');
