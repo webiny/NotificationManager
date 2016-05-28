@@ -30,21 +30,6 @@ class Feedback extends AbstractService
         $this->api('post', 'email/delivery', function () {
             return $this->parse();
         });
-
-        $this->api('get', 'test', function () {
-            $user = User::findById('570e8e00ff587209205f1a81');
-            $notification = new Notification('test-11');
-            $result = $notification->setRecipient('slasherz999@gmail.com', 'Sven Al Hamad')
-                                   ->addEntity($user)
-                                   ->addCustomVariable('customTest', 'ovo je custom varijabla')
-                                   ->send();
-
-            if ($result) {
-                die('message sent');
-            } else {
-                die('message not sent');
-            }
-        });
     }
 
     public function markRead(EmailLog $emailLog)
@@ -67,34 +52,35 @@ class Feedback extends AbstractService
         $data = $this->wRequest()->getPayload();
 
         // check if it's a subscription confirmation
-        if (!empty($data->Type) && $data->Type == 'SubscriptionConfirmation') {
+        if (!empty($data->get('Type')) && $data->get('Type') == 'SubscriptionConfirmation') {
             // confirm the subscription
-            file_get_contents($data->SubscribeURL);
+            file_get_contents($data->get('SubscribeURL'));
             return;
         }
 
         // extract message id
-        if (empty($data->mail->messageId)) {
+        if (empty($data->get('mail')['messageId'])) {
             throw new AppException('Payload is missing messageId');
         }
+        $mgId = $data->get('mail')['messageId'];
 
         // get message for the matching message id
         /**
          * @var EmailLog $emailLog
          */
-        $emailLog = EmailLog::findOne(['messageId' => $data->mail->messageId]);
+        $emailLog = EmailLog::findOne(['messageId' => $mgId]);
         if (empty($emailLog)) {
-            throw new AppException(sprintf('Message under id "%s" not found in email log.', $data->mail->messageId));
+            throw new AppException(sprintf('Message under id "%s" not found in email log.', $mgId));
         }
 
         // save the log info
-        $emailLog->log = print_r($data->val(), true);
+        $emailLog->log = print_r($data->getAll(), true);
 
         // check the notificationType
-        $notificationType = strtolower($data->notificationType);
+        $notificationType = strtolower($data->get('notificationType'));
         switch ($notificationType) {
             case 'bounce':
-                if ($data->bounce->bounceType == 'Permanent') {
+                if ($data->get('bounce')['bounceType'] == 'Permanent') {
                     $emailLog->status = $emailLog::STATUS_HARD_BOUNCE;
                 } else {
                     $emailLog->status = $emailLog::STATUS_SOFT_BOUNCE;
@@ -113,6 +99,6 @@ class Feedback extends AbstractService
                 break;
         }
 
-        $emailLog->save();
+        $emailLog->notification->save();
     }
 }
