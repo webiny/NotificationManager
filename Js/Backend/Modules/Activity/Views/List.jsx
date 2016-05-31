@@ -77,21 +77,8 @@ List.defaultProps = {
                                 <Table.TimeAgoField name="createdOn" align="left" label="Created On" sort="createdOn"/>
                                 <Table.Field name="email" align="left" label="Email" sort="email"/>
                                 <Table.Field name="subject" align="left" label="Subject" sort="subject"/>
-
                                 <Table.Field align="right">
-                                    <Table.FieldRenderer>
-                                        {(data, $this) => {
-                                            return (
-                                                <td className={$this.getTdClasses()}>
-                                                    <Ui.Button
-                                                        type="default"
-                                                        label="Show Content"
-                                                        onClick={() => this.showContent(data.id)}/>
-                                                </td>
-                                            );
-                                        }}
-                                    </Table.FieldRenderer>
-
+                                    {data => <Ui.Button type="default" label="Show Content" onClick={() => this.showContent(data.id)}/>}
                                 </Table.Field>
 
                             </Table.Row>

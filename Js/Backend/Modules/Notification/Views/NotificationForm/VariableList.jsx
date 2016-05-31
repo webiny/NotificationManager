@@ -49,16 +49,13 @@ VariableList.defaultProps = {
                                 <Table.Table>
                                     <Table.Row>
                                         <Table.Field name="key" align="left" label="Variable Name" sort="key">
-                                            <Table.FieldRenderer>
-                                                {function renderer(data) {
-                                                    return (
-                                                        <td className={this.getTdClasses()}>
-                                                            <strong>&#123;{data.key}&#125;</strong>
-                                                            <br/>
-                                                            <span>{data.description}</span>
-                                                        </td>
-                                                    );
-                                                }}</Table.FieldRenderer>
+                                            {data => (
+                                                <span>
+                                                    <strong>&#123;{data.key}&#125;</strong>
+                                                    <br/>
+                                                    <span>{data.description}</span>
+                                                </span>
+                                            )}
                                         </Table.Field>
                                         <Table.Field name="entity" align="left" label="Entity" sort="entity"/>
                                         <Table.Field name="attribute" align="left" label="Attribute" sort="attribute"/>
