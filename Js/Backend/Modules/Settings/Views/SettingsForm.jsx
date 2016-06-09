@@ -294,6 +294,24 @@ SettingsForm.defaultProps = {
 
                                 </Ui.Tabs.Tab>
 
+                                <Ui.Tabs.Tab label="Cron Setup Guide" icon="icon-info-circle">
+                                    <Ui.Form.Fieldset title="About"/>
+                                    <p>
+                                        Notification manager sends all the emails in a background process,
+                                        this way your code doesn't have wait for the SMTP connection to be established
+                                        and your code takes less time to execute.
+                                    </p>
+                                    <p>
+                                        This background process is triggered via a cron job. This cron job can be configured via crontab,
+                                        or via the Webiny Cron Manager app.
+                                    </p>
+                                    <p>
+                                        The cron should be configured so it exectures the following script every minute:
+                                        <pre>{window.location.origin}/api/services/mail-queue/send</pre>
+                                    </p>
+
+                                </Ui.Tabs.Tab>
+
                             </Ui.Tabs.Tabs>
                         </Ui.Panel.Body>
 
