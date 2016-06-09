@@ -14,8 +14,14 @@ NotificationList.defaultProps = {
     renderer() {
         const listProps = {
             api: '/entities/notification-manager/notifications',
-            fields: 'title,description,slug,createdOn',
+            fields: 'title,description,slug,email.subject,createdOn',
+            searchFields: 'title,description,email.subject',
             connectToRouter: true
+        };
+
+        const searchProps = {
+            placeholder: 'Search by title, description or email subject',
+            name: '_searchQuery'
         };
 
         return (
@@ -37,6 +43,21 @@ NotificationList.defaultProps = {
                 </Ui.Grid.Col>
                 <Ui.Grid.Col all={12}>
                     <Ui.List.ApiContainer ui="notificationList" {...listProps}>
+
+                        <Ui.List.FormFilters>
+                            {(applyFilters, resetFilters) => (
+                                <Ui.Grid.Row>
+                                    <Ui.Grid.Col all={10}>
+                                        <Ui.Input {...searchProps} onEnter={applyFilters()}/>
+                                    </Ui.Grid.Col>
+                                    <Ui.Grid.Col all={2}>
+                                        <Ui.Button type="primary" label="Filter" onClick={applyFilters()}/>
+                                        <Ui.Button type="secondary" label="Reset" onClick={resetFilters()}/>
+                                    </Ui.Grid.Col>
+                                </Ui.Grid.Row>
+                            )}
+                        </Ui.List.FormFilters>
+
                         <Table.Table>
                             <Table.Row>
                                 <Table.Field align="left" label="Title" sort="title">

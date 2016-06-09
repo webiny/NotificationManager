@@ -14,7 +14,13 @@ TemplateList.defaultProps = {
         const listProps = {
             api: '/entities/notification-manager/templates',
             fields: 'name,createdOn',
+            searchFields: 'name',
             connectToRouter: true
+        };
+
+        const searchProps = {
+            placeholder: 'Search by name',
+            name: '_searchQuery'
         };
 
         return (
@@ -33,6 +39,20 @@ TemplateList.defaultProps = {
                 </Ui.Grid.Col>
                 <Ui.Grid.Col all={12}>
                     <Ui.List.ApiContainer ui="templateList" {...listProps}>
+
+                        <Ui.List.FormFilters>
+                            {(applyFilters, resetFilters) => (
+                                <Ui.Grid.Row>
+                                    <Ui.Grid.Col all={10}>
+                                        <Ui.Input {...searchProps} onEnter={applyFilters()}/>
+                                    </Ui.Grid.Col>
+                                    <Ui.Grid.Col all={2}>
+                                        <Ui.Button type="primary" label="Filter" onClick={applyFilters()}/>
+                                        <Ui.Button type="secondary" label="Reset" onClick={resetFilters()}/>
+                                    </Ui.Grid.Col>
+                                </Ui.Grid.Row>
+                            )}
+                        </Ui.List.FormFilters>
 
                         <Table.Table>
                             <Table.Row>

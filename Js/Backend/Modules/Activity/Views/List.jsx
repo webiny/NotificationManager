@@ -29,7 +29,19 @@ List.defaultProps = {
     renderer() {
         const listProps = {
             api: '/entities/notification-manager/email-log',
-            fields: 'id,status,email,name,subject,createdOn'
+            fields: 'id,status,email,name,subject,createdOn',
+            searchFields: 'email,name,subject',
+            connectToRouter: true
+        };
+
+        const searchProps = {
+            placeholder: 'Search by name, email or subject',
+            name: '_searchQuery'
+        };
+
+        const dateProps = {
+            placeholder: 'Search by date',
+            name: 'createdOn'
         };
 
         return (
@@ -45,6 +57,23 @@ List.defaultProps = {
                 </Ui.Grid.Col>
                 <Ui.Grid.Col all={12}>
                     <Ui.List.ApiContainer ui="templateList" {...listProps}>
+
+                        <Ui.List.FormFilters>
+                            {(applyFilters, resetFilters) => (
+                                <Ui.Grid.Row>
+                                    <Ui.Grid.Col all={5}>
+                                        <Ui.Input {...searchProps} onEnter={applyFilters()}/>
+                                    </Ui.Grid.Col>
+                                    <Ui.Grid.Col all={5}>
+                                        <Ui.Date {...dateProps} onEnter={applyFilters()}/>
+                                    </Ui.Grid.Col>
+                                    <Ui.Grid.Col all={2}>
+                                        <Ui.Button type="primary" label="Filter" onClick={applyFilters()}/>
+                                        <Ui.Button type="secondary" label="Reset" onClick={resetFilters()}/>
+                                    </Ui.Grid.Col>
+                                </Ui.Grid.Row>
+                            )}
+                        </Ui.List.FormFilters>
 
                         <Table.Table>
                             <Table.Row>
@@ -78,7 +107,8 @@ List.defaultProps = {
                                 <Table.Field name="email" align="left" label="Email" sort="email"/>
                                 <Table.Field name="subject" align="left" label="Subject" sort="subject"/>
                                 <Table.Field align="right">
-                                    {data => <Ui.Button type="default" label="Show Content" onClick={() => this.showContent(data.id)}/>}
+                                    {data => <Ui.Button type="default" label="Show Content"
+                                                        onClick={() => this.showContent(data.id)}/>}
                                 </Table.Field>
 
                             </Table.Row>

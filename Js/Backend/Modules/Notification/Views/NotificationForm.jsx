@@ -60,9 +60,13 @@ NotificationForm.defaultProps = {
                                     Notification
                                 </Ui.Grid.Col>
                                 <Ui.Grid.Col all={6}>
-                                    <Ui.Button type="primary" align="right" onClick={container.submit}>Save Changes</Ui.Button>
-                                    <Ui.Button type="secondary" align="right" onClick={() => this.sendTestEmail(model.email.content)}>Send Test Email</Ui.Button>
-                                    <Ui.Button type="default" align="right" onClick={container.cancel}>Go Back</Ui.Button>
+                                    <Ui.Button type="primary" align="right" onClick={container.submit}>Save
+                                        Changes</Ui.Button>
+                                    <Ui.Button type="secondary" align="right"
+                                               onClick={() => this.sendTestEmail(model.email.content)}>Send Test
+                                        Email</Ui.Button>
+                                    <Ui.Button type="default" align="right" onClick={container.cancel}>Go
+                                        Back</Ui.Button>
                                 </Ui.Grid.Col>
                             </Ui.Grid.Row>
 
@@ -72,10 +76,10 @@ NotificationForm.defaultProps = {
                                 <Ui.Tabs.Tab label="General" icon="icon-settings">
                                     <Ui.Grid.Row>
                                         <Ui.Grid.Col all={6}>
-                                            <Ui.Input label="Title" name="title" validate="required" />
-                                            <Ui.Input label="Slug" name="slug" readOnly={true} />
+                                            <Ui.Input label="Title" name="title" validate="required"/>
+                                            <Ui.Input label="Slug" name="slug" readOnly={true}/>
                                             <Ui.Textarea label="Description" name="description"/>
-                                            <Ui.Tags label="Labels" name="labels" placeholder="Add Label" />
+                                            <Ui.Tags label="Labels" name="labels" placeholder="Add Label"/>
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
                                             @ToDo: Sending history goes here
@@ -86,7 +90,8 @@ NotificationForm.defaultProps = {
                                     <Ui.Grid.Row>
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Input label="Subject" name="email.subject" validate="required"/>
-                                            <Ui.Input label="From Address" name="email.fromAddress" validate="required, email"/>
+                                            <Ui.Input label="From Address" name="email.fromAddress"
+                                                      validate="required, email"/>
                                             <Ui.Input label="From Name" name="email.fromName" validate="required"/>
                                             <Ui.Select {...templateSelect} validate="required"/>
                                         </Ui.Grid.Col>
@@ -99,7 +104,7 @@ NotificationForm.defaultProps = {
                                     <VariableList/>
                                 </Ui.Tabs.Tab>
                             </Ui.Tabs.Tabs>
-                            <PreviewModal ui="previewModal" />
+                            <PreviewModal ui="previewModal"/>
                         </Ui.Panel.Body>
                     </Ui.Panel.Panel>
                 )}
