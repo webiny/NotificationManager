@@ -7,8 +7,10 @@ class Overview extends Webiny.Module {
         const Menu = Webiny.Ui.Menu;
 
         this.registerMenus(
-            new Menu('Notifications', [
-                new Menu('Activity', 'NotificationManager.Activity')
+            new Menu('Marketing Tools', [
+                new Menu('Notification Manager', [
+                    new Menu('Activity', 'NotificationManager.Activity')
+                ])
             ], 'icon-bell')
         );
 

@@ -7,8 +7,10 @@ class Template extends Webiny.Module {
         const Menu = Webiny.Ui.Menu;
 
         this.registerMenus(
-            new Menu('Notifications', [
-                new Menu('Templates', 'NotificationManager.Templates')
+            new Menu('Marketing Tools', [
+                new Menu('Notification Manager', [
+                    new Menu('Templates', 'NotificationManager.Templates')
+                ])
             ], 'icon-bell')
         );
 
