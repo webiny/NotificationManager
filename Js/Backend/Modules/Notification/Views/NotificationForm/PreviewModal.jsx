@@ -24,13 +24,9 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         });
     }
 
-    resetState() {
-
-    }
-
     render() {
         return (
-            <Ui.Modal.Dialog ref="dialog" onHidden={this.resetState}>
+            <Ui.Modal.Dialog ref="dialog">
                 <Ui.Modal.Header title="Preview Email"/>
                 <Ui.Modal.Body>
                     <Ui.Alert type={this.state.type} title={this.state.title} close={false} ui="previewStatus">

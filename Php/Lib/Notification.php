@@ -161,7 +161,7 @@ class Notification
         $log->content = $this->emailContent;
         $log->email = $this->recipientEmail;
         $log->name = $this->recipientName;
-        $log->notification = $this->notification->getId();
+        $log->notification = $this->notification;
         $log->subject = $this->notification->email['subject'];
         $log->save();
 
