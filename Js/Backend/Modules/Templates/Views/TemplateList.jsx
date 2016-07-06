@@ -32,7 +32,7 @@ TemplateList.defaultProps = {
                                 Templates
                             </Ui.Grid.Col>
                             <Ui.Grid.Col all={2}>
-                                <Ui.Link type="primary" align="right" route="NotificationManager.Template.Create">Create new Templateb</Ui.Link>
+                                <Ui.Link type="primary" align="right" route="NotificationManager.Template.Create">Create new Template</Ui.Link>
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
                     </h2>
