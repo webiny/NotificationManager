@@ -3,12 +3,7 @@ import Webiny from 'Webiny';
 const Ui = Webiny.Ui.Components;
 
 class EntityVariableModal extends Webiny.Ui.ModalComponent {
-
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
+    renderDialog() {
         const formProps = {
             ui: 'entityVariableForm',
             api: '/entities/notification-manager/notification-variable',
@@ -73,7 +68,7 @@ class EntityVariableModal extends Webiny.Ui.ModalComponent {
             }
         };
         return (
-            <Ui.Modal.Dialog ref="dialog">
+            <Ui.Modal.Dialog>
                 <Ui.Modal.Header title="Entity Variable"/>
                 <Ui.Modal.Body>
                     <Ui.Form.Container {...formProps}>
