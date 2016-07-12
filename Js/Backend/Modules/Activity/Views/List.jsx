@@ -112,8 +112,6 @@ List.defaultProps = {
                                 </Table.Field>
 
                             </Table.Row>
-
-                            <Table.Empty/>
                         </Table.Table>
 
                         <Ui.List.Pagination/>

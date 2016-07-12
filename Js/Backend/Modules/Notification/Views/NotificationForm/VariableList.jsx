@@ -70,7 +70,6 @@ VariableList.defaultProps = {
                                             <Table.DeleteAction/>
                                         </Table.Actions>
                                     </Table.Row>
-                                    <Table.Empty/>
                                 </Table.Table>
                             </Ui.List.ApiContainer>
                         </view>

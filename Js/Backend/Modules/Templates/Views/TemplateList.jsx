@@ -64,8 +64,6 @@ TemplateList.defaultProps = {
                                     <Table.DeleteAction/>
                                 </Table.Actions>
                             </Table.Row>
-
-                            <Table.Empty/>
                         </Table.Table>
 
                         <Ui.List.Pagination/>
