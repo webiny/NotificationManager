@@ -2,7 +2,7 @@
 namespace Apps\NotificationManager\Php\Entities;
 
 use Apps\Core\Php\DevTools\DevToolsTrait;
-use Apps\Core\Php\DevTools\Entity\EntityAbstract;
+use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 
 /**
  * Class EmailLog
@@ -20,7 +20,7 @@ use Apps\Core\Php\DevTools\Entity\EntityAbstract;
  * @package Apps\Core\Php\Entities
  *
  */
-class EmailLog extends EntityAbstract
+class EmailLog extends AbstractEntity
 {
     use DevToolsTrait;
 

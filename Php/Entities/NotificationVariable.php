@@ -2,7 +2,7 @@
 namespace Apps\NotificationManager\Php\Entities;
 
 use Apps\Core\Php\DevTools\DevToolsTrait;
-use Apps\Core\Php\DevTools\Entity\EntityAbstract;
+use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Webiny\Component\Entity\EntityException;
 
 /**
@@ -19,7 +19,7 @@ use Webiny\Component\Entity\EntityException;
  * @package Apps\Core\Php\Entities
  *
  */
-class NotificationVariable extends EntityAbstract
+class NotificationVariable extends AbstractEntity
 {
     use DevToolsTrait;
 

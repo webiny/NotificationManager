@@ -3,14 +3,13 @@
 namespace Apps\NotificationManager\Php\Lib;
 
 use Apps\Core\Php\DevTools\DevToolsTrait;
+use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\NotificationVariable;
 use Webiny\Component\Mailer\MailerTrait;
 use Webiny\Component\Validation\ValidationTrait;
 use Webiny\Component\Validation\ValidationException;
 use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
-
-use Webiny\Component\Entity\EntityAbstract;
 
 class Notification
 {
@@ -58,11 +57,11 @@ class Notification
     }
 
     /**
-     * @param EntityAbstract $entity
+     * @param AbstractEntity $entity
      *
      * @return $this
      */
-    public function addEntity(EntityAbstract $entity)
+    public function addEntity(AbstractEntity $entity)
     {
         $this->entities[get_class($entity)] = $entity;
 
