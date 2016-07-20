@@ -3,48 +3,28 @@ const Ui = Webiny.Ui.Components;
 
 class SettingsForm extends Webiny.Ui.View {
 
-    constructor(props) {
-        super(props);
-    }
 }
 
 SettingsForm.defaultProps = {
     renderer() {
-        const formProps = {
-            api: '/entities/core/settings',
-            fields: '*',
-            url: 'key',
-            defaultModel: {
-                id: 'notification-manager'
-            }
-        };
-
         return (
-            <Ui.Form.Container ui="settingsForm" {...formProps}>
+            <Ui.Settings id="notification-manager">
                 {(model, container) => (
-                    <Ui.Panel.Panel>
-                        <Ui.Panel.Header>
-                            <Ui.Grid.Row>
-                                <Ui.Grid.Col all={6}>
-                                    Settings
-                                </Ui.Grid.Col>
-                                <Ui.Grid.Col all={6}>
-                                    <Ui.Button type="primary" align="right" onClick={container.submit}>Save Changes</Ui.Button>
-                                </Ui.Grid.Col>
-                            </Ui.Grid.Row>
-                        </Ui.Panel.Header>
-
-                        <Ui.Panel.Body>
-                            <Ui.Tabs.Tabs>
+                    <Ui.View.Form>
+                        <Ui.View.Header
+                            title="Notification Manager Settings"
+                            description="Set your notification settings here"/>
+                        <Ui.View.Body noPadding>
+                            <Ui.Tabs.Tabs size="large">
                                 <Ui.Tabs.Tab label="General" icon="icon-settings">
                                     <Ui.Grid.Row>
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="SMTP Settings"/>
 
-                                            <Ui.Input label="Server Name" name="settings.serverName" validate="required" />
-                                            <Ui.Input label="Username" name="settings.username" validate="required" />
-                                            <Ui.Input label="Password" name="settings.password" validate="required" type="password" />
-                                            <Ui.Input label="Send limit (emails per second)" name="settings.sendLimit" validate="required" />
+                                            <Ui.Input label="Server Name" name="settings.serverName" validate="required"/>
+                                            <Ui.Input label="Username" name="settings.username" validate="required"/>
+                                            <Ui.Input label="Password" name="settings.password" validate="required" type="password"/>
+                                            <Ui.Input label="Send limit (emails per second)" name="settings.sendLimit" validate="required"/>
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="AWS SNS Settings"/>
@@ -52,17 +32,17 @@ SettingsForm.defaultProps = {
                                             <dl>
                                                 <dt>SNS Bounce Endpoint</dt>
                                                 <dd>
-                                                    <pre>{window.location.origin}/api/services/notification-manager/feedback/email/bounce</pre>
+                                                    <Ui.Copy.Input value={`${webinyApiPath}/services/notification-manager/feedback/email/bounce`}/>
                                                 </dd>
 
                                                 <dt>SNS Complaint Endpoint</dt>
                                                 <dd>
-                                                    <pre>{window.location.origin}/api/services/notification-manager/feedback/email/complaint</pre>
+                                                    <Ui.Copy.Input value={`${webinyApiPath}/services/notification-manager/feedback/email/complaint`}/>
                                                 </dd>
 
                                                 <dt>SNS Delivery Endpoint (optional)</dt>
                                                 <dd>
-                                                    <pre>{window.location.origin}/api/services/notification-manager/feedback/email/delivery</pre>
+                                                    <Ui.Copy.Input value={`${webinyApiPath}/services/notification-manager/feedback/email/delivery`}/>
                                                 </dd>
                                             </dl>
                                             <Ui.Alert title="AWS SES" close={false}>
@@ -82,9 +62,9 @@ SettingsForm.defaultProps = {
                                         </li>
                                         <li>Once you have your account go to
                                             <strong> Services </strong>
-                                        &gt;
-                                            <strong> Security & Identity </strong>
-                                        &gt;
+                                            &gt;
+                                            <strong> Security &amp; Identity </strong>
+                                            &gt;
                                             <strong> IAM </strong>
                                             .
                                         </li>
@@ -138,9 +118,9 @@ SettingsForm.defaultProps = {
                                     <ol>
                                         <li>In the top menu click
                                             <strong> Services </strong>
-                                        &gt;
+                                            &gt;
                                             <strong> Application Services </strong>
-                                        &gt;
+                                            &gt;
                                             <strong> SES </strong>
                                             .
                                         </li>
@@ -153,7 +133,7 @@ SettingsForm.defaultProps = {
                                         <li>
                                             Enter the mail address you from which you will send your emails.
                                             <br/>
-                                            <strong>  NOTE: </strong>
+                                            <strong> NOTE: </strong>
                                             You can verify multiple email addresses.
                                             <br/>
                                             Alternatively you can go to
@@ -207,9 +187,9 @@ SettingsForm.defaultProps = {
                                         <li>
                                             To setup SNS, in the top menu go to
                                             <strong> Services </strong>
-                                        &gt;
+                                            &gt;
                                             <strong> Mobile Services </strong>
-                                        &gt;
+                                            &gt;
                                             <strong> SNS </strong>
                                             .
                                         </li>
@@ -296,28 +276,31 @@ SettingsForm.defaultProps = {
 
                                 <Ui.Tabs.Tab label="Cron Setup Guide" icon="icon-info-circle">
                                     <Ui.Form.Fieldset title="About"/>
+
                                     <p>
                                         Notification manager sends all the emails in a background process,
-                                        this way your code doesn't have wait for the SMTP connection to be established
-                                        and your code takes less time to execute.
+                                        this way your code doesn't have to wait for the SMTP connection to be established
+                                        and takes less time to execute.
                                     </p>
+
                                     <p>
                                         This background process is triggered via a cron job. This cron job can be configured via crontab,
                                         or via the Webiny Cron Manager app.
                                     </p>
+
                                     <p>
-                                        The cron should be configured so it exectures the following script every minute:
-                                        <pre>{window.location.origin}/api/services/mail-queue/send</pre>
+                                        The cron should be configured so it executes the following script every minute:
                                     </p>
-
+                                    <Ui.Copy.Input value={webinyApiPath + '/services/mail-queue/send'}/>
                                 </Ui.Tabs.Tab>
-
                             </Ui.Tabs.Tabs>
-                        </Ui.Panel.Body>
-
-                    </Ui.Panel.Panel>
+                        </Ui.View.Body>
+                        <Ui.View.Footer align="right">
+                            <Ui.Button type="primary" onClick={container.submit} label="Save settings"/>
+                        </Ui.View.Footer>
+                    </Ui.View.Form>
                 )}
-            </Ui.Form.Container>
+            </Ui.Settings>
         );
     }
 };
