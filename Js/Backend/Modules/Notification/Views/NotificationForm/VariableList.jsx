@@ -12,7 +12,7 @@ VariableList.defaultProps = {
 
     renderer() {
         const listProps = {
-            api: '/entities/notification-manager/notification-variables',
+            api: '/entities/notification-manager/email-log',
             query: {
                 notification: Webiny.Router.getParams('id'),
                 '_sort': 'key'
@@ -26,10 +26,6 @@ VariableList.defaultProps = {
                 <Ui.ViewSwitcher.View view="variableList" defaultView>
                     {showView => (
                         <view>
-                            <Ui.Alert title="About">
-                                This is a list of variables that you can use in your notification content.
-                                The list also defines the data source from where the variable value will be pulled.
-                            </Ui.Alert>
 
                             <h2>
                                 <Ui.Grid.Row>
@@ -45,6 +41,14 @@ VariableList.defaultProps = {
                                     </Ui.Grid.Col>
                                 </Ui.Grid.Row>
                             </h2>
+                            <Ui.Grid.Row>
+                                <Ui.Grid.Col all={12}>
+                                    <Ui.Alert title="About">
+                                        This is a list of variables that you can use in your notification content.
+                                        The list also defines the data source from where the variable value will be pulled.
+                                    </Ui.Alert>
+                                </Ui.Grid.Col>
+                            </Ui.Grid.Row>
                             <Ui.List.ApiContainer {...listProps}>
                                 <Table.Table>
                                     <Table.Row>
@@ -77,11 +81,11 @@ VariableList.defaultProps = {
                 </Ui.ViewSwitcher.View>
 
                 <Ui.ViewSwitcher.View view="entityVariableModal" modal>
-                     {(showView, data) => <EntityVariableModal {...{showView, data}} />}
+                    {(showView, data) => <EntityVariableModal {...{showView, data}} />}
                 </Ui.ViewSwitcher.View>
 
                 <Ui.ViewSwitcher.View view="customVariableModal" modal>
-                     {(showView, data) => <CustomVariableModal {...{showView, data}} />}
+                    {(showView, data) => <CustomVariableModal {...{showView, data}} />}
                 </Ui.ViewSwitcher.View>
 
             </Ui.ViewSwitcher.Container>

@@ -21,7 +21,11 @@ SettingsForm.defaultProps = {
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="SMTP Settings"/>
 
-                                            <Ui.Input label="Server Name" name="settings.serverName" validate="required"/>
+                                            <Ui.Input
+                                                label="Server Name"
+                                                name="settings.serverName"
+                                                validate="required"
+                                                description="For example: email-smtp.us-east-1.amazonaws.com"/>
                                             <Ui.Input label="Username" name="settings.username" validate="required"/>
                                             <Ui.Input label="Password" name="settings.password" validate="required" type="password"/>
                                             <Ui.Input label="Send limit (emails per second)" name="settings.sendLimit" validate="required"/>

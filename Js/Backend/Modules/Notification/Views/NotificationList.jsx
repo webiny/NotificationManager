@@ -25,23 +25,16 @@ NotificationList.defaultProps = {
         };
 
         return (
-            <Ui.Grid.Row>
-                <Ui.Grid.Col all={12}>
-                    <h2>
-                        <Ui.Grid.Row>
-                            <Ui.Grid.Col all={10}>
-                                Notifications
-                            </Ui.Grid.Col>
-                            <Ui.Grid.Col all={2}>
-                                <Ui.Button type="primary" align="right" onClick={this.ui('notificationCreateNewModal:show')}>
-                                    Create new Notification
-                                </Ui.Button>
-                                <NotificationCreateNewModal ui="notificationCreateNewModal"/>
-                            </Ui.Grid.Col>
-                        </Ui.Grid.Row>
-                    </h2>
-                </Ui.Grid.Col>
-                <Ui.Grid.Col all={12}>
+            <Ui.View.List>
+                <Ui.View.Header title="Notifications">
+                    <Ui.Button type="primary" align="right" onClick={this.ui('notificationCreateNewModal:show')}>
+                        <Ui.Icon icon="icon-plus-circled"/>
+                        Create new Template
+                    </Ui.Button>
+                    <NotificationCreateNewModal ui="notificationCreateNewModal"/>
+                </Ui.View.Header>
+
+                <Ui.View.Body>
                     <Ui.List.ApiContainer ui="notificationList" {...listProps}>
 
                         <Ui.List.FormFilters>
@@ -51,8 +44,7 @@ NotificationList.defaultProps = {
                                         <Ui.Input {...searchProps} onEnter={applyFilters()}/>
                                     </Ui.Grid.Col>
                                     <Ui.Grid.Col all={2}>
-                                        <Ui.Button type="primary" label="Filter" onClick={applyFilters()}/>
-                                        <Ui.Button type="secondary" label="Reset" onClick={resetFilters()}/>
+                                        <Ui.Button type="secondary" align="right" label="Reset Filter" onClick={resetFilters()}/>
                                     </Ui.Grid.Col>
                                 </Ui.Grid.Row>
                             )}
@@ -73,8 +65,8 @@ NotificationList.defaultProps = {
                         </Table.Table>
                         <Ui.List.Pagination/>
                     </Ui.List.ApiContainer>
-                </Ui.Grid.Col>
-            </Ui.Grid.Row>
+                </Ui.View.Body>
+            </Ui.View.List>
         );
     }
 };

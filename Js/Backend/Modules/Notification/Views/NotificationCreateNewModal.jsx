@@ -35,7 +35,7 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
                 </Ui.Modal.Body>
                 <Ui.Modal.Footer>
                     <Ui.Button type="secondary" label="Cancel" onClick={this.hide}/>
-                    <Ui.Button type="primary" label="Add frequency" onClick={this.ui('newNotificationForm:submit')}/>
+                    <Ui.Button type="primary" label="Add Notification" onClick={this.ui('newNotificationForm:submit')}/>
                 </Ui.Modal.Footer>
             </Ui.Modal.Dialog>
         );

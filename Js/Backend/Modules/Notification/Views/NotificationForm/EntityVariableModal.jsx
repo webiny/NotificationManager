@@ -88,7 +88,7 @@ class EntityVariableModal extends Webiny.Ui.ModalComponent {
                 </Ui.Modal.Body>
                 <Ui.Modal.Footer>
                     <Ui.Button type="default" label="Close" onClick={this.hide}/>
-                    <Ui.Button type="primary" label="Save changes" onClick={this.ui('entityVariableForm:submit')}/>
+                    <Ui.Button type="primary" label="Save" onClick={this.ui('entityVariableForm:submit')}/>
                 </Ui.Modal.Footer>
             </Ui.Modal.Dialog>
         );

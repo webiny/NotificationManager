@@ -3,6 +3,7 @@ namespace Apps\NotificationManager\Php\Entities;
 
 use Apps\Core\Php\DevTools\DevToolsTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
+use Apps\Core\Php\DevTools\Exceptions\AppException;
 
 /**
  * Class Notification
@@ -40,7 +41,14 @@ class Notification extends AbstractEntity
         $this->attr('description')->char()->setToArrayDefault();
         $this->attr('slug')->char()->setToArrayDefault();
         $this->attr('labels')->arr()->setToArrayDefault();
-        $this->attr('email')->object()->setToArrayDefault();
+        $this->attr('email')->object()->setToArrayDefault()->onSet(function ($val) {
+            foreach ($val as $v) {
+                $this->validateVariables($v);
+            }
+            $this->email = $val;
+
+            return $val;
+        })->setAfterPopulate(true);
 
         $template = 'Apps\NotificationManager\Php\Entities\Template';
         $this->attr('template')->many2one('Template')->setEntity($template);
@@ -59,6 +67,44 @@ class Notification extends AbstractEntity
         // we take the template from the current notification
         $content = str_replace('{_content_}', $content, $notification->template->content);
 
-        return ['email'=>$this->wRequest()->getRequestData()['content']];
+        return ['email' => $this->wRequest()->getRequestData()['content']];
     }
+
+    public function validateVariables($content)
+    {
+        // extract variables from the provided content
+        $variables = $this->str($content)->match('\{.*?}');
+
+        if ($variables && $variables->count() < 1) {
+            return true;
+        }
+
+        // load all variables associated with this notification
+        $assocVars = NotificationVariable::find(['notification' => $this->id]);
+
+        $missingVars = [];
+        foreach ($variables[0] as $v) {
+            $found = false;
+            $v = str_replace(['{', '}'], '', $v);
+            foreach ($assocVars as $av) {
+                if ($v == $av->key) {
+                    $found = true;
+                }
+            }
+
+            if (!$found) {
+                $missingVars[] = $v;
+            }
+        }
+
+        if (count($missingVars) > 0) {
+            throw new AppException('One or more variables present in the email content are not defined in the variables list. (' . join(', ',
+                    $missingVars) . ')');
+        }
+
+        return true;
+
+    }
+
+
 }

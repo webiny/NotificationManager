@@ -29,23 +29,10 @@ TemplateForm.defaultProps = {
         return (
             <Ui.Form.Container ui="templateForm" {...formProps}>
                 {(model, container) => (
-                    <Ui.Panel.Panel>
-                        <Ui.Panel.Header>
-                            <Ui.Grid.Row>
-                                <Ui.Grid.Col all={6}>
-                                    Template
-                                </Ui.Grid.Col>
-                                <Ui.Grid.Col all={6}>
-                                    <Ui.Button type="primary" align="right" onClick={container.submit}>Save Changes</Ui.Button>
-                                    <Ui.Button type="secondary" align="right" onClick={() => this.previewTemplate(model.content)}>Preview Template</Ui.Button>
-                                    <Ui.Button type="default" align="right" onClick={container.cancel}>Go Back</Ui.Button>
-                                </Ui.Grid.Col>
-                            </Ui.Grid.Row>
+                    <Ui.View.Form>
+                        <Ui.View.Header title="Template"/>
 
-                        </Ui.Panel.Header>
-
-                        <Ui.Panel.Body>
-
+                        <Ui.View.Body>
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={8}>
 
@@ -79,14 +66,17 @@ TemplateForm.defaultProps = {
                                         </dd>
                                     </dl>
 
-
                                 </Ui.Grid.Col>
 
                             </Ui.Grid.Row>
+                        </Ui.View.Body>
 
-                        </Ui.Panel.Body>
-
-                    </Ui.Panel.Panel>
+                        <Ui.View.Footer align="right">
+                            <Ui.Button type="primary" onClick={container.submit}>Save Changes</Ui.Button>
+                            <Ui.Button type="secondary" onClick={() => this.previewTemplate(model.content)}>Preview Template</Ui.Button>
+                            <Ui.Button type="default" onClick={container.cancel}>Go Back</Ui.Button>
+                        </Ui.View.Footer>
+                    </Ui.View.Form>
                 )}
             </Ui.Form.Container>
         );

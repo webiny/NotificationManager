@@ -24,20 +24,15 @@ TemplateList.defaultProps = {
         };
 
         return (
-            <Ui.Grid.Row>
-                <Ui.Grid.Col all={12}>
-                    <h2>
-                        <Ui.Grid.Row>
-                            <Ui.Grid.Col all={10}>
-                                Templates
-                            </Ui.Grid.Col>
-                            <Ui.Grid.Col all={2}>
-                                <Ui.Link type="primary" align="right" route="NotificationManager.Template.Create">Create new Template</Ui.Link>
-                            </Ui.Grid.Col>
-                        </Ui.Grid.Row>
-                    </h2>
-                </Ui.Grid.Col>
-                <Ui.Grid.Col all={12}>
+            <Ui.View.List>
+                <Ui.View.Header title="Templates">
+                    <Ui.Link type="primary" align="right" route="NotificationManager.Template.Create">
+                        <Ui.Icon icon="icon-plus-circled"/>
+                        Create new Template
+                    </Ui.Link>
+                </Ui.View.Header>
+
+                <Ui.View.Body>
                     <Ui.List.ApiContainer ui="templateList" {...listProps}>
 
                         <Ui.List.FormFilters>
@@ -47,8 +42,7 @@ TemplateList.defaultProps = {
                                         <Ui.Input {...searchProps} onEnter={applyFilters()}/>
                                     </Ui.Grid.Col>
                                     <Ui.Grid.Col all={2}>
-                                        <Ui.Button type="primary" label="Filter" onClick={applyFilters()}/>
-                                        <Ui.Button type="secondary" label="Reset" onClick={resetFilters()}/>
+                                        <Ui.Button type="secondary" align="right" label="Reset Filter" onClick={resetFilters()}/>
                                     </Ui.Grid.Col>
                                 </Ui.Grid.Row>
                             )}
@@ -68,9 +62,8 @@ TemplateList.defaultProps = {
 
                         <Ui.List.Pagination/>
                     </Ui.List.ApiContainer>
-                </Ui.Grid.Col>
-
-            </Ui.Grid.Row>
+                </Ui.View.Body>
+            </Ui.View.List>
         );
     }
 };

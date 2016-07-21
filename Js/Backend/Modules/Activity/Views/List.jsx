@@ -45,17 +45,9 @@ List.defaultProps = {
         };
 
         return (
-            <Ui.Grid.Row>
-                <Ui.Grid.Col all={12}>
-                    <h2>
-                        <Ui.Grid.Row>
-                            <Ui.Grid.Col all={12}>
-                                Activity
-                            </Ui.Grid.Col>
-                        </Ui.Grid.Row>
-                    </h2>
-                </Ui.Grid.Col>
-                <Ui.Grid.Col all={12}>
+            <Ui.View.List>
+                <Ui.View.Header title="Activity"/>
+                <Ui.View.Body>
                     <Ui.List.ApiContainer ui="templateList" {...listProps}>
 
                         <Ui.List.FormFilters>
@@ -68,8 +60,7 @@ List.defaultProps = {
                                         <Ui.Date {...dateProps} onEnter={applyFilters()}/>
                                     </Ui.Grid.Col>
                                     <Ui.Grid.Col all={2}>
-                                        <Ui.Button type="primary" label="Filter" onClick={applyFilters()}/>
-                                        <Ui.Button type="secondary" label="Reset" onClick={resetFilters()}/>
+                                        <Ui.Button type="secondary" align="right" label="Reset Filters" onClick={resetFilters()}/>
                                     </Ui.Grid.Col>
                                 </Ui.Grid.Row>
                             )}
@@ -103,12 +94,11 @@ List.defaultProps = {
                                         <Ui.Label type="success">Read</Ui.Label>
                                     </case>
                                 </Table.CaseField>
-                                <Table.TimeAgoField name="createdOn" align="left" label="Created On" sort="createdOn"/>
+                                <Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
                                 <Table.Field name="email" align="left" label="Email" sort="email"/>
                                 <Table.Field name="subject" align="left" label="Subject" sort="subject"/>
                                 <Table.Field align="right">
-                                    {data => <Ui.Button type="default" label="Show Content"
-                                                        onClick={() => this.showContent(data.id)}/>}
+                                    {data => <Ui.Button type="default" label="Show Content" onClick={() => this.showContent(data.id)}/>}
                                 </Table.Field>
 
                             </Table.Row>
@@ -116,9 +106,9 @@ List.defaultProps = {
 
                         <Ui.List.Pagination/>
                     </Ui.List.ApiContainer>
-                </Ui.Grid.Col>
 
-            </Ui.Grid.Row>
+                </Ui.View.Body>
+            </Ui.View.List>
         );
     }
 };
