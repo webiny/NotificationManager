@@ -29,7 +29,7 @@ NotificationList.defaultProps = {
                 <Ui.View.Header title="Notifications">
                     <Ui.Button type="primary" align="right" onClick={this.ui('notificationCreateNewModal:show')}>
                         <Ui.Icon icon="icon-plus-circled"/>
-                        Create new Template
+                        Create notification
                     </Ui.Button>
                     <NotificationCreateNewModal ui="notificationCreateNewModal"/>
                 </Ui.View.Header>

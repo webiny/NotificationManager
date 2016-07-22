@@ -10,11 +10,7 @@ class EntityVariableModal extends Webiny.Ui.ModalComponent {
             fields: '*',
             defaultModel: _.merge({type: 'entity'}, {notification: Webiny.Router.getParams('id')}, this.props.data),
             onSubmitSuccess: this.props.showView('variableList'),
-            onSuccessMessage: record => {
-                return (<span>Variable
-                    <strong>{record.key}</strong>
-                    saved!</span>);
-            }
+            onSuccessMessage: record => <span>Variable <strong>{record.key}</strong> saved!</span>
         };
 
         const entitySelect = {
@@ -26,19 +22,18 @@ class EntityVariableModal extends Webiny.Ui.ModalComponent {
             fields: 'class,name',
             perPage: 2,
             valueAttr: 'class',
-            textAttr: 'name',
             minimumResultsForSearch: 5,
             optionRenderer: option => {
                 return (
                     <div>
-                        <strong>{option.name}</strong>
+                        <strong>{option.data.name}</strong>
                         <br/>
-                        <span>{option.class}</span>
+                        <span>{option.data.class}</span>
                     </div>
                 );
             },
             selectedRenderer: option => {
-                return option.name;
+                return option.data.name;
             }
         };
 
@@ -51,20 +46,19 @@ class EntityVariableModal extends Webiny.Ui.ModalComponent {
             fields: 'tag,name',
             perPage: 2,
             valueAttr: 'name',
-            textAttr: 'name',
-            filterBy: ['entity', 'entity'],
+            filterBy: 'entity',
             minimumResultsForSearch: 5,
             optionRenderer: option => {
                 return (
                     <div>
-                        <strong>{option.name}</strong>
+                        <strong>{option.data.name}</strong>
                         <br/>
-                        <span>{option.type}</span>
+                        <span>{option.data.type}</span>
                     </div>
                 );
             },
             selectedRenderer: option => {
-                return option.name;
+                return option.data.name;
             }
         };
         return (

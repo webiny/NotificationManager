@@ -92,14 +92,13 @@ NotificationForm.defaultProps = {
                                     <VariableList/>
                                 </Ui.Tabs.Tab>
                             </Ui.Tabs.Tabs>
+                            <PreviewModal ui="previewModal"/>
                         </Ui.View.Body>
                         <Ui.View.Footer align="right">
                             <Ui.Button type="primary" onClick={container.submit}>Save Changes</Ui.Button>
                             <Ui.Button type="secondary" onClick={() => this.sendTestEmail(model.email.content)}>Send Test Email</Ui.Button>
                             <Ui.Button type="default" onClick={container.cancel}>Go Back</Ui.Button>
                         </Ui.View.Footer>
-
-                        <PreviewModal ui="previewModal"/>
                     </Ui.View.Form>
                 )}
             </Ui.Form.Container>

@@ -13,7 +13,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
             'title': 'Please Wait'
         };
 
-        this.bindMethods('setSuccess,resetState');
+        this.bindMethods('setSuccess');
     }
 
     setSuccess() {
@@ -29,7 +29,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
             <Ui.Modal.Dialog>
                 <Ui.Modal.Header title="Preview Email"/>
                 <Ui.Modal.Body>
-                    <Ui.Alert type={this.state.type} title={this.state.title} close={false} ui="previewStatus">
+                    <Ui.Alert type={this.state.type} title={this.state.title} close={false}>
                         {this.state.message}
                     </Ui.Alert>
                 </Ui.Modal.Body>
