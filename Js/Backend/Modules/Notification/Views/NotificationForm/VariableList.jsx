@@ -12,6 +12,7 @@ VariableList.defaultProps = {
 
     renderer() {
         const listProps = {
+            ui: 'variableListContainer',
             api: '/entities/notification-manager/notification-variable',
             query: {
                 notification: Webiny.Router.getParams('id'),

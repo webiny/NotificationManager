@@ -58,7 +58,7 @@ NotificationForm.defaultProps = {
                         <Ui.View.Header title="Notification"/>
 
                         <Ui.View.Body noPadding={true}>
-                            <Ui.Tabs.Tabs>
+                            <Ui.Tabs.Tabs size="large">
                                 <Ui.Tabs.Tab label="General" icon="icon-settings">
                                     <Ui.Grid.Row>
                                         <Ui.Grid.Col all={6}>
