@@ -3,7 +3,7 @@ namespace Apps\NotificationManager\Php\Services;
 
 set_time_limit(0);
 
-use Apps\Core\Php\DevTools\DevToolsTrait;
+use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Services\AbstractService;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Entities\EmailLog;
@@ -15,7 +15,7 @@ use Webiny\Component\Mailer\MailerTrait;
 
 class MailQueue extends AbstractService
 {
-    use DevToolsTrait, MailerTrait;
+    use WebinyTrait, MailerTrait;
 
     function __construct()
     {

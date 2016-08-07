@@ -2,7 +2,7 @@
 
 namespace Apps\NotificationManager\Php\Lib;
 
-use Apps\Core\Php\DevTools\DevToolsTrait;
+use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\NotificationVariable;
@@ -13,7 +13,7 @@ use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
 
 class Notification
 {
-    use ValidationTrait, DevToolsTrait, MailerTrait;
+    use ValidationTrait, WebinyTrait, MailerTrait;
 
     protected $slug;
     protected $recipientEmail;

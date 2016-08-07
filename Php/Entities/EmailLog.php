@@ -1,7 +1,7 @@
 <?php
 namespace Apps\NotificationManager\Php\Entities;
 
-use Apps\Core\Php\DevTools\DevToolsTrait;
+use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 
 /**
@@ -22,7 +22,7 @@ use Apps\Core\Php\DevTools\Entity\AbstractEntity;
  */
 class EmailLog extends AbstractEntity
 {
-    use DevToolsTrait;
+    use WebinyTrait;
 
     const STATUS_PENDING = 0;
     const STATUS_ERROR = 1;

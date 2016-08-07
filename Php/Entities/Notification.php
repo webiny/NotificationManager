@@ -1,7 +1,7 @@
 <?php
 namespace Apps\NotificationManager\Php\Entities;
 
-use Apps\Core\Php\DevTools\DevToolsTrait;
+use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
 
@@ -21,7 +21,7 @@ use Apps\Core\Php\DevTools\Exceptions\AppException;
  */
 class Notification extends AbstractEntity
 {
-    use DevToolsTrait;
+    use WebinyTrait;
 
     protected static $entityCollection = 'NotificationManagerNotification';
     protected static $entityMask = '{title}';

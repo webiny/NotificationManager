@@ -1,7 +1,7 @@
 <?php
 namespace Apps\NotificationManager\Php\Entities;
 
-use Apps\Core\Php\DevTools\DevToolsTrait;
+use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 
 /**
@@ -16,7 +16,7 @@ use Apps\Core\Php\DevTools\Entity\AbstractEntity;
  */
 class Template extends AbstractEntity
 {
-    use DevToolsTrait;
+    use WebinyTrait;
 
     protected static $entityCollection = 'NotificationManagerTemplate';
     protected static $entityMask = '{name}';
