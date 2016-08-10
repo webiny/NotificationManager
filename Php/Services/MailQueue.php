@@ -3,8 +3,9 @@ namespace Apps\NotificationManager\Php\Services;
 
 set_time_limit(0);
 
-use Apps\Core\Php\DevTools\WebinyTrait;
+use Apps\Core\Php\DevTools\Interfaces\PublicApiInterface;
 use Apps\Core\Php\DevTools\Services\AbstractService;
+use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Lib\NotificationException;
@@ -13,7 +14,7 @@ use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 use Webiny\Component\Mailer\MailerTrait;
 
-class MailQueue extends AbstractService
+class MailQueue extends AbstractService implements PublicApiInterface
 {
     use WebinyTrait, MailerTrait;
 

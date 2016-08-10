@@ -1,15 +1,14 @@
 <?php
 namespace Apps\NotificationManager\Php\Services;
 
+use Apps\Core\Php\DevTools\Interfaces\PublicApiInterface;
+use Apps\Core\Php\DevTools\Services\AbstractService;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
-use Apps\Core\Php\DevTools\Services\AbstractService;
-use Apps\Core\Php\Entities\User;
 use Apps\NotificationManager\Php\Entities\EmailLog;
-use Apps\NotificationManager\Php\Lib\Notification;
 
 
-class Feedback extends AbstractService
+class Feedback extends AbstractService implements PublicApiInterface
 {
     use WebinyTrait;
 
@@ -55,7 +54,8 @@ class Feedback extends AbstractService
         if (!empty($data->get('Type')) && $data->get('Type') == 'SubscriptionConfirmation') {
             // confirm the subscription
             file_get_contents($data->get('SubscribeURL'));
-            return;
+
+            return true;
         }
 
         // extract message id
@@ -100,5 +100,7 @@ class Feedback extends AbstractService
         }
 
         $emailLog->notification->save();
+
+        return true;
     }
 }

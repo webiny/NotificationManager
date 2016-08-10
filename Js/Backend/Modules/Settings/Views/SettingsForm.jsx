@@ -135,7 +135,7 @@ SettingsForm.defaultProps = {
                                             .
                                         </li>
                                         <li>
-                                            Enter the mail address you from which you will send your emails.
+                                            Enter the mail address from which you will send your emails.
                                             <br/>
                                             <strong> NOTE: </strong>
                                             You can verify multiple email addresses.
