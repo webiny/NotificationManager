@@ -295,7 +295,7 @@ SettingsForm.defaultProps = {
                                     <p>
                                         The cron should be configured so it executes the following script every minute:
                                     </p>
-                                    <Ui.Copy.Input value={webinyApiPath + '/services/mail-queue/send'}/>
+                                    <Ui.Copy.Input value={webinyApiPath + '/services/notification-manager/mail-queue/send'}/>
                                 </Ui.Tabs.Tab>
                             </Ui.Tabs.Tabs>
                         </Ui.View.Body>
