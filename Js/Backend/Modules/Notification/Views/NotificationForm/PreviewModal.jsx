@@ -24,6 +24,14 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         });
     }
 
+    setError() {
+        this.setState({
+            'type': 'error',
+            'message': 'There has been an error while trying to send your message. Please check your SMTP settings.',
+            'title': 'Message Not Sent'
+        });
+    }
+
     renderDialog() {
         return (
             <Ui.Modal.Dialog>

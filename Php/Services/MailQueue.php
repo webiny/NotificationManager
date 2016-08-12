@@ -16,7 +16,7 @@ use Webiny\Component\Mailer\MailerTrait;
 
 class MailQueue extends AbstractService implements PublicApiInterface
 {
-    use WebinyTrait, MailerTrait;
+    use WebinyTrait;
 
     function __construct()
     {
@@ -53,8 +53,8 @@ class MailQueue extends AbstractService implements PublicApiInterface
                 // update all those emails to status SENT, in case if another cron runs in meantime so we don't send some emails twice
                 // this can happen because we sleep between sending emails to stay within the send limit
                 foreach ($emails as $e) {
-                    //$e->status = EmailLog::STATUS_SENT;
-                    //$e->save();
+                    $e->status = EmailLog::STATUS_SENT;
+                    $e->save();
                 }
             }
 
@@ -63,7 +63,7 @@ class MailQueue extends AbstractService implements PublicApiInterface
         /**
          * @var EmailLog $e
          */
-        $mailer = $this->getMailer();
+        $mailer = \Apps\NotificationManager\Php\Lib\Mailer::getMailer();
         $emailLog = ['sent' => 0, 'errors' => 0];
         foreach ($emails as $e) {
             $msg = $mailer->getMessage();
@@ -95,38 +95,6 @@ class MailQueue extends AbstractService implements PublicApiInterface
         }
 
         return $emailLog;
-    }
-
-    /**
-     * @return Mailer
-     * @throws NotificationException
-     * @throws \Webiny\Component\StdLib\Exception\Exception
-     */
-    private function getMailer()
-    {
-        // load the mailer settings
-        $settings = Setting::findOne(['key' => 'notification-manager']);
-        if (empty($settings)) {
-            throw new NotificationException(sprintf('Unable to load SMTP settings'));
-        }
-        $settings = $settings['settings'];
-
-        $config = [
-            'Transport' => [
-                'Type'       => 'smtp',
-                'Host'       => $settings['serverName'],
-                'Port'       => 587,
-                'Username'   => $settings['username'],
-                'Password'   => $settings['password'],
-                'Encryption' => 'tls',
-                'AuthMode'   => 'login'
-            ],
-            'Debug'     => true
-        ];
-
-        Mailer::setConfig(Config::getInstance()->parseResource(['Default' => $config]));
-
-        return $this->mailer('Default');
     }
 
 }

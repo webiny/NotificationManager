@@ -13,19 +13,25 @@ class NotificationForm extends Webiny.Ui.View {
         this.bindMethods('sendTestEmail');
     }
 
-    sendTestEmail(emailContent) {
+    sendTestEmail(model) {
         const postBody = {
             'email': Webiny.Model.get('User').email,
-            'content': emailContent
+            'content': model.email.content,
+            'subject': model.email.subject,
+            'fromAddress': model.email.fromAddress,
+            'fromName': model.email.fromName
         };
 
         const api = new Webiny.Api.Endpoint('/entities/notification-manager/notifications');
 
         // show modal box
         this.ui('previewModal').show();
-        api.post('preview/' + Webiny.Router.getParams('id'), postBody).then(() => {
-            // update status in the modalbox
-            this.ui('previewModal').setSuccess();
+        api.post('preview/' + Webiny.Router.getParams('id'), postBody).then((response) => {
+            if (response.data.data.status === true) {
+                this.ui('previewModal').setSuccess();
+            } else {
+                this.ui('previewModal').setError();
+            }
         });
     }
 
@@ -96,7 +102,7 @@ NotificationForm.defaultProps = {
                         </Ui.View.Body>
                         <Ui.View.Footer align="right">
                             <Ui.Button type="primary" onClick={container.submit}>Save Changes</Ui.Button>
-                            <Ui.Button type="secondary" onClick={() => this.sendTestEmail(model.email.content)}>Send Test Email</Ui.Button>
+                            <Ui.Button type="secondary" onClick={() => this.sendTestEmail(model)}>Send Test Email</Ui.Button>
                             <Ui.Button type="default" onClick={container.cancel}>Go Back</Ui.Button>
                         </Ui.View.Footer>
                     </Ui.View.Form>

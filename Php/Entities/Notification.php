@@ -4,6 +4,8 @@ namespace Apps\NotificationManager\Php\Entities;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
+use Apps\NotificationManager\Php\Lib\Mailer;
+use Webiny\Component\Mailer\Email;
 
 /**
  * Class Notification
@@ -67,7 +69,40 @@ class Notification extends AbstractEntity
         // we take the template from the current notification
         $content = str_replace('{_content_}', $content, $notification->template->content);
 
-        return ['email' => $this->wRequest()->getRequestData()['content']];
+        // get email
+        $email = $this->wRequest()->getRequestData()['email'];
+
+        // subject
+        $subject = $this->wRequest()->getRequestData()['subject'];
+
+        // from name
+        $fromName = $this->wRequest()->getRequestData()['fromName'];
+
+        // from email
+        $fromAddress = $this->wRequest()->getRequestData()['fromAddress'];
+
+
+        // send it
+        try {
+            // get mailer
+            $mailer = Mailer::getMailer();
+
+            // populate
+            $msg = $mailer->getMessage();
+            $msg->setFrom(new Email($fromAddress, $fromName));
+            $msg->setSubject($subject)->setBody($content)->setTo(new Email($email));
+
+            
+            $result = $mailer->send($msg);
+            if ($result) {
+                return ['status' => true];
+            } else {
+                return ['status' => false];
+            }
+        } catch (\Exception $e) {
+            die(print_r($e));
+            return ['status' => false];
+        }
     }
 
     public function validateVariables($content)

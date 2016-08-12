@@ -153,7 +153,7 @@ class Notification
         }
     }
 
-    public function scheduleForSending()
+    private function scheduleForSending()
     {
         // start email log
         $log = new EmailLog();
@@ -164,7 +164,7 @@ class Notification
         $log->subject = $this->notification->email['subject'];
         $log->save();
 
-        // update the tracker with the email log id
+        // update the tracker with the email log id (we get the id after the previous save)
         $log->content = str_replace('{emailLog}', $log->id, $log->content);
         $log->save();
     }
