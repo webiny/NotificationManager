@@ -12,8 +12,14 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
             'message': 'Your message is queued for sending...',
             'title': 'Please Wait'
         };
+    }
 
-        this.bindMethods('setSuccess');
+    setPending() {
+        this.setState({
+            'type': 'info',
+            'message': 'Your message is queued for sending...',
+            'title': 'Please Wait'
+        });
     }
 
     setSuccess() {

@@ -26,6 +26,7 @@ class NotificationForm extends Webiny.Ui.View {
 
         // show modal box
         this.ui('previewModal').show();
+        this.ui('previewModal').setPending();
         api.post('preview/' + Webiny.Router.getParams('id'), postBody).then((response) => {
             if (response.data.data.status === true) {
                 this.ui('previewModal').setSuccess();
