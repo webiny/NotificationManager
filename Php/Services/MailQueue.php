@@ -9,8 +9,10 @@ use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Lib\NotificationException;
+use Apps\NotificationManager\Php\Lib\NotificationManager;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
+use Webiny\Component\Storage\File\File;
 
 class MailQueue extends AbstractService implements PublicApiInterface
 {
@@ -62,10 +64,19 @@ class MailQueue extends AbstractService implements PublicApiInterface
         $mailer = $this->wService('NotificationManager')->getMailer();
         /* @var EmailLog $e */
         $emailLog = ['sent' => 0, 'errors' => 0];
+        $storage = $this->wStorage('NotificationManager');
         foreach ($emails as $e) {
             $msg = $mailer->getMessage();
             $msg->setFrom(new Email($e->notification->email['fromAddress'], $e->notification->email['fromName']));
             $msg->setSubject($e->subject)->setBody($e->content)->setTo(new Email($e->email, $e->name));
+
+            // Add attachments
+            $files = [];
+            foreach ($e->attachments as $att) {
+                $file = new File($att['key'], $storage);
+                $files[] = $file;
+                $msg->addAttachment($file, $att['name'], $att['type']);
+            }
 
             try {
                 $result = $mailer->send($msg);
@@ -77,6 +88,12 @@ class MailQueue extends AbstractService implements PublicApiInterface
                     $e->status = EmailLog::STATUS_ERROR;
                     $e->log = print_r($mailer->getTransport()->getDebugLog(), true);
                     $emailLog['errors']++;
+                }
+
+                // Cleanup temporary attachments
+                /* @var File $f */
+                foreach ($files as $f) {
+                    $f->delete();
                 }
 
                 $e->save();

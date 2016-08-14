@@ -7,15 +7,16 @@ use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 /**
  * Class EmailLog
  *
- * @property string        $id
- * @property string        $messageId
- * @property integer       $status
- * @property string        $subject
- * @property string        $content
- * @property string        $email
- * @property string        $name
- * @property string        $log
- * @property Notification  $notification
+ * @property string       $id
+ * @property string       $messageId
+ * @property integer      $status
+ * @property string       $subject
+ * @property string       $content
+ * @property array        $attachments
+ * @property string       $email
+ * @property string       $name
+ * @property string       $log
+ * @property Notification $notification
  *
  * @package Apps\Core\Php\Entities
  *
@@ -43,6 +44,7 @@ class EmailLog extends AbstractEntity
         $this->attr('messageId')->char()->setToArrayDefault();
         $this->attr('subject')->char()->setToArrayDefault();
         $this->attr('content')->char();
+        $this->attr('attachments')->arr();
         $this->attr('email')->char()->setToArrayDefault();
         $this->attr('name')->char()->setToArrayDefault();
         $this->attr('log')->char();

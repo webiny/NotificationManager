@@ -7,6 +7,7 @@ use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\NotificationVariable;
 use Webiny\Component\Mailer\MailerTrait;
+use Webiny\Component\Storage\File\File;
 use Webiny\Component\Validation\ValidationTrait;
 use Webiny\Component\Validation\ValidationException;
 use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
@@ -20,13 +21,13 @@ class Notification
     protected $recipientName;
     protected $entities = [];
     protected $customVars = [];
+    protected $attachments = [];
     protected $emailContent;
 
     /**
      * @var NotificationEntity
      */
     protected $notification;
-
 
     /**
      * @param string $slug Notification slug.
@@ -37,6 +38,8 @@ class Notification
     }
 
     /**
+     * Set recipient
+     *
      * @param string $email
      * @param string $name
      *
@@ -57,6 +60,8 @@ class Notification
     }
 
     /**
+     * Add entity
+     *
      * @param AbstractEntity $entity
      *
      * @return $this
@@ -69,6 +74,8 @@ class Notification
     }
 
     /**
+     * Add custom variable
+     *
      * @param string $name
      * @param string $value
      *
@@ -82,8 +89,24 @@ class Notification
     }
 
     /**
+     * Add attachment
+     *
+     * @param File   $file
+     * @param string $fileName
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function addAttachment(File $file, $fileName = '', $type = 'plain/text')
+    {
+        $this->attachments[] = ['file' => $file, 'name' => $fileName, 'type' => $type];
+
+        return $this;
+    }
+
+    /**
      * Send the notification.
-     * If successful true is returned, otherwise false.
+     * Returns true on success or false on failure.
      *
      * @return bool
      * @throws NotificationException
@@ -100,15 +123,17 @@ class Notification
         }
 
         // append tracker
-        $trackerPath = $this->wConfig()
-                            ->get('Application.ApiPath') . '/services/notification-manager/feedback/email/mark-read/{emailLog}/1px';
+        $markReadUrl = '/services/notification-manager/feedback/email/mark-read/{emailLog}/1px';
+        $trackerPath = $this->wConfig()->get('Application.ApiPath') . $markReadUrl;
         $tracker = '<img src="' . $trackerPath . '" style="border:none; width:1px; height:1px; position: absolute" />';
         $this->emailContent = $this->notification->email['content'] . $tracker;
 
         // combine the template and the content
-        $this->emailContent = str_replace(['{_content_}', '{_hostName_}'],
-            [$this->emailContent, $this->wConfig()->get('Application.WebPath')],
-            $this->notification->template->content);
+        $replace = [
+            '{_content_}'  => $this->emailContent,
+            '{_hostName_}' => $this->wConfig()->get('Application.WebPath')
+        ];
+        $this->emailContent = str_replace(array_keys($replace), array_values($replace), $this->notification->template->content);
 
         // parse variables
         $this->parseVariables();
@@ -134,20 +159,18 @@ class Notification
         foreach ($vars as $v) {
             if ($v->type == 'entity') {
                 if (!isset($this->entities[$v->entity])) {
-                    throw new NotificationException(sprintf('Entity "%s", that is required by "%s" variable, is missing.',
-                        $v->entity, $v->key));
+                    throw new NotificationException(sprintf('Entity "%s", that is required by "%s" variable, is missing.', $v->entity,
+                        $v->key));
                 } else {
                     // replace the value inside the content
-                    $this->emailContent = str_replace('{' . $v->key . '}',
-                        $this->entities[$v->entity]->getAttribute($v->attribute)->getValue(), $this->emailContent);
+                    $this->emailContent = str_replace('{' . $v->key . '}', $this->entities[$v->entity][$v->attribute], $this->emailContent);
                 }
             } else {
                 if (!isset($this->customVars[$v->key])) {
                     throw new NotificationException(sprintf('Custom variable "%s" is missing.', $v->key));
                 } else {
                     // replace the value inside the content
-                    $this->emailContent = str_replace('{' . $v->key . '}', $this->customVars[$v->key],
-                        $this->emailContent);
+                    $this->emailContent = str_replace('{' . $v->key . '}', $this->customVars[$v->key], $this->emailContent);
                 }
             }
         }
@@ -163,6 +186,19 @@ class Notification
         $log->notification = $this->notification;
         $log->subject = $this->notification->email['subject'];
         $log->save();
+
+        // copy attachments to temporary storage
+        /* @var File $att */
+        $storage = $this->wStorage('NotificationManager');
+        foreach ($this->attachments as $index => $att) {
+            $key = $log->id . '-' . $index . '.tmp';
+            $storage->setContents($key, $att['file']->getContents());
+            $log->attachments[] = [
+                'key'  => $key,
+                'type' => $att['type'],
+                'name' => $att['name']
+            ];
+        }
 
         // update the tracker with the email log id (we get the id after the previous save)
         $log->content = str_replace('{emailLog}', $log->id, $log->content);
