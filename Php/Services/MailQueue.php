@@ -9,7 +9,6 @@ use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Lib\NotificationException;
-use Apps\NotificationManager\Php\Lib\NotificationManager;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 use Webiny\Component\Storage\File\File;
