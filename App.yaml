@@ -6,3 +6,7 @@ Description:
 AuthorName: Webiny LTD
 AuthorLink: http://www.webiny.com
 AuthorEmail: info@webiny.com
+
+Services:
+    NotificationManager:
+        Class: Apps\NotificationManager\Php\Lib\NotificationManager

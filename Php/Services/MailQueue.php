@@ -9,10 +9,8 @@ use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Lib\NotificationException;
-use Webiny\Component\Config\Config;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
-use Webiny\Component\Mailer\MailerTrait;
 
 class MailQueue extends AbstractService implements PublicApiInterface
 {
@@ -60,10 +58,9 @@ class MailQueue extends AbstractService implements PublicApiInterface
 
         } while ($count < 1 && $numIterations > 0);
 
-        /**
-         * @var EmailLog $e
-         */
-        $mailer = \Apps\NotificationManager\Php\Lib\Mailer::getMailer();
+        /* @var Mailer $mailer */
+        $mailer = $this->wService('NotificationManager')->getMailer();
+        /* @var EmailLog $e */
         $emailLog = ['sent' => 0, 'errors' => 0];
         foreach ($emails as $e) {
             $msg = $mailer->getMessage();

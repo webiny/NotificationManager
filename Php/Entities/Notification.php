@@ -4,8 +4,8 @@ namespace Apps\NotificationManager\Php\Entities;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
-use Apps\NotificationManager\Php\Lib\Mailer;
 use Webiny\Component\Mailer\Email;
+use Webiny\Component\Mailer\Mailer;
 
 /**
  * Class Notification
@@ -57,52 +57,44 @@ class Notification extends AbstractEntity
 
 
         $this->api('post', 'preview/{notification}', function (Notification $notification) {
-            return $this->preview($notification);
+            $data = $this->wRequest()->getRequestData();
+
+            return $this->preview($notification, $data);
         });
     }
 
-    public function preview(Notification $notification)
+    /**
+     * Send preview email
+     *
+     * @param Notification $notification
+     * @param array        $data
+     *
+     * @return array
+     */
+    public function preview(Notification $notification, array $data)
     {
         // we take the latest content from the post request
-        $content = $this->wRequest()->getRequestData()['content'];
+        $content = $data['content'];
 
         // we take the template from the current notification
         $content = str_replace('{_content_}', $content, $notification->template->content);
 
-        // get email
-        $email = $this->wRequest()->getRequestData()['email'];
-
-        // subject
-        $subject = $this->wRequest()->getRequestData()['subject'];
-
-        // from name
-        $fromName = $this->wRequest()->getRequestData()['fromName'];
-
-        // from email
-        $fromAddress = $this->wRequest()->getRequestData()['fromAddress'];
-
-
         // send it
-        try {
-            // get mailer
-            $mailer = Mailer::getMailer();
+        // get mailer
+        /* @var $mailer Mailer */
+        $mailer = $this->wService('NotificationManager')->getMailer();
 
-            // populate
-            $msg = $mailer->getMessage();
-            $msg->setFrom(new Email($fromAddress, $fromName));
-            $msg->setSubject($subject)->setBody($content)->setTo(new Email($email));
+        // populate
+        $msg = $mailer->getMessage();
+        $msg->setFrom(new Email($data['fromAddress'], $data['fromName']));
+        $msg->setSubject($data['subject'])->setBody($content)->setTo(new Email($data['email']));
 
-            
-            $result = $mailer->send($msg);
-            if ($result) {
-                return ['status' => true];
-            } else {
-                return ['status' => false];
-            }
-        } catch (\Exception $e) {
-            die(print_r($e));
-            return ['status' => false];
+
+        if ($mailer->send($msg)) {
+            return ['status' => true];
         }
+
+        return ['status' => false];
     }
 
     public function validateVariables($content)
