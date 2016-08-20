@@ -69,6 +69,7 @@ class Notification
                 new NotificationException(sprintf('Recipient email "%s" is invalid.', $email));
             }
         }
+        return $this;
     }
 
     /**
