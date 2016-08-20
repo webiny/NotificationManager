@@ -66,7 +66,12 @@ class MailQueue extends AbstractService implements PublicApiInterface
         $storage = $this->wStorage('NotificationManager');
         foreach ($emails as $e) {
             $msg = $mailer->getMessage();
-            $msg->setFrom(new Email($e->notification->email['fromAddress'], $e->notification->email['fromName']));
+
+            // get sender
+            $senderEmail = !empty($e->notification->email['fromAddress']) ? $e->notification->email['fromAddress'] : $settings['settings']['senderEmail'];
+            $senderName = !empty($e->notification->email['fromName']) ? $e->notification->email['fromName'] : $settings['settings']['senderName'];
+
+            $msg->setFrom(new Email($senderEmail, $senderName));
             $msg->setSubject($e->subject)->setBody($e->content)->setTo(new Email($e->email, $e->name));
 
             // Add attachments

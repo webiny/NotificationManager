@@ -85,9 +85,19 @@ NotificationForm.defaultProps = {
                                 <Ui.Tabs.Tab label="Email content" icon="icon-doc-text">
                                     <Ui.Grid.Row>
                                         <Ui.Grid.Col all={6}>
-                                            <Ui.Input label="Subject" name="email.subject" validate="required"/>
-                                            <Ui.Input label="From Address" name="email.fromAddress" validate="required, email"/>
-                                            <Ui.Input label="From Name" name="email.fromName" validate="required"/>
+                                            <Ui.Input
+                                                label="Subject"
+                                                name="email.subject"
+                                                validate="required"/>
+                                            <Ui.Input
+                                                label="From Address"
+                                                name="email.fromAddress"
+                                                validate="email"
+                                                placeholder="Leave blank to use the default sender"/>
+                                            <Ui.Input
+                                                label="From Name"
+                                                name="email.fromName"
+                                                placeholder="Leave blank to use the default sender"/>
                                             <Ui.Select {...templateSelect} validate="required"/>
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>

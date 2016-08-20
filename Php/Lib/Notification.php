@@ -6,23 +6,28 @@ use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\NotificationVariable;
+use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\MailerTrait;
 use Webiny\Component\Storage\File\File;
 use Webiny\Component\Validation\ValidationTrait;
 use Webiny\Component\Validation\ValidationException;
 use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
 
+/**
+ * Class Notification
+ * @package Apps\NotificationManager\Php\Lib
+ */
 class Notification
 {
     use ValidationTrait, WebinyTrait, MailerTrait;
 
     protected $slug;
-    protected $recipientEmail;
-    protected $recipientName;
+    protected $recipients = [];
     protected $entities = [];
     protected $customVars = [];
     protected $attachments = [];
     protected $emailContent;
+    protected $emailSubject;
 
     /**
      * @var NotificationEntity
@@ -40,23 +45,30 @@ class Notification
     /**
      * Set recipient
      *
-     * @param string $email
-     * @param string $name
+     * @param string|array $email An email, or list of emails in form [[email, name], [email, name]]
+     * @param string       $name
      *
      * @return $this
      */
-    public function setRecipient($email, $name)
+    public function setRecipient($email, $name = null)
     {
-        try {
-            self::validation()->validate($email, 'email');
-        } catch (ValidationException $e) {
-            new NotificationException(sprintf('Recipient email "%s" is invalid.', $email));
+        if (is_array($email)) {
+            foreach ($email as $e) {
+                try {
+                    self::validation()->validate($e[0], 'email');
+                    $this->recipients[] = new Email($email, (isset($e[1]) ? $e[1] : null));
+                } catch (ValidationException $e) {
+                    new NotificationException(sprintf('Recipient email "%s" is invalid.', $e[0]));
+                }
+            }
+        } else {
+            try {
+                self::validation()->validate($email, 'email');
+                $this->recipients[] = new Email($email, $name);
+            } catch (ValidationException $e) {
+                new NotificationException(sprintf('Recipient email "%s" is invalid.', $email));
+            }
         }
-
-        $this->recipientEmail = $email;
-        $this->recipientName = $name;
-
-        return $this;
     }
 
     /**
@@ -121,6 +133,7 @@ class Notification
         if (empty($this->notification)) {
             new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
         }
+        $this->emailSubject = $this->notification->email['subject'];
 
         // append tracker
         $markReadUrl = '/services/notification-manager/feedback/email/mark-read/{emailLog}/1px';
@@ -164,6 +177,9 @@ class Notification
                 } else {
                     // replace the value inside the content
                     $this->emailContent = str_replace('{' . $v->key . '}', $this->entities[$v->entity][$v->attribute], $this->emailContent);
+
+                    // replace the value inside the subject line
+                    $this->emailSubject = str_replace('{' . $v->key . '}', $this->entities[$v->entity][$v->attribute], $this->emailSubject);
                 }
             } else {
                 if (!isset($this->customVars[$v->key])) {
@@ -171,6 +187,9 @@ class Notification
                 } else {
                     // replace the value inside the content
                     $this->emailContent = str_replace('{' . $v->key . '}', $this->customVars[$v->key], $this->emailContent);
+
+                    // replace the value inside the subject line
+                    $this->emailSubject = str_replace('{' . $v->key . '}', $this->customVars[$v->key], $this->emailSubject);
                 }
             }
         }
@@ -178,30 +197,32 @@ class Notification
 
     private function scheduleForSending()
     {
-        // start email log
-        $log = new EmailLog();
-        $log->content = $this->emailContent;
-        $log->email = $this->recipientEmail;
-        $log->name = $this->recipientName;
-        $log->notification = $this->notification;
-        $log->subject = $this->notification->email['subject'];
-        $log->save();
+        foreach ($this->recipients as $r) {
+            // start email log
+            $log = new EmailLog();
+            $log->content = $this->emailContent;
+            $log->email = $r->email;
+            $log->name = $r->name;
+            $log->notification = $this->notification;
+            $log->subject = $this->emailSubject;
+            $log->save();
 
-        // copy attachments to temporary storage
-        /* @var File $att */
-        $storage = $this->wStorage('NotificationManager');
-        foreach ($this->attachments as $index => $att) {
-            $key = $log->id . '-' . $index . '.tmp';
-            $storage->setContents($key, $att['file']->getContents());
-            $log->attachments[] = [
-                'key'  => $key,
-                'type' => $att['type'],
-                'name' => $att['name']
-            ];
+            // copy attachments to temporary storage
+            /* @var File $att */
+            $storage = $this->wStorage('NotificationManager');
+            foreach ($this->attachments as $index => $att) {
+                $key = $log->id . '-' . $index . '.tmp';
+                $storage->setContents($key, $att['file']->getContents());
+                $log->attachments[] = [
+                    'key'  => $key,
+                    'type' => $att['type'],
+                    'name' => $att['name']
+                ];
+            }
+
+            // update the tracker with the email log id (we get the id after the previous save)
+            $log->content = str_replace('{emailLog}', $log->id, $log->content);
+            $log->save();
         }
-
-        // update the tracker with the email log id (we get the id after the previous save)
-        $log->content = str_replace('{emailLog}', $log->id, $log->content);
-        $log->save();
     }
 }
