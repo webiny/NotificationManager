@@ -52,6 +52,7 @@ VariableList.defaultProps = {
                             </Ui.Grid.Row>
                             <Ui.List.ApiContainer {...listProps}>
                                 <Table.Table>
+                                    <Table.Empty/>
                                     <Table.Row>
                                         <Table.Field name="key" align="left" label="Variable Name" sort="key">
                                             {data => (
