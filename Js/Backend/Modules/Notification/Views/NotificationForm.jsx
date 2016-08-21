@@ -84,7 +84,7 @@ NotificationForm.defaultProps = {
                                 </Ui.Tabs.Tab>
                                 <Ui.Tabs.Tab label="Email content" icon="icon-doc-text">
                                     <Ui.Grid.Row>
-                                        <Ui.Grid.Col all={6}>
+                                        <Ui.Grid.Col all={4}>
                                             <Ui.Input
                                                 label="Subject"
                                                 name="email.subject"
@@ -100,7 +100,7 @@ NotificationForm.defaultProps = {
                                                 placeholder="Leave blank to use the default sender"/>
                                             <Ui.Select {...templateSelect} validate="required"/>
                                         </Ui.Grid.Col>
-                                        <Ui.Grid.Col all={6}>
+                                        <Ui.Grid.Col all={8}>
                                             <Ui.HtmlEditor
                                                 label="Content"
                                                 name="email.content"
