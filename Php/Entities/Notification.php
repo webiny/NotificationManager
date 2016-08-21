@@ -6,19 +6,21 @@ use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Lib\NotificationException;
+use Webiny\Component\Entity\EntityCollection;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 
 /**
  * Class Notification
  *
- * @property string   $id
- * @property string   $title
- * @property string   $description
- * @property string   $slug
- * @property array    $labels
- * @property object   $email
- * @property Template $template
+ * @property string           $id
+ * @property string           $title
+ * @property string           $description
+ * @property string           $slug
+ * @property array            $labels
+ * @property object           $email
+ * @property EntityCollection $variables
+ * @property Template         $template
  *
  * @package Apps\Core\Php\Entities
  *
@@ -49,19 +51,49 @@ class Notification extends AbstractEntity
             foreach ($val as $v) {
                 $this->validateVariables($v);
             }
-            $this->email = $val;
-
             return $val;
         })->setAfterPopulate(true);
 
         $template = 'Apps\NotificationManager\Php\Entities\Template';
         $this->attr('template')->many2one('Template')->setEntity($template);
 
+        $this->attr('variables')->one2many('notification')->setEntity('\Apps\NotificationManager\Php\Entities\NotificationVariable');
 
         $this->api('post', 'preview/{notification}', function (Notification $notification) {
             $data = $this->wRequest()->getRequestData();
 
             return $this->preview($notification, $data);
+        });
+
+        $this->api('post', '{id}/copy', function () {
+            $newNotification = new Notification();
+            $newNotification->description = $this->description;
+            $newNotification->title = uniqid($this->title . '-');
+            $newNotification->labels = $this->labels;
+            $newNotification->template = $this->template;
+            $newNotification->save();
+
+            /* @var EntityCollection $variables */
+            $variables = $this->variables;
+
+            foreach ($variables as $variable) {
+                /* @var NotificationVariable $variable */
+                $newVariable = new NotificationVariable();
+                $newVariable->key = $variable->key;
+                $newVariable->entity = $variable->entity;
+                $newVariable->attribute = $variable->attribute;
+                $newVariable->description = $variable->description;
+                $newVariable->type = $variable->type;
+
+                $newVariable->notification = $newNotification;
+                $newVariable->save();
+            }
+
+            $newNotification->email = $this->email;
+            $newNotification->save();
+
+            return $newNotification->toArray($this->wRequest()->getFields());
+
         });
     }
 

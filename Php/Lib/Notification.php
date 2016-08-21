@@ -56,8 +56,8 @@ class Notification
         if (is_array($email)) {
             foreach ($email as $e) {
                 try {
-                    self::validation()->validate($e[0], 'email');
-                    $this->recipients[] = new Email($email, (isset($e[1]) ? $e[1] : null));
+                    self::validation()->validate($e[0] ?? null, 'email');
+                    $this->recipients[] = new Email($e[0], $e[1] ?? null);
                 } catch (ValidationException $e) {
                     new NotificationException(sprintf('Recipient email "%s" is invalid.', $e[0]));
                 }
@@ -70,6 +70,7 @@ class Notification
                 new NotificationException(sprintf('Recipient email "%s" is invalid.', $email));
             }
         }
+        return $this;
     }
 
     /**
