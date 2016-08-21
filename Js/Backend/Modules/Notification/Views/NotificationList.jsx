@@ -52,7 +52,7 @@ NotificationList.defaultProps = {
 
                         <Table.Table>
                             <Table.Row>
-                                <Table.Field align="left" label="Title" sort="title">
+                                <Table.Field align="left" label="Title" sort="title" route="NotificationManager.Notification.Edit">
                                     {data => <span><strong>{data.title}</strong><br/>{data.slug}</span>}
                                 </Table.Field>
                                 <Table.Field name="description" align="left" label="Description" sort="description"/>

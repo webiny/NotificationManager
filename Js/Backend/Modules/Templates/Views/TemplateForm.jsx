@@ -71,10 +71,10 @@ TemplateForm.defaultProps = {
                             </Ui.Grid.Row>
                         </Ui.View.Body>
 
-                        <Ui.View.Footer align="right">
-                            <Ui.Button type="primary" onClick={container.submit}>Save Changes</Ui.Button>
-                            <Ui.Button type="secondary" onClick={() => this.previewTemplate(model.content)}>Preview Template</Ui.Button>
-                            <Ui.Button type="default" onClick={container.cancel}>Go Back</Ui.Button>
+                        <Ui.View.Footer>
+                            <Ui.Button align="right" type="primary" onClick={container.submit}>Save Changes</Ui.Button>
+                            <Ui.Button align="right" type="secondary" onClick={() => this.previewTemplate(model.content)}>Preview Template</Ui.Button>
+                            <Ui.Button align="left" type="default" onClick={container.cancel}>Go Back</Ui.Button>
                         </Ui.View.Footer>
                     </Ui.View.Form>
                 )}
