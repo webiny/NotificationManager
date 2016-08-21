@@ -37,30 +37,6 @@ class EntityVariableModal extends Webiny.Ui.ModalComponent {
             }
         };
 
-        const attributeSelect = {
-            label: 'Attribute',
-            name: 'attribute',
-            placeholder: 'Select Attribute',
-            allowClear: true,
-            api: '/services/core/entities/attributes',
-            fields: 'tag,name',
-            perPage: 2,
-            valueAttr: 'name',
-            filterBy: 'entity',
-            minimumResultsForSearch: 5,
-            optionRenderer: option => {
-                return (
-                    <div>
-                        <strong>{option.data.name}</strong>
-                        <br/>
-                        <span>{option.data.type}</span>
-                    </div>
-                );
-            },
-            selectedRenderer: option => {
-                return option.data.name;
-            }
-        };
         return (
             <Ui.Modal.Dialog>
                 <Ui.Modal.Header title="Entity Variable"/>
@@ -71,7 +47,6 @@ class EntityVariableModal extends Webiny.Ui.ModalComponent {
                                 <Ui.Grid.Col all={12}>
                                     <Ui.Input label="Variable Name" name="key" validate="required"/>
                                     <Ui.Select {...entitySelect}/>
-                                    <Ui.Select {...attributeSelect}/>
                                     <Ui.Input label="Description" name="description"/>
                                     <Ui.Hidden name="notification"/>
                                     <Ui.Hidden name="type"/>

@@ -101,7 +101,10 @@ NotificationForm.defaultProps = {
                                             <Ui.Select {...templateSelect} validate="required"/>
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
-                                            <Ui.HtmlEditor label="Content" name="email.content"/>
+                                            <Ui.HtmlEditor
+                                                label="Content"
+                                                name="email.content"
+                                                description="You can use Smarty syntax for your email content."/>
                                         </Ui.Grid.Col>
                                     </Ui.Grid.Row>
                                 </Ui.Tabs.Tab>

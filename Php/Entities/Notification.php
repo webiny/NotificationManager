@@ -9,6 +9,7 @@ use Apps\NotificationManager\Php\Lib\NotificationException;
 use Webiny\Component\Entity\EntityCollection;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
+use Webiny\Component\TemplateEngine\TemplateEngineException;
 
 /**
  * Class Notification
@@ -51,6 +52,17 @@ class Notification extends AbstractEntity
             foreach ($val as $v) {
                 $this->validateVariables($v);
             }
+
+            // validate content
+            $templateEngine = $this->wTemplateEngine();
+            try {
+                $templateEngine->fetch('eval:' . $val['content']);
+                // everything is fine…
+            } catch (TemplateEngineException $e) {
+                // error occured
+                throw new AppException('Invalid template syntax: '.$e->getMessage());
+            }
+
             return $val;
         })->setAfterPopulate(true);
 
@@ -159,7 +171,7 @@ class Notification extends AbstractEntity
             $found = false;
 
             // we need to explode the nested attributes
-            $v = $this->str($v)->explode('.')->first();
+            $v = $this->str($v)->explode('.')->first()->replace('$', '');
 
             foreach ($assocVars as $av) {
                 if ($v == $av->key) {

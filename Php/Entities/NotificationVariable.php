@@ -11,7 +11,6 @@ use Webiny\Component\Entity\EntityException;
  * @property string $id
  * @property string $key
  * @property string $entity
- * @property string $attribute
  * @property string $description
  * @property string $notification
  * @property string $type
@@ -33,7 +32,6 @@ class NotificationVariable extends AbstractEntity
         $this->attr('key')->char()->setValidators('required')->setToArrayDefault();
 
         $this->attr('entity')->char()->setToArrayDefault();
-        $this->attr('attribute')->char()->setToArrayDefault();
         $this->attr('description')->char()->setToArrayDefault();
         $this->attr('type')->char()->setToArrayDefault();
 

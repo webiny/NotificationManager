@@ -2,6 +2,7 @@
 
 namespace Apps\NotificationManager\Php\Lib;
 
+use Apps\Core\Php\DevTools\TemplateEngine;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Entities\EmailLog;
@@ -31,6 +32,11 @@ class Notification
     protected $emailSubject;
 
     /**
+     * @var TemplateEngine
+     */
+    protected $templateInstance;
+
+    /**
      * @var NotificationEntity
      */
     protected $notification;
@@ -41,6 +47,7 @@ class Notification
     public function __construct($slug)
     {
         $this->slug = $slug;
+        $this->templateInstance = $this->wTemplateEngine();
     }
 
     /**
@@ -70,6 +77,7 @@ class Notification
                 new NotificationException(sprintf('Recipient email "%s" is invalid.', $email));
             }
         }
+
         return $this;
     }
 
@@ -135,16 +143,23 @@ class Notification
         if (empty($this->notification)) {
             new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
         }
+
+        // assign content and subject
         $this->emailSubject = $this->notification->email['subject'];
+        $this->emailContent = $this->notification->email['content'];
+
+        // parse variables
+        $this->parseVariables();
+
+        // merge variables and content
+        $this->emailContent = $this->templateInstance->fetch('eval:' . $this->emailContent);
+        $this->emailSubject = $this->templateInstance->fetch('eval:' . $this->emailSubject);
 
         // append tracker
         $markReadUrl = '/services/notification-manager/feedback/email/mark-read/{emailLog}/1px';
         $trackerPath = $this->wConfig()->get('Application.ApiPath') . $markReadUrl;
         $tracker = '<img src="' . $trackerPath . '" style="border:none; width:1px; height:1px; position: absolute" />';
-        $this->emailContent = $this->notification->email['content'] . $tracker;
-
-        // parse variables
-        $this->parseVariables();
+        $this->emailContent .= $tracker;
 
         // combine the template and the content
         $replace = [
@@ -178,73 +193,16 @@ class Notification
             return $content;
         }
 
-        // extract content variables
-        $contentVariables = $this->str($content)->match('\{(.*?)\}');
-        if (!$contentVariables || $contentVariables->count() < 1) {
-            return $content;
-        }
-        $contentVariables = $contentVariables[1];
-
         foreach ($vars as $v) {
             if (!isset($this->entities[$v->entity])) {
                 throw new NotificationException(sprintf('Entity "%s", that is required by "%s" variable, is missing.', $v->entity,
                     $v->key));
             }
 
-            // check if the current variable key is contained within the content variables
-            foreach ($contentVariables as $cv) {
-                $cv = $this->str($cv);
-                if ($cv->startsWith($v)) {
-                    // check if it's a nested key
-                    if ($cv->contains('.')) {
-                        // nested
-                        $nestedKeys = $cv->explode('.')->removeFirst()->join('.');
-                        $value = $this->getEntityValue($this->entities[$v->entity][$v->attribute], $nestedKeys);
-                        if ($value == null) {
-                            throw new NotificationException(sprintf('Entity "%s" is missing attribute.', $nestedKeys));
-                        }
-                        $content = str_replace('{' . $cv . '}', $value, $content);
-                    } else {
-                        // not nested
-                        $content = str_replace('{' . $cv . '}', $this->entities[$v->entity][$v->attribute], $content);
-                    }
-
-                }
-            }
+            $this->templateInstance->getTemplateEngine()->assign($v->key, $this->entities[$v->entity]);
         }
 
         return $content;
-    }
-
-    /**
-     * Gets a nested key from attribute in this entity or a given variable
-     * If first parameter is a string that contains a '.', then it's considered to be a valid path
-     *
-     * @param AbstractEntity $entity
-     * @param null           $path
-     *
-     * @return mixed|null
-     * @internal param $variable
-     */
-    private function getEntityValue($entity, $path = null)
-    {
-        $path = explode('.', $path);
-
-        $current = $entity;
-        foreach ($path as $key) {
-            try {
-                if ($value = ($current->$key ?? ($current[$key] ?? null))) {
-                    $current = $value;
-                    continue;
-                }
-            } catch (\Exception $e) {
-                return null;
-            }
-
-            return null;
-        }
-
-        return $current;
     }
 
     private function parseCustomVariables($content)
@@ -254,39 +212,12 @@ class Notification
             return $content;
         }
 
-        // extract content variables
-        $contentVariables = $this->str($content)->match('\{(.*?)\}');
-        if (!$contentVariables || $contentVariables->count() < 1) {
-            return $content;
-        }
-        $contentVariables = $contentVariables[1];
-
         foreach ($vars as $v) {
             if (!isset($this->customVars[$v->key])) {
                 throw new NotificationException(sprintf('Custom variable "%s" is missing.', $v->key));
             }
 
-            // check if the current variable key is contained within the content variables
-            foreach ($contentVariables as $cv) {
-                $cv = $this->str($cv);
-
-                if ($cv->startsWith($v)) {
-                    // check if it's a nested key
-                    if ($cv->contains('.')) {
-                        // nested
-                        $nestedKeys = $cv->explode('.')->removeFirst()->join('.');
-                        $value = $this->arr($this->customVars[$v->key])->keyNested($nestedKeys);
-                        if ($value == null) {
-                            throw new NotificationException(sprintf('Custom variable "%s" is missing key value.', $v->key, $cv));
-                        }
-                        $content = str_replace('{' . $cv . '}', $value, $content);
-                    } else {
-                        // not nested
-                        $content = str_replace('{' . $cv . '}', $this->customVars[$v->key], $content);
-                    }
-
-                }
-            }
+            $this->templateInstance->getTemplateEngine()->assign($v->key, $this->customVars[$v->key]);
         }
 
         return $content;

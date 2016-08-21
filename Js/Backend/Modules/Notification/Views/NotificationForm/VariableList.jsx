@@ -57,14 +57,13 @@ VariableList.defaultProps = {
                                         <Table.Field name="key" align="left" label="Variable Name" sort="key">
                                             {data => (
                                                 <span>
-                                                    <strong>&#123;{data.key}&#125;</strong>
+                                                    <strong>&#123;${data.key}&#125;</strong>
                                                     <br/>
                                                     <span>{data.description}</span>
                                                 </span>
                                             )}
                                         </Table.Field>
                                         <Table.Field name="entity" align="left" label="Entity" sort="entity"/>
-                                        <Table.Field name="attribute" align="left" label="Attribute" sort="attribute"/>
                                         <Table.Actions>
                                             <Table.EditAction label="Edit" onClick={(data) => {
                                                 if (data['type'] === 'entity') {
