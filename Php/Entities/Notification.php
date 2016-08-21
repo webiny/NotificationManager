@@ -125,6 +125,10 @@ class Notification extends AbstractEntity
         $missingVars = [];
         foreach ($variables[1] as $v) {
             $found = false;
+
+            // we need to explode the nested attributes
+            $v = $this->str($v)->explode('.')->first();
+
             foreach ($assocVars as $av) {
                 if ($v == $av->key) {
                     $found = true;
