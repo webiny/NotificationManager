@@ -36,22 +36,39 @@ SettingsForm.defaultProps = {
                                             <dl>
                                                 <dt>SNS Bounce Endpoint</dt>
                                                 <dd>
-                                                    <Ui.Copy.Input value={`${webinyApiPath}/services/notification-manager/feedback/email/bounce`}/>
+                                                    <Ui.Copy.Input
+                                                        value={`${webinyApiPath}/services/notification-manager/feedback/email/bounce`}/>
                                                 </dd>
 
                                                 <dt>SNS Complaint Endpoint</dt>
                                                 <dd>
-                                                    <Ui.Copy.Input value={`${webinyApiPath}/services/notification-manager/feedback/email/complaint`}/>
+                                                    <Ui.Copy.Input
+                                                        value={`${webinyApiPath}/services/notification-manager/feedback/email/complaint`}/>
                                                 </dd>
 
                                                 <dt>SNS Delivery Endpoint (optional)</dt>
                                                 <dd>
-                                                    <Ui.Copy.Input value={`${webinyApiPath}/services/notification-manager/feedback/email/delivery`}/>
+                                                    <Ui.Copy.Input
+                                                        value={`${webinyApiPath}/services/notification-manager/feedback/email/delivery`}/>
                                                 </dd>
                                             </dl>
                                             <Ui.Alert title="AWS SES" close={false}>
                                                 If you are using AWS SES to send emails, please check the setup guide in the next tab.
                                             </Ui.Alert>
+                                        </Ui.Grid.Col>
+                                    </Ui.Grid.Row>
+                                    <Ui.Grid.Row>
+                                        <Ui.Grid.Col all={6}>
+                                            <Ui.Form.Fieldset title="Default Sender"/>
+
+                                            <Ui.Input
+                                                label="Sender Name"
+                                                name="settings.senderName"
+                                                validate="required"/>
+                                            <Ui.Input
+                                                label="Sender email"
+                                                name="settings.senderEmail"
+                                                validate="required,email"/>
                                         </Ui.Grid.Col>
                                     </Ui.Grid.Row>
                                 </Ui.Tabs.Tab>

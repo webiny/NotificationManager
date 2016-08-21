@@ -58,6 +58,15 @@ NotificationList.defaultProps = {
                                 <Table.Field name="description" align="left" label="Description" sort="description"/>
                                 <Table.TimeAgoField name="createdOn" align="left" label="Created On" sort="createdOn"/>
                                 <Table.Actions>
+                                    <Table.Action label={this.i18n(`Copy`)} icon="fa-files-o" onClick={row => {
+                                        new Webiny.Api.Endpoint(listProps.api).post(`/${row.id}/copy`).then(response => {
+                                            Webiny.Growl.success(this.i18n('Notification copied successfully!'));
+                                            Webiny.Router.goToRoute('NotificationManager.Notification.Edit', {
+                                                id: response.getData('id')
+                                            });
+                                        });
+                                    }}/>
+                                    <Ui.Dropdown.Divider />
                                     <Table.EditAction route="NotificationManager.Notification.Edit"/>
                                     <Table.DeleteAction/>
                                 </Table.Actions>

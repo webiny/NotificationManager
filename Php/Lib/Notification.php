@@ -6,23 +6,29 @@ use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\NotificationVariable;
+use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\MailerTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\Storage\File\File;
 use Webiny\Component\Validation\ValidationTrait;
 use Webiny\Component\Validation\ValidationException;
 use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
 
+/**
+ * Class Notification
+ * @package Apps\NotificationManager\Php\Lib
+ */
 class Notification
 {
-    use ValidationTrait, WebinyTrait, MailerTrait;
+    use ValidationTrait, WebinyTrait, MailerTrait, StdLibTrait;
 
     protected $slug;
-    protected $recipientEmail;
-    protected $recipientName;
+    protected $recipients = [];
     protected $entities = [];
     protected $customVars = [];
     protected $attachments = [];
     protected $emailContent;
+    protected $emailSubject;
 
     /**
      * @var NotificationEntity
@@ -40,22 +46,30 @@ class Notification
     /**
      * Set recipient
      *
-     * @param string $email
-     * @param string $name
+     * @param string|array $email An email, or list of emails in form [[email, name], [email, name]]
+     * @param string       $name
      *
      * @return $this
      */
-    public function setRecipient($email, $name)
+    public function setRecipient($email, $name = null)
     {
-        try {
-            self::validation()->validate($email, 'email');
-        } catch (ValidationException $e) {
-            new NotificationException(sprintf('Recipient email "%s" is invalid.', $email));
+        if (is_array($email)) {
+            foreach ($email as $e) {
+                try {
+                    self::validation()->validate($e[0] ?? null, 'email');
+                    $this->recipients[] = new Email($e[0], $e[1] ?? null);
+                } catch (ValidationException $e) {
+                    new NotificationException(sprintf('Recipient email "%s" is invalid.', $e[0]));
+                }
+            }
+        } else {
+            try {
+                self::validation()->validate($email, 'email');
+                $this->recipients[] = new Email($email, $name);
+            } catch (ValidationException $e) {
+                new NotificationException(sprintf('Recipient email "%s" is invalid.', $email));
+            }
         }
-
-        $this->recipientEmail = $email;
-        $this->recipientName = $name;
-
         return $this;
     }
 
@@ -121,6 +135,7 @@ class Notification
         if (empty($this->notification)) {
             new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
         }
+        $this->emailSubject = $this->notification->email['subject'];
 
         // append tracker
         $markReadUrl = '/services/notification-manager/feedback/email/mark-read/{emailLog}/1px';
@@ -128,15 +143,15 @@ class Notification
         $tracker = '<img src="' . $trackerPath . '" style="border:none; width:1px; height:1px; position: absolute" />';
         $this->emailContent = $this->notification->email['content'] . $tracker;
 
+        // parse variables
+        $this->parseVariables();
+
         // combine the template and the content
         $replace = [
             '{_content_}'  => $this->emailContent,
             '{_hostName_}' => $this->wConfig()->get('Application.WebPath')
         ];
         $this->emailContent = str_replace(array_keys($replace), array_values($replace), $this->notification->template->content);
-
-        // parse variables
-        $this->parseVariables();
 
         // save the mail into the mail queue
         $this->scheduleForSending();
@@ -149,59 +164,163 @@ class Notification
      */
     private function parseVariables()
     {
-        // load all variables required for this notification
-        $vars = NotificationVariable::find(['notification' => $this->notification->id]);
+        $this->emailContent = $this->parseEntityVariables($this->emailContent);
+        $this->emailContent = $this->parseCustomVariables($this->emailContent);
+
+        $this->emailSubject = $this->parseEntityVariables($this->emailSubject);
+        $this->emailSubject = $this->parseCustomVariables($this->emailSubject);
+    }
+
+    private function parseEntityVariables($content)
+    {
+        $vars = NotificationVariable::find(['notification' => $this->notification->id, 'type' => 'entity']);
         if ($vars->totalCount() < 1) {
-            return;
+            return $content;
         }
 
-        // loop over variables and make sure all the variables are provided
+        // extract content variables
+        $contentVariables = $this->str($content)->match('\{(.*?)\}');
+        if (!$contentVariables || $contentVariables->count() < 1) {
+            return $content;
+        }
+        $contentVariables = $contentVariables[1];
+
         foreach ($vars as $v) {
-            if ($v->type == 'entity') {
-                if (!isset($this->entities[$v->entity])) {
-                    throw new NotificationException(sprintf('Entity "%s", that is required by "%s" variable, is missing.', $v->entity,
-                        $v->key));
-                } else {
-                    // replace the value inside the content
-                    $this->emailContent = str_replace('{' . $v->key . '}', $this->entities[$v->entity][$v->attribute], $this->emailContent);
-                }
-            } else {
-                if (!isset($this->customVars[$v->key])) {
-                    throw new NotificationException(sprintf('Custom variable "%s" is missing.', $v->key));
-                } else {
-                    // replace the value inside the content
-                    $this->emailContent = str_replace('{' . $v->key . '}', $this->customVars[$v->key], $this->emailContent);
+            if (!isset($this->entities[$v->entity])) {
+                throw new NotificationException(sprintf('Entity "%s", that is required by "%s" variable, is missing.', $v->entity,
+                    $v->key));
+            }
+
+            // check if the current variable key is contained within the content variables
+            foreach ($contentVariables as $cv) {
+                $cv = $this->str($cv);
+                if ($cv->startsWith($v)) {
+                    // check if it's a nested key
+                    if ($cv->contains('.')) {
+                        // nested
+                        $nestedKeys = $cv->explode('.')->removeFirst()->join('.');
+                        $value = $this->getEntityValue($this->entities[$v->entity][$v->attribute], $nestedKeys);
+                        if ($value == null) {
+                            throw new NotificationException(sprintf('Entity "%s" is missing attribute.', $nestedKeys));
+                        }
+                        $content = str_replace('{' . $cv . '}', $value, $content);
+                    } else {
+                        // not nested
+                        $content = str_replace('{' . $cv . '}', $this->entities[$v->entity][$v->attribute], $content);
+                    }
+
                 }
             }
         }
+
+        return $content;
+    }
+
+    /**
+     * Gets a nested key from attribute in this entity or a given variable
+     * If first parameter is a string that contains a '.', then it's considered to be a valid path
+     *
+     * @param AbstractEntity $entity
+     * @param null           $path
+     *
+     * @return mixed|null
+     * @internal param $variable
+     */
+    private function getEntityValue($entity, $path = null)
+    {
+        $path = explode('.', $path);
+
+        $current = $entity;
+        foreach ($path as $key) {
+            try {
+                if ($value = ($current->$key ?? ($current[$key] ?? null))) {
+                    $current = $value;
+                    continue;
+                }
+            } catch (\Exception $e) {
+                return null;
+            }
+
+            return null;
+        }
+
+        return $current;
+    }
+
+    private function parseCustomVariables($content)
+    {
+        $vars = NotificationVariable::find(['notification' => $this->notification->id, 'type' => 'custom']);
+        if ($vars->totalCount() < 1) {
+            return $content;
+        }
+
+        // extract content variables
+        $contentVariables = $this->str($content)->match('\{(.*?)\}');
+        if (!$contentVariables || $contentVariables->count() < 1) {
+            return $content;
+        }
+        $contentVariables = $contentVariables[1];
+
+        foreach ($vars as $v) {
+            if (!isset($this->customVars[$v->key])) {
+                throw new NotificationException(sprintf('Custom variable "%s" is missing.', $v->key));
+            }
+
+            // check if the current variable key is contained within the content variables
+            foreach ($contentVariables as $cv) {
+                $cv = $this->str($cv);
+
+                if ($cv->startsWith($v)) {
+                    // check if it's a nested key
+                    if ($cv->contains('.')) {
+                        // nested
+                        $nestedKeys = $cv->explode('.')->removeFirst()->join('.');
+                        $value = $this->arr($this->customVars[$v->key])->keyNested($nestedKeys);
+                        if ($value == null) {
+                            throw new NotificationException(sprintf('Custom variable "%s" is missing key value.', $v->key, $cv));
+                        }
+                        $content = str_replace('{' . $cv . '}', $value, $content);
+                    } else {
+                        // not nested
+                        $content = str_replace('{' . $cv . '}', $this->customVars[$v->key], $content);
+                    }
+
+                }
+            }
+        }
+
+        return $content;
+
     }
 
     private function scheduleForSending()
     {
-        // start email log
-        $log = new EmailLog();
-        $log->content = $this->emailContent;
-        $log->email = $this->recipientEmail;
-        $log->name = $this->recipientName;
-        $log->notification = $this->notification;
-        $log->subject = $this->notification->email['subject'];
-        $log->save();
+        foreach ($this->recipients as $r) {
+            // start email log
+            $log = new EmailLog();
+            $log->content = $this->emailContent;
+            $log->email = $r->email;
+            $log->name = $r->name;
+            $log->notification = $this->notification;
+            $log->subject = $this->emailSubject;
+            $log->save();
 
-        // copy attachments to temporary storage
-        /* @var File $att */
-        $storage = $this->wStorage('NotificationManager');
-        foreach ($this->attachments as $index => $att) {
-            $key = $log->id . '-' . $index . '.tmp';
-            $storage->setContents($key, $att['file']->getContents());
-            $log->attachments[] = [
-                'key'  => $key,
-                'type' => $att['type'],
-                'name' => $att['name']
-            ];
+            // copy attachments to temporary storage
+            /* @var File $att */
+            $storage = $this->wStorage('NotificationManager');
+            foreach ($this->attachments as $index => $att) {
+                $key = $log->id . '-' . $index . '.tmp';
+                $storage->setContents($key, $att['file']->getContents());
+                $log->attachments[] = [
+                    'key'  => $key,
+                    'type' => $att['type'],
+                    'name' => $att['name']
+                ];
+            }
+
+            // update the tracker with the email log id (we get the id after the previous save)
+            $log->content = str_replace('{emailLog}', $log->id, $log->content);
+            $log->save();
         }
-
-        // update the tracker with the email log id (we get the id after the previous save)
-        $log->content = str_replace('{emailLog}', $log->id, $log->content);
-        $log->save();
     }
 }

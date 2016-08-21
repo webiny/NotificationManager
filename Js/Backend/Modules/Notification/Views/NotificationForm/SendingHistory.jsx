@@ -22,6 +22,7 @@ SendingHistory.defaultProps = {
             <Ui.List.ApiContainer ui="templateList" {...listProps}>
                 <Table.Table>
                     <Table.Row>
+                        <Table.Empty/>
                         <Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
                         <Table.Field name="email" align="left" label="Email" sort="email"/>
                         <Table.Field align="right">
