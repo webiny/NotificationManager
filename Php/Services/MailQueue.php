@@ -24,7 +24,7 @@ class MailQueue extends AbstractService implements PublicApiInterface
         });
     }
 
-    private function sendEmails()
+    public function sendEmails()
     {
         // calculate the max amount of emails we can send in one minute (that's the cron frequency)
         $settings = Setting::findOne(['key' => 'notification-manager']);
