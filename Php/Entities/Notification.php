@@ -59,7 +59,7 @@ class Notification extends AbstractEntity
                 $templateEngine->fetch('eval:' . $val['content']);
                 // everything is fine…
             } catch (TemplateEngineException $e) {
-                // error occured
+                // error occurred
                 throw new AppException('Invalid template syntax: '.$e->getMessage());
             }
 
@@ -93,7 +93,6 @@ class Notification extends AbstractEntity
                 $newVariable = new NotificationVariable();
                 $newVariable->key = $variable->key;
                 $newVariable->entity = $variable->entity;
-                $newVariable->attribute = $variable->attribute;
                 $newVariable->description = $variable->description;
                 $newVariable->type = $variable->type;
 
