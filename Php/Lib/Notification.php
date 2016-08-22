@@ -141,7 +141,7 @@ class Notification
         // load notification
         $this->notification = NotificationEntity::findOne(['slug' => $this->slug]);
         if (empty($this->notification)) {
-            new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
+            throw new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
         }
 
         // assign content and subject
