@@ -7,6 +7,7 @@ use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\NotificationVariable;
+use Apps\NotificationManager\Php\Services\MailQueue;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\MailerTrait;
 use Webiny\Component\StdLib\StdLibTrait;
@@ -141,7 +142,7 @@ class Notification
         // load notification
         $this->notification = NotificationEntity::findOne(['slug' => $this->slug]);
         if (empty($this->notification)) {
-            new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
+            throw new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
         }
 
         // assign content and subject
@@ -252,6 +253,12 @@ class Notification
             // update the tracker with the email log id (we get the id after the previous save)
             $log->content = str_replace('{emailLog}', $log->id, $log->content);
             $log->save();
+
+            // check if instant send it active
+            if($this->wConfig()->get('Application.NotificationManager.InstantSend', false)){
+                $mailQueue = new MailQueue();
+                $mailQueue->sendEmails();
+            }
         }
     }
 }

@@ -96,7 +96,6 @@ class Notification extends AbstractEntity
                 $newVariable = new NotificationVariable();
                 $newVariable->key = $variable->key;
                 $newVariable->entity = $variable->entity;
-                $newVariable->attribute = $variable->attribute;
                 $newVariable->description = $variable->description;
                 $newVariable->type = $variable->type;
 

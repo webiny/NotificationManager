@@ -15,7 +15,7 @@ NotificationList.defaultProps = {
         const listProps = {
             api: '/entities/notification-manager/notifications',
             fields: 'title,description,slug,email.subject,createdOn,labels',
-            searchFields: 'title,description,email.subject,labels',
+            searchFields: 'title,slug,description,email.subject,labels',
             connectToRouter: true
         };
 
