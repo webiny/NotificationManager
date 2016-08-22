@@ -39,7 +39,7 @@ TemplateForm.defaultProps = {
                                     <Ui.Form.Fieldset title="Template"/>
 
                                     <Ui.Input label="Name" name="name" validate="required"/>
-                                    <Ui.CodeEditor label="Content" name="content"/>
+                                    <Ui.CodeEditor label="Content" name="content" description="Enter plain text or HTML content"/>
 
                                 </Ui.Grid.Col>
 

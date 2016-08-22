@@ -14,8 +14,8 @@ NotificationList.defaultProps = {
     renderer() {
         const listProps = {
             api: '/entities/notification-manager/notifications',
-            fields: 'title,description,slug,email.subject,createdOn',
-            searchFields: 'title,description,email.subject',
+            fields: 'title,description,slug,email.subject,createdOn,labels',
+            searchFields: 'title,description,email.subject,labels',
             connectToRouter: true
         };
 
@@ -53,10 +53,16 @@ NotificationList.defaultProps = {
                         <Table.Table>
                             <Table.Row>
                                 <Table.Field align="left" label="Title" sort="title" route="NotificationManager.Notification.Edit">
-                                    {data => <span><strong>{data.title}</strong><br/>{data.slug}</span>}
+                                    {data => (
+                                        <span>
+                                            <strong>{data.title}</strong>
+                                            <br/>{data.slug}<br/>
+                                            {data.labels.map((l, k) => <Ui.Label key={k} type="info">{l}</Ui.Label>)}
+                                        </span>
+                                    )}
                                 </Table.Field>
                                 <Table.Field name="description" align="left" label="Description" sort="description"/>
-                                <Table.TimeAgoField name="createdOn" align="left" label="Created On" sort="createdOn"/>
+                                <Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
                                 <Table.Actions>
                                     <Table.Action label={this.i18n(`Copy`)} icon="fa-files-o" onClick={row => {
                                         new Webiny.Api.Endpoint(listProps.api).post(`/${row.id}/copy`).then(response => {

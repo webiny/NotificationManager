@@ -94,7 +94,7 @@ List.defaultProps = {
                                         <Ui.Label type="success">Read</Ui.Label>
                                     </case>
                                 </Table.CaseField>
-                                <Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
+                                <Table.TimeAgoField name="createdOn" align="left" label="Sent" sort="createdOn"/>
                                 <Table.Field name="email" align="left" label="Email" sort="email"/>
                                 <Table.Field name="subject" align="left" label="Subject" sort="subject"/>
                                 <Table.Field align="right">

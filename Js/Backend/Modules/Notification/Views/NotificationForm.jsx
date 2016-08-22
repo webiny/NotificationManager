@@ -27,7 +27,7 @@ class NotificationForm extends Webiny.Ui.View {
         // show modal box
         this.ui('previewModal').show();
         this.ui('previewModal').setPending();
-        api.post('preview/' + Webiny.Router.getParams('id'), postBody).then((response) => {
+        api.post(Webiny.Router.getParams('id') + '/preview', postBody).then((response) => {
             if (response.data.data.status === true) {
                 this.ui('previewModal').setSuccess();
             } else {
@@ -42,7 +42,7 @@ NotificationForm.defaultProps = {
     renderer() {
         const formProps = {
             api: '/entities/notification-manager/notifications',
-            fields: '*,template',
+            fields: '*,variables,template',
             connectToRouter: true,
             onSubmitSuccess: () => Webiny.Router.goToRoute('NotificationManager.Notifications'),
             onCancel: () => Webiny.Router.goToRoute('NotificationManager.Notifications')
@@ -109,7 +109,7 @@ NotificationForm.defaultProps = {
                                     </Ui.Grid.Row>
                                 </Ui.Tabs.Tab>
                                 <Ui.Tabs.Tab label="Variables" icon="icon-menu">
-                                    <VariableList/>
+                                    <VariableList data={model.variables} container={container} onChange={vars => container.setModel('variables', vars)}/>
                                 </Ui.Tabs.Tab>
                             </Ui.Tabs.Tabs>
                             <PreviewModal ui="previewModal"/>

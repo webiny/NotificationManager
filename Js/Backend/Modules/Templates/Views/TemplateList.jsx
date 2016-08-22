@@ -50,8 +50,8 @@ TemplateList.defaultProps = {
 
                         <Table.Table>
                             <Table.Row>
-                                <Table.Field name="name" align="left" label="Name" sort="name"/>
-                                <Table.TimeAgoField name="createdOn" align="left" label="Created On" sort="createdOn"/>
+                                <Table.Field name="name" align="left" label="Name" sort="name" route="NotificationManager.Template.Edit"/>
+                                <Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
 
                                 <Table.Actions>
                                     <Table.EditAction route="NotificationManager.Template.Edit"/>

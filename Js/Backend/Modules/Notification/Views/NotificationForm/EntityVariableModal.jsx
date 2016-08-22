@@ -6,11 +6,14 @@ class EntityVariableModal extends Webiny.Ui.ModalComponent {
     renderDialog() {
         const formProps = {
             ui: 'entityVariableForm',
-            api: '/entities/notification-manager/notification-variable',
-            fields: '*',
-            defaultModel: _.merge({type: 'entity'}, {notification: Webiny.Router.getParams('id')}, this.props.data),
-            onSubmitSuccess: () => this.props.showView('variableList')().then(this.ui('variableListContainer:loadData')),
-            onSuccessMessage: record => <span>Variable <strong>{record.key}</strong> saved!</span>
+            defaultModel: _.merge({type: 'entity'}, this.props.data),
+            onSubmit: model => {
+                Webiny.Growl.success(<span>Variable <strong>{model.key}</strong> added!</span>);
+                this.hide().then(() => {
+                    this.props.onSave(model);
+                    this.props.showView('variableList')();
+                });
+            }
         };
 
         const entitySelect = {
