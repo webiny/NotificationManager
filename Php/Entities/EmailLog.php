@@ -48,15 +48,6 @@ class EmailLog extends AbstractEntity
         $this->attr('email')->char()->setToArrayDefault();
         $this->attr('name')->char()->setToArrayDefault();
         $this->attr('log')->char();
-
-        /*
-         * 1 - error sending
-         * 2 - sent, waiting for response
-         * 3 - successfully delivered
-         * 4 - bounce
-         * 5 - complaint
-         * 6 - read
-         */
         $this->attr('status')->integer()->setToArrayDefault();
 
         $notification = 'Apps\NotificationManager\Php\Entities\Notification';
