@@ -72,7 +72,14 @@ class MailQueue extends AbstractService implements PublicApiInterface
             $senderName = !empty($e->notification->email['fromName']) ? $e->notification->email['fromName'] : $settings['settings']['senderName'];
 
             $msg->setFrom(new Email($senderEmail, $senderName));
-            $msg->setSubject($e->subject)->setBody($e->content)->setTo(new Email($e->email, $e->name));
+            $msg->setSubject($e->subject)->setBody($e->content);
+
+            // check if sending is rerouted
+            if($this->wConfig()->get('Application.NotificationManager.Reroute', false)){
+                $msg->setTo(new Email($this->wConfig()->get('Application.NotificationManager.Reroute', false), $e->name));
+            }else{
+                $msg->setTo(new Email($e->email, $e->name));
+            }
 
             // Add attachments
             $files = [];

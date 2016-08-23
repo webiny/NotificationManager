@@ -34,6 +34,21 @@ Application:
       InstantSend: true
 ```
 
+## Reroute sending
+
+In situations where you would need to reroute emails, i.e. you downloaded a production database with customer data, but you don't want the system
+to accidentally send an email to that customer. You can tell to the notification system that all emails should be sent to a specific email,
+regardless to what the email queue says.
+
+```yaml
+Application:
+  NotificationManager:
+      Reroute: me@mail.com
+```
+
+All notifications will now be sent to `me@mail.com`.
+
+
 ## Email content - template
 
 The email content field is parsed by Smarty template engine. This enables you to write an if or a foreach loop, amongst many other stuff that smarty supports.
