@@ -6,7 +6,6 @@ use Apps\Core\Php\DevTools\TemplateEngine;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Entities\EmailLog;
-use Apps\NotificationManager\Php\Entities\NotificationVariable;
 use Apps\NotificationManager\Php\Services\MailQueue;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\MailerTrait;
@@ -189,10 +188,9 @@ class Notification
 
     private function parseEntityVariables($content)
     {
-        $vars = NotificationVariable::find(['notification' => $this->notification->id, 'type' => 'entity']);
-        if ($vars->totalCount() < 1) {
-            return $content;
-        }
+        $vars = array_filter($this->notification->variables, function($variable) {
+           return $variable['type'] === 'entity';
+        });
 
         foreach ($vars as $v) {
             if (!isset($this->entities[$v->entity])) {
@@ -208,10 +206,9 @@ class Notification
 
     private function parseCustomVariables($content)
     {
-        $vars = NotificationVariable::find(['notification' => $this->notification->id, 'type' => 'custom']);
-        if ($vars->totalCount() < 1) {
-            return $content;
-        }
+        $vars = array_filter($this->notification->variables, function($variable) {
+            return $variable['type'] === 'custom';
+        });
 
         foreach ($vars as $v) {
             if (!isset($this->customVars[$v->key])) {

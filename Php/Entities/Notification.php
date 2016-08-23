@@ -137,7 +137,7 @@ class Notification extends AbstractEntity
         return ['status' => false];
     }
 
-    public function validateVariables($content)
+    public function validate1s($content)
     {
         // extract variables from the provided content
         $variables = $this->str($content)->match('\{(.*?)\}');
