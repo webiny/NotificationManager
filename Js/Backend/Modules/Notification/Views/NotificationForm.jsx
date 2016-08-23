@@ -109,7 +109,7 @@ NotificationForm.defaultProps = {
                                     </Ui.Grid.Row>
                                 </Ui.Tabs.Tab>
                                 <Ui.Tabs.Tab label="Variables" icon="icon-menu">
-                                    <VariableList data={model.variables} container={container} onChange={vars => container.setModel('variables', vars)}/>
+                                    <VariableList data={model.variables} onChange={vars => container.setModel('variables', vars)}/>
                                 </Ui.Tabs.Tab>
                             </Ui.Tabs.Tabs>
                             <PreviewModal ui="previewModal"/>
