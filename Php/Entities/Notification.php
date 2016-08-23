@@ -75,7 +75,6 @@ class Notification extends AbstractEntity
             return $this->preview($data);
         });
 
-        // TODO: @pavel ovo pojednostaviti
         /**
          * @api.name Copy notification
          * @api.body.title string New notification title
@@ -86,23 +85,7 @@ class Notification extends AbstractEntity
             $newNotification->title = uniqid($this->title . '-');
             $newNotification->labels = $this->labels;
             $newNotification->template = $this->template;
-            $newNotification->save();
-
-            /* @var EntityCollection $variables */
-            $variables = $this->variables;
-
-            foreach ($variables as $variable) {
-                /* @var NotificationVariable $variable */
-                $newVariable = new NotificationVariable();
-                $newVariable->key = $variable->key;
-                $newVariable->entity = $variable->entity;
-                $newVariable->description = $variable->description;
-                $newVariable->type = $variable->type;
-
-                $newVariable->notification = $newNotification;
-                $newVariable->save();
-            }
-
+            $newNotification->variables = $this->variables;
             $newNotification->email = $this->email;
             $newNotification->save();
 
