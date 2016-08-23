@@ -188,17 +188,17 @@ class Notification
 
     private function parseEntityVariables($content)
     {
-        $vars = array_filter($this->notification->variables, function($variable) {
-           return $variable['type'] === 'entity';
+        $vars = array_filter($this->notification->variables->val(), function($variable) {
+            return $variable['type'] === 'entity';
         });
 
         foreach ($vars as $v) {
-            if (!isset($this->entities[$v->entity])) {
-                throw new NotificationException(sprintf('Entity "%s", that is required by "%s" variable, is missing.', $v->entity,
-                    $v->key));
+            if (!isset($this->entities[$v['entity']])) {
+                throw new NotificationException(sprintf('Entity "%s", that is required by "%s" variable, is missing.', $v['entity'],
+                    $v['key']));
             }
 
-            $this->templateInstance->getTemplateEngine()->assign($v->key, $this->entities[$v->entity]);
+            $this->templateInstance->getTemplateEngine()->assign($v['key'], $this->entities[$v['entity']]);
         }
 
         return $content;
@@ -206,16 +206,16 @@ class Notification
 
     private function parseCustomVariables($content)
     {
-        $vars = array_filter($this->notification->variables, function($variable) {
+        $vars = array_filter($this->notification->variables->val(), function($variable) {
             return $variable['type'] === 'custom';
         });
 
         foreach ($vars as $v) {
-            if (!isset($this->customVars[$v->key])) {
-                throw new NotificationException(sprintf('Custom variable "%s" is missing.', $v->key));
+            if (!isset($this->customVars[$v['key']])) {
+                throw new NotificationException(sprintf('Custom variable "%s" is missing.', $v['key']));
             }
 
-            $this->templateInstance->getTemplateEngine()->assign($v->key, $this->customVars[$v->key]);
+            $this->templateInstance->getTemplateEngine()->assign($v['key'], $this->customVars[$v['key']]);
         }
 
         return $content;
