@@ -27,6 +27,13 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
                                     <Ui.Input label="Title" name="title" validate="required"/>
                                 </Ui.Grid.Col>
                                 <Ui.Grid.Col all={12}>
+                                    <Ui.Input
+                                        label="Slug"
+                                        name="slug"
+                                        placeholder="Leave blank for automatic slug"
+                                        description="This cannot be changed later."/>
+                                </Ui.Grid.Col>
+                                <Ui.Grid.Col all={12}>
                                     <Ui.Textarea label="Description" name="description"/>
                                 </Ui.Grid.Col>
                             </Ui.Grid.Row>

@@ -6,7 +6,6 @@ use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
 use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Lib\NotificationException;
-use Webiny\Component\Entity\EntityCollection;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 use Webiny\Component\TemplateEngine\TemplateEngineException;
@@ -40,13 +39,21 @@ class Notification extends AbstractEntity
         $this->attr('title')->char()->setValidators('required,unique')->setValidationMessages([
             'unique' => 'A notification with the same title already exists.'
         ])->setToArrayDefault()->onSet(function ($val) {
-            $this->slug = $this->str($val)->slug()->val();
+            if (!$this->exists() && !$this->slug) {
+                $this->slug = $this->str($val)->slug()->val();
+            }
 
             return $val;
         })->setAfterPopulate();
 
         $this->attr('description')->char()->setToArrayDefault();
-        $this->attr('slug')->char()->setToArrayDefault();
+
+        $this->attr('slug')->char()->setToArrayDefault()->setOnce()->setValidators('required,unique')->setValidationMessages([
+            'unique' => 'A notification with the same slug already exists.'
+        ])->onSet(function ($val) {
+            return $this->str($val)->slug()->val();
+        });
+
         $this->attr('labels')->arr()->setToArrayDefault();
         $this->attr('email')->object()->setToArrayDefault()->onSet(function ($val) {
             foreach ($val as $v) {
