@@ -103,7 +103,7 @@ VariableList.defaultProps = {
                                                         </span>
                                                     )}
                                                 </Table.Field>
-                                                <Table.Field name="key" align="left" label="Variable Name" sort="key">
+                                                <Table.Field name="key" align="left" label="Entity" sort="key">
                                                     {data => (
                                                         <span>
                                                             {data.entity}
