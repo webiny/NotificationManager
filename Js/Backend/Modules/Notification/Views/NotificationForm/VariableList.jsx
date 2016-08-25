@@ -19,13 +19,40 @@ class VariableList extends Webiny.Ui.View {
 
     saveVariable(oldVar, newVar) {
         const vars = _.clone(this.props.data);
-        var existing = _.find(vars, {key: _.get(oldVar, 'key', newVar.key)});
+        const existing = _.find(vars, {key: _.get(oldVar, 'key', newVar.key)});
         if (!existing) {
             vars.push(newVar);
         } else {
             _.merge(existing, newVar);
         }
         this.props.onChange(vars);
+    }
+
+    deleteConfirm(data, actions, modal) {
+        const vars = _.clone(this.props.data);
+        vars.splice(_.findIndex(vars, data.key), 1);
+        modal.hide().then(() => {
+            this.props.onChange(vars);
+        });
+    }
+
+    getEntityAttributes(data) {
+        if (data.type !== 'entity') {
+            return;
+        }
+
+        return (<ul>
+            <Ui.Data
+                api="/services/core/entities/attributes"
+                fields="tag,name"
+                query={{'entity': data.entity}}>
+                {varData => (
+                    varData.map(varDetails => {
+                        return (<li key={varDetails.name}>{varDetails.name}</li>);
+                    })
+                )}
+            </Ui.Data>
+        </ul>);
     }
 }
 
@@ -70,22 +97,25 @@ VariableList.defaultProps = {
                                                 <Table.Field name="key" align="left" label="Variable Name" sort="key">
                                                     {data => (
                                                         <span>
-                                                    <strong>&#123;${data.key}&#125;</strong>
-                                                    <br/>
-                                                    <span>{data.description}</span>
-                                                </span>
+                                                            <strong>&#123;${data.key}&#125;</strong>
+                                                            <br/>
+                                                            <span>{data.description}</span>
+                                                        </span>
                                                     )}
                                                 </Table.Field>
-                                                <Table.Field name="entity" align="left" label="Entity" sort="entity"/>
+                                                <Table.Field name="key" align="left" label="Variable Name" sort="key">
+                                                    {data => (
+                                                        <span>
+                                                            {data.entity}
+                                                            {this.getEntityAttributes(data)}
+                                                        </span>
+                                                    )}
+                                                </Table.Field>
+
                                                 <Table.Actions>
                                                     <Table.EditAction label="Edit" onClick={(data) => showView(views[data['type']])(data)}/>
-                                                    <Table.DeleteAction onConfirm={(data, actions, modal) => {
-                                                const vars = _.clone(this.props.data);
-                                                vars.splice(_.findIndex(vars, data.key), 1);
-                                                modal.hide().then(() => {
-                                                    this.props.onChange(vars);
-                                                });
-                                            }}/>
+                                                    <Table.DeleteAction
+                                                        onConfirm={(data, action, modal) => this.deleteConfirm(data, action, modal)}/>
                                                 </Table.Actions>
                                             </Table.Row>
                                         </Table.Table>
