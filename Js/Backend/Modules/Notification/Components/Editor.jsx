@@ -175,7 +175,7 @@ class Editor extends Webiny.Ui.Component {
         return (
             <li key={index} className={this.classSet(itemClasses)} {...linkProps}>
                 <span className="title"><Ui.Icon icon={_.has(item, 'entity') ? 'fa-database' : 'fa-cube'}/> {item.key}</span>
-                {item.description ? <span className="description">{item.description}</span> : null}<br/>
+                <span className="description">{item.description || ''}</span>
                 {type}
             </li>
         );
