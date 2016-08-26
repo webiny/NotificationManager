@@ -74,6 +74,24 @@ class Editor extends Webiny.Ui.Component {
         window.qe = this.editor;
     }
 
+    componentDidUpdate() {
+        super.componentDidUpdate();
+        if (this.state.options) {
+            // Make sure the list is scrolled to selected item
+            const list = ReactDOM.findDOMNode(this).querySelector('.autosuggest');
+            const item = ReactDOM.findDOMNode(this).querySelector('li.selected');
+            const itemBottom = item.offsetTop + item.offsetHeight;
+            const itemTop = item.offsetTop;
+            if (itemBottom >= list.scrollTop + list.offsetHeight) {
+                list.scrollTop = itemBottom - list.offsetHeight;
+            }
+
+            if (itemTop < list.scrollTop) {
+                list.scrollTop = itemTop;
+            }
+        }
+    }
+
     setOptions(options) {
         if (!options || options.length === 0) {
             options = null;
@@ -175,7 +193,7 @@ class Editor extends Webiny.Ui.Component {
         return (
             <li key={index} className={this.classSet(itemClasses)} {...linkProps}>
                 <span className="title"><Ui.Icon icon={_.has(item, 'entity') ? 'fa-database' : 'fa-cube'}/> {item.key}</span>
-                <span className="description">{item.description || ''}</span>
+                {item.description ? <span className="description">{item.description || ''}</span> : null}<br/>
                 {type}
             </li>
         );

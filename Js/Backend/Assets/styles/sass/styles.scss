@@ -4,6 +4,8 @@
     position: absolute;
     border: none;
     .autosuggest {
+      max-height: 400px;
+      overflow: scroll;
       display: block;
       top: 0;
       .variable-option {
