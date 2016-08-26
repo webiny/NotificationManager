@@ -75,7 +75,6 @@ class Editor extends Webiny.Ui.Component {
     }
 
     setOptions(options) {
-        console.log("SET OPTIONS", options);
         if (!options || options.length === 0) {
             options = null;
         } else {
