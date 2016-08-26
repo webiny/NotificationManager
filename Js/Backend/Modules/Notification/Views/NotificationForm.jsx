@@ -2,7 +2,7 @@ import Webiny from 'Webiny';
 import VariableList from './NotificationForm/VariableList';
 import PreviewModal from './NotificationForm/PreviewModal';
 import SendingHistory from './NotificationForm/SendingHistory';
-import Editor from './../../Editor/Editor';
+import Editor from './../Components/Editor';
 const Ui = Webiny.Ui.Components;
 
 
