@@ -80,12 +80,12 @@ VariableList.defaultProps = {
                                                 <Table.Actions>
                                                     <Table.EditAction label="Edit" onClick={(data) => showView(views[data['type']])(data)}/>
                                                     <Table.DeleteAction onConfirm={(data, actions, modal) => {
-                                                const vars = _.clone(this.props.data);
-                                                vars.splice(_.findIndex(vars, data.key), 1);
-                                                modal.hide().then(() => {
-                                                    this.props.onChange(vars);
-                                                });
-                                            }}/>
+                                                        const vars = _.clone(this.props.data);
+                                                        vars.splice(_.findIndex(vars, {key: data.key}), 1);
+                                                        modal.hide().then(() => {
+                                                            this.props.onChange(vars);
+                                                        });
+                                                    }}/>
                                                 </Table.Actions>
                                             </Table.Row>
                                         </Table.Table>

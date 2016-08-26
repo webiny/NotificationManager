@@ -16,10 +16,12 @@ class Editor extends Webiny.Ui.Component {
         );
 
         this.state = {
-            insertAt: null,
             options: null,
             selectedOption: null
         };
+
+        this.entityApi = new Webiny.Api.Endpoint('/services/core/entities');
+        this.attributes = {};
     }
 
     componentDidMount() {
@@ -61,7 +63,7 @@ class Editor extends Webiny.Ui.Component {
         // Need to use this hacky solution to execute my handler before all others
         this.editor.keyboard.bindings[13].unshift({
             key: 13, handler: () => {
-                if (this.state.options) {
+                if (this.state.options && this.state.selectedOption !== null) {
                     this.selectCurrent();
                     return false;
                 }
@@ -72,74 +74,84 @@ class Editor extends Webiny.Ui.Component {
         window.qe = this.editor;
     }
 
+    setOptions(options) {
+        console.log("SET OPTIONS", options);
+        if (!options || options.length === 0) {
+            options = null;
+        } else {
+            options = _.sortBy(options, 'key');
+        }
+
+        this.setState({options, selectedOption: 0});
+    }
+
+    loadAttributes(entity) {
+        if (this.attributes[entity]) {
+            return Q(this.attributes[entity]);
+        }
+
+        return this.entityApi.get('attributes', {entity}).then(apiResponse => {
+            const options = apiResponse.getData();
+            _.map(options, o => {
+                o.key = o.name;
+            });
+            this.attributes[entity] = options;
+            return options;
+        });
+    }
+
     detectVariable() {
         const selection = this.editor.getSelection();
         const text = this.editor.getText(0, selection.index);
         let variable = null;
 
-        if (text.endsWith('{$')) {
-            // Show list of notification variables
-            this.setState({
-                insertAt: selection.index,
-                selectedOption: 0,
-                options: this.props.variables
-            });
+        if (text.endsWith('}')) {
+            this.setOptions(null);
             return;
         }
 
-        if (text.endsWith('.')) {
-            for (let i = selection.index; i >= 0; i--) {
-                if (text[i] === '{' && text[i + 1] === '$') {
-                    variable = text.substring(i + 2, text.length - 1);
-                    break;
-                }
-            }
-
-            if (variable) {
-                console.log("DETECTED VARIABLE", variable);
-                this.setState({
-                    insertAt: selection.index,
-                    selectedOption: 0,
-                    options: [
-                        {key: 'number'},
-                        {key: 'dueDate'},
-                        {key: 'total'}
-                    ]
-                });
-            } else {
-                this.setState('options', null);
-            }
-            return;
-        }
-
-        // See if a partial variable name is typed in and filter options based on that
         for (let i = selection.index - 1; i >= 0; i--) {
-            if (typeof text[i] == 'undefined' || text[i] === ' ') {
+            if (typeof text[i] === 'undefined' || text[i] === ' ' || text[i] === '}') {
                 break;
             }
 
             if (text[i] === '{' && text[i + 1] === '$') {
-                variable = text.substring(i + 2, selection.index);
-                let options = _.filter(this.props.variables, v => v.key.startsWith(variable));
-                if (!options) {
-                    this.setState({options: null});
-                    return;
-                } else {
-                    options = _.map(options, opt => {
-                        opt.insertValue = opt.key.length <= variable.length ? '' : opt.key.substring(variable.length);
-                        return opt;
-                    });
-                    this.setState({
-                        insertAt: selection.index,
-                        selectedOption: 0,
-                        options
-                    });
-                    return;
+                variable = text.substring(i + 2, selection.index).trim();
+                const vars = variable.split('.');
+                if (vars.length <= 1) {
+                    this.variableStartIndex = i + 2;
+                    let options = _.clone(this.props.variables);
+                    if (vars.length > 0) {
+                        options = _.filter(options, o => o.key.startsWith(vars[0]));
+                    }
+                    return this.setOptions(options);
                 }
+
+                const root = vars.shift();
+                const partial = vars.pop();
+                const rootVar = _.find(this.props.variables, {key: root});
+
+                if (rootVar) {
+                    let chain = this.loadAttributes(rootVar.entity);
+                    _.each(vars, v => {
+                        chain = chain.then(options => {
+                            const attr = _.find(options, {key: v});
+                            if (attr && attr.entity) {
+                                return this.loadAttributes(attr.entity);
+                            }
+                        });
+                    });
+                    chain = chain.then(options => {
+                        this.variableStartIndex = (i + 2) + variable.lastIndexOf('.') + 1;
+                        if (partial.length > 0) {
+                            options = _.filter(options, o => o.key.startsWith(partial));
+                        }
+                        this.setOptions(options);
+                    });
+                }
+                return;
             }
         }
-
-        this.setState({options: null});
     }
 
     getCurrentIndex() {
@@ -155,25 +167,38 @@ class Editor extends Webiny.Ui.Component {
         };
 
         const linkProps = {
-            onMouseDown: () => this.selectItem(item),
+            onMouseDown: this.selectCurrent,
             onMouseOver: () => this.setState({selectedOption: index})
         };
 
+        const type = <span className="type">{_.has(item, 'entity') ? item.entity : item.type}</span>;
+
         return (
             <li key={index} className={this.classSet(itemClasses)} {...linkProps}>
-                <span className="title"><Ui.Icon icon="fa-cube"/> {item.key}</span>
-                {item.description ? <span className="description">{item.description}</span> : null}
-                <span className="type">{item.type === 'entity' ? item.entity : 'Custom variable'}</span>
+                <span className="title"><Ui.Icon icon={_.has(item, 'entity') ? 'fa-database' : 'fa-cube'}/> {item.key}</span>
+                {item.description ? <span className="description">{item.description}</span> : null}<br/>
+                {type}
             </li>
         );
     }
 
     selectItem(item) {
-        console.log("selected", item);
-        const insert = _.has(item, 'insertValue') ? item.insertValue : item.key;
-        this.editor.insertText(this.state.insertAt, insert);
-        this.editor.setSelection(this.state.insertAt + _.get(insert, 'length', 0));
-        this.setState({options: null, insertAt: null});
+        if (!item || !this.variableStartIndex) {
+            return;
+        }
+        let insert = item.key;
+        if (_.has(item, 'entity')) {
+            insert += '.';
+        } else {
+            insert += '}';
+        }
+        this.editor.deleteText(this.variableStartIndex, this.editor.getSelection().index - this.variableStartIndex);
+        this.editor.insertText(this.variableStartIndex, insert);
+        this.editor.setSelection(this.variableStartIndex + _.get(insert, 'length', 0));
+        this.variableStartIndex = null;
+        setTimeout(() => {
+            this.setState({options: null, selectedOption: null}, this.detectVariable);
+        }, 20);
     }
 
     selectNext() {
@@ -265,8 +290,9 @@ Editor.defaultProps = {
         }
 
         let dropdownMenu = null;
-        if (this.state.options) {
-            const bounds = this.editor.getBounds(this.state.insertAt);
+        const selection = this.editor && this.editor.getSelection(true);
+        if (this.state.options && selection) {
+            const bounds = this.editor.getBounds(selection.index);
             const toolbarHeight = this.editor.getModule('toolbar').container.offsetHeight + 15;
             dropdownMenu = (
                 <div className="search" style={{top: bounds.top + toolbarHeight, left: bounds.left}}>
@@ -285,6 +311,7 @@ Editor.defaultProps = {
             <div className="form-group">
                 {label}
                 <span className="info-text">{info}</span>
+
                 <div className="notification-manager-editor">
                     <Ui.HtmlEditor ref="editor" {..._.pick(this.props, passProps)}/>
                     {dropdownMenu}

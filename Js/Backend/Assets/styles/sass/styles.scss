@@ -15,14 +15,13 @@
           }
         }
         .description {
-
+          float: right;
         }
         .type {
           font-size: 16px;
           color: #399f90
         }
         > span {
-          width: 100%;
           float: left;
         }
       }
