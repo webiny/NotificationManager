@@ -16,6 +16,7 @@ NotificationList.defaultProps = {
             api: '/entities/notification-manager/notifications',
             fields: 'title,description,slug,email.subject,createdOn,labels',
             searchFields: 'title,slug,description,email.subject,labels',
+            sort: '-id',
             connectToRouter: true
         };
 
