@@ -1,0 +1,31 @@
+.notification-manager-editor {
+  position: relative;
+  .search {
+    position: absolute;
+    border: none;
+    .autosuggest {
+      display: block;
+      top: 0;
+      .variable-option {
+        .title {
+          font-weight: bold;
+          color: #FA5723;
+          .icon {
+            color: #d5d5d5;
+          }
+        }
+        .description {
+
+        }
+        .type {
+          font-size: 16px;
+          color: #399f90
+        }
+        > span {
+          width: 100%;
+          float: left;
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ import Webiny from 'Webiny';
 import VariableList from './NotificationForm/VariableList';
 import PreviewModal from './NotificationForm/PreviewModal';
 import SendingHistory from './NotificationForm/SendingHistory';
+import Editor from './../../Editor/Editor';
 const Ui = Webiny.Ui.Components;
 
 
@@ -101,7 +102,8 @@ NotificationForm.defaultProps = {
                                             <Ui.Select {...templateSelect} validate="required"/>
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={8}>
-                                            <Ui.HtmlEditor
+                                            <Editor
+                                                variables={model.variables}
                                                 label="Content"
                                                 name="email.content"
                                                 description="You can use Smarty syntax for your email content."/>
