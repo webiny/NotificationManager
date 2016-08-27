@@ -5,7 +5,7 @@
     border: none;
     .autosuggest {
       max-height: 400px;
-      overflow: scroll;
+      overflow-y: scroll;
       display: block;
       top: 0;
       .variable-option {
