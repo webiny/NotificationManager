@@ -8,19 +8,31 @@
       overflow-y: scroll;
       display: block;
       top: 0;
+      .plain-search {
+         ul {
+           li {
+             padding: 10px;
+             line-height: 100%;
+           }
+         }
+      }
       .variable-option {
         .title {
-          font-weight: bold;
           color: #FA5723;
-          .icon {
-            color: #d5d5d5;
-          }
+          font-size: 0.8em;
+          font-weight: bold;
+        }
+        .icon{
+          margin: 7px 10px 0px 3px;
+          color: #d5d5d5;
         }
         .description {
-          float: right;
+          font-size: 0.7em;
+          color: #737373;
         }
         .type {
-          font-size: 16px;
+          font-size: 0.7em;
+          display: block;
           color: #399f90
         }
         > span {

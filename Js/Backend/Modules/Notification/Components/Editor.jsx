@@ -192,9 +192,18 @@ class Editor extends Webiny.Ui.Component {
 
         return (
             <li key={index} className={this.classSet(itemClasses)} {...linkProps}>
-                <span className="title"><Ui.Icon icon={_.has(item, 'entity') ? 'fa-database' : 'fa-cube'}/> {item.key}</span>
-                {item.description ? <span className="description">{item.description || ''}</span> : null}<br/>
-                {type}
+                <Ui.Grid.Row>
+                    <Ui.Grid.Col all={1}>
+                        <Ui.Icon icon={_.has(item, 'entity') ? 'fa-database' : 'fa-cube'}/>
+                    </Ui.Grid.Col>
+                    <Ui.Grid.Col all={6}>
+                        <span className="title">{item.key}</span>
+                        {type}
+                    </Ui.Grid.Col>
+                    <Ui.Grid.Col all={5}>
+                        {item.description ? <span className="description">{item.description || ''}</span> : null}
+                    </Ui.Grid.Col>
+                </Ui.Grid.Row>
             </li>
         );
     }
