@@ -169,6 +169,8 @@ class Editor extends Webiny.Ui.Component {
                 return;
             }
         }
+
+        this.setOptions(null);
     }
 
     getCurrentIndex() {
