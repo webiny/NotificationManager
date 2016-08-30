@@ -169,8 +169,6 @@ class Editor extends Webiny.Ui.Component {
                 return;
             }
         }
-
-        this.setOptions(null);
     }
 
     getCurrentIndex() {
@@ -202,7 +200,7 @@ class Editor extends Webiny.Ui.Component {
                         <span className="title">{item.key}</span>
                         {type}
                     </Ui.Grid.Col>
-                    <Ui.Grid.Col all={5}>
+                    <Ui.Grid.Col all={5} className="text-right">
                         {item.description ? <span className="description">{item.description || ''}</span> : null}
                     </Ui.Grid.Col>
                 </Ui.Grid.Row>
@@ -321,7 +319,7 @@ Editor.defaultProps = {
         const selection = this.editor && this.editor.getSelection(true);
         if (this.state.options && selection) {
             const bounds = this.editor.getBounds(selection.index);
-            const toolbarHeight = this.editor.getModule('toolbar').container.offsetHeight + 15;
+            const toolbarHeight = this.editor.getModule('toolbar').container.offsetHeight + 20 + (this.props.label ? 25 : 0);
             dropdownMenu = (
                 <div className="search" style={{top: bounds.top + toolbarHeight, left: bounds.left}}>
                     <div className="autosuggest">
@@ -333,18 +331,10 @@ Editor.defaultProps = {
             );
         }
 
-        const passProps = ['accept', 'imageApi', 'sizeLimit', 'toolbar', 'valueLink'];
-
         return (
-            <div className="form-group">
-                {label}
-                <span className="info-text">{info}</span>
-
-                <div className="notification-manager-editor">
-                    <Ui.HtmlEditor ref="editor" {..._.pick(this.props, passProps)}/>
-                    {dropdownMenu}
-                </div>
-                <span className="help-block">{description}</span>
+            <div className="notification-manager-editor">
+                <Ui.HtmlEditor ref="editor" {..._.omit(this.props, ['renderer', 'children', 'variables'])}/>
+                {dropdownMenu}
             </div>
         );
     }
