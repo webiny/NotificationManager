@@ -1,5 +1,4 @@
 import Webiny from 'Webiny';
-import VariableList from './NotificationForm/VariableList';
 import PreviewModal from './NotificationForm/PreviewModal';
 import SendingHistory from './NotificationForm/SendingHistory';
 import Editor from './../Components/Editor';
@@ -59,6 +58,29 @@ NotificationForm.defaultProps = {
             allowClear: true
         };
 
+        const entitySelect = {
+            name: 'entity',
+            placeholder: 'Select Entity',
+            allowClear: true,
+            api: '/services/core/entities',
+            fields: 'class,name',
+            perPage: 2,
+            valueAttr: 'class',
+            minimumResultsForSearch: 5,
+            optionRenderer: option => {
+                return (
+                    <div>
+                        <strong>{option.data.name}</strong>
+                        <br/>
+                        <span>{option.data.class}</span>
+                    </div>
+                );
+            },
+            selectedRenderer: option => {
+                return option.data.name;
+            }
+        };
+
         return (
             <Ui.Form.Container ui="notificationForm" {...formProps}>
                 {(model, container) => (
@@ -111,7 +133,60 @@ NotificationForm.defaultProps = {
                                     </Ui.Grid.Row>
                                 </Ui.Tabs.Tab>
                                 <Ui.Tabs.Tab label="Variables" icon="icon-menu">
-                                    <VariableList data={model.variables} onChange={vars => container.setModel('variables', vars)}/>
+                                    <Ui.Alert title="About">
+                                        This is a list of variables that you can use in your notification content.
+                                        The list also defines the data source from where the variable value will be pulled.
+                                    </Ui.Alert>
+                                    <Ui.Alert title="Important" type="warning">
+                                        Changes you make to the variables are not saved until you save the notification!
+                                    </Ui.Alert>
+                                    <Ui.Dynamic.Fieldset name="variables">
+                                        <Ui.Dynamic.Header>
+                                            {() => (
+                                                <Ui.Grid.Row>
+                                                    <Ui.Grid.Col all={2}><Ui.Form.Fieldset title="Variable name"/></Ui.Grid.Col>
+                                                    <Ui.Grid.Col all={4}><Ui.Form.Fieldset title="Entity (leave blank for custom variables)"/></Ui.Grid.Col>
+                                                    <Ui.Grid.Col all={3}><Ui.Form.Fieldset title="Description"/></Ui.Grid.Col>
+                                                    <Ui.Grid.Col all={3}></Ui.Grid.Col>
+                                                </Ui.Grid.Row>
+                                            )}
+                                        </Ui.Dynamic.Header>
+                                        <Ui.Dynamic.Row>
+                                            {function (record, index, actions) {
+                                                return (
+                                                    <Ui.Grid.Row key={index}>
+                                                        <Ui.Grid.Col all={2}>
+                                                            <Ui.Input placeholder="Key" name="key" validate="required"/>
+                                                        </Ui.Grid.Col>
+                                                        <Ui.Grid.Col all={4}>
+                                                            <Ui.Select {...entitySelect} label={null}/>
+                                                        </Ui.Grid.Col>
+                                                        <Ui.Grid.Col all={3}>
+                                                            <Ui.Input placeholder="Description" name="description"/>
+                                                        </Ui.Grid.Col>
+                                                        <Ui.Grid.Col all={3}>
+                                                            <div className="btn-group">
+                                                                <Ui.Button type="primary" label="Add" onClick={actions.add(index)}/>
+                                                                <Ui.Button type="secondary" label="x" onClick={actions.remove(index)}/>
+                                                            </div>
+                                                        </Ui.Grid.Col>
+                                                    </Ui.Grid.Row>
+                                                );
+                                            }}
+                                        </Ui.Dynamic.Row>
+                                        <Ui.Dynamic.Empty>
+                                            {function (actions) {
+                                                return (
+                                                    <Ui.Grid.Row>
+                                                        <Ui.Grid.Col all={12}>
+                                                            <h5>You have not defined any variables yet. Click "Add variable" to define your first variable!</h5>
+                                                            <Ui.Button type="primary" label="Add variable" onClick={actions.add(0)}/>
+                                                        </Ui.Grid.Col>
+                                                    </Ui.Grid.Row>
+                                                )
+                                            }}
+                                        </Ui.Dynamic.Empty>
+                                    </Ui.Dynamic.Fieldset>
                                 </Ui.Tabs.Tab>
                             </Ui.Tabs.Tabs>
                             <PreviewModal ui="previewModal"/>
