@@ -27,7 +27,7 @@ SettingsForm.defaultProps = {
                                                 validate="required"
                                                 description="For example: email-smtp.us-east-1.amazonaws.com"/>
                                             <Ui.Input label="Username" name="settings.username" validate="required"/>
-                                            <Ui.Input label="Password" name="settings.password" validate="required" type="password"/>
+                                            <Ui.Password label="Password" name="settings.password" validate="required"/>
                                             <Ui.Input label="Send limit (emails per second)" name="settings.sendLimit" validate="required"/>
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
