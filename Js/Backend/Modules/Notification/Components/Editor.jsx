@@ -139,7 +139,7 @@ class Editor extends Webiny.Ui.Component {
                     this.variableStartIndex = i + 2;
                     let options = _.clone(this.props.variables);
                     if (vars.length > 0) {
-                        options = _.filter(options, o => o.key.startsWith(vars[0]));
+                        options = _.filter(options, o => o.key && o.key.startsWith(vars[0]));
                     }
                     return this.setOptions(options);
                 }
