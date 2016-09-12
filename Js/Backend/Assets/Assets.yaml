@@ -1,3 +1,4 @@
 Assets:
-    Styles:
-        Sass: styles/sass/styles.scss
+    App:
+        Styles:
+            Sass: styles/sass/styles.scss
