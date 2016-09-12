@@ -296,25 +296,6 @@ Editor.defaultProps = {
         ['clean']
     ],
     renderer() {
-        let label = null;
-        if (this.props.label) {
-            let tooltip = null;
-            if (this.props.tooltip) {
-                tooltip = <Ui.Tooltip target={<Ui.Icon icon="icon-info-circle"/>}>{this.props.tooltip}</Ui.Tooltip>;
-            }
-            label = <label className="control-label">{this.props.label} {tooltip}</label>;
-        }
-
-        let info = this.props.info;
-        if (_.isFunction(info)) {
-            info = info(this);
-        }
-
-        let description = this.props.description;
-        if (_.isFunction(description)) {
-            description = description(this);
-        }
-
         let dropdownMenu = null;
         const selection = this.editor && this.editor.getSelection(true);
         if (this.state.options && selection) {
