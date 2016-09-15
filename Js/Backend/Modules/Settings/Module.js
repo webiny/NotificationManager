@@ -5,17 +5,18 @@ class Settings extends Webiny.Module {
 
     init() {
         const Menu = Webiny.Ui.Menu;
+        const role = 'notification-manager';
 
         this.registerMenus(
             new Menu('Marketing Tools', [
                 new Menu('Notification Manager', [
                     new Menu('Settings', 'NotificationManager.Settings')
-                ])
+                ]).setRole(role)
             ], 'icon-bell')
         );
 
         this.registerRoutes(
-            new Webiny.Route('NotificationManager.Settings', '/notification-manager/settings', Views.SettingsForm, 'Notification Manager - Settings')
+            new Webiny.Route('NotificationManager.Settings', '/notification-manager/settings', Views.SettingsForm, 'Notification Manager - Settings').setRole(role)
         );
     }
 }

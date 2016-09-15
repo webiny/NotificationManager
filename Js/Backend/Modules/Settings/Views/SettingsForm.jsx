@@ -8,7 +8,7 @@ class SettingsForm extends Webiny.Ui.View {
 SettingsForm.defaultProps = {
     renderer() {
         return (
-            <Ui.Settings id="notification-manager">
+            <Ui.Settings id="notification-manager" api="/entities/notification-manager/settings">
                 {(model, container) => (
                     <Ui.View.Form>
                         <Ui.View.Header
@@ -32,7 +32,9 @@ SettingsForm.defaultProps = {
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
                                             <Ui.Form.Fieldset title="AWS SNS Settings"/>
-
+                                            <Ui.Alert title="AWS SES" close={false}>
+                                                If you are using AWS SES to send emails, please check the setup guide in the next tab.
+                                            </Ui.Alert>
                                             <dl>
                                                 <dt>SNS Bounce Endpoint</dt>
                                                 <dd>
@@ -52,9 +54,6 @@ SettingsForm.defaultProps = {
                                                         value={`${webinyApiPath}/services/notification-manager/feedback/email/delivery`}/>
                                                 </dd>
                                             </dl>
-                                            <Ui.Alert title="AWS SES" close={false}>
-                                                If you are using AWS SES to send emails, please check the setup guide in the next tab.
-                                            </Ui.Alert>
                                         </Ui.Grid.Col>
                                     </Ui.Grid.Row>
                                     <Ui.Grid.Row>

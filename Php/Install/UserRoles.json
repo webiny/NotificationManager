@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Notification manager",
+        "slug": "notification-manager",
+        "description": "This role allows user to manage all system notifications",
+        "permissions": [
+            "notification-manager-manage-all"
+        ]
+    }
+]

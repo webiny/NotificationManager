@@ -1,0 +1,45 @@
+[
+    {
+        "name": "Manage notifications",
+        "slug": "notification-manager-manage-all",
+        "description": "Allows user to perform all actions on Notification Manager app",
+        "permissions": {
+            "entities": {
+                "Apps\\NotificationManager\\Php\\Entities\\EmailLog": {
+                    "crudCreate": false,
+                    "crudRead": true,
+                    "crudUpdate": false,
+                    "crudDelete": false
+                },
+                "Apps\\NotificationManager\\Php\\Entities\\Notification": {
+                    "crudCreate": true,
+                    "crudRead": true,
+                    "crudUpdate": true,
+                    "crudDelete": true,
+                    "{id}/preview": {
+                        "post": true
+                    },
+                    "{id}/copy": {
+                        "post": true
+                    }
+                },
+                "Apps\\NotificationManager\\Php\\Entities\\Setting": {
+                    "crudDelete": true,
+                    "crudUpdate": true,
+                    "crudRead": true,
+                    "crudCreate": true,
+                    "key/{key}": {
+                        "get": true,
+                        "patch": true
+                    }
+                },
+                "Apps\\NotificationManager\\Php\\Entities\\Template": {
+                    "crudRead": true,
+                    "crudCreate": true,
+                    "crudUpdate": true,
+                    "crudDelete": true
+                }
+            }
+        }
+    }
+]
