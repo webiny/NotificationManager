@@ -14,6 +14,7 @@ class Feedback extends AbstractService implements PublicApiInterface
 
     function __construct()
     {
+        parent::__construct();
         $this->api('get', 'email/mark-read/{emailLog}/1px', function (EmailLog $emailLog) {
             return $this->markRead($emailLog);
         });

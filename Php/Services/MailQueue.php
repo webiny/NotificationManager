@@ -3,7 +3,7 @@ namespace Apps\NotificationManager\Php\Services;
 
 set_time_limit(0);
 
-use Apps\Core\Php\DevTools\Interfaces\PublicApiInterface;
+use Apps\Core\Php\DevTools\Interfaces\NoAuthorizationInterface;
 use Apps\Core\Php\DevTools\Services\AbstractService;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\Entities\Setting;
@@ -13,12 +13,13 @@ use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 use Webiny\Component\Storage\File\File;
 
-class MailQueue extends AbstractService implements PublicApiInterface
+class MailQueue extends AbstractService implements NoAuthorizationInterface
 {
     use WebinyTrait;
 
     function __construct()
     {
+        parent::__construct();
         $this->api('get', 'send', function () {
             return $this->sendEmails();
         });
