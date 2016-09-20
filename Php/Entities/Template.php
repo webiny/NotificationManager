@@ -42,17 +42,12 @@ class Template extends AbstractEntity
 
     /**
      * We don't allow deletion of this template if it's in use by notifications
-     * @return bool
      * @throws AppException
      */
-    public function delete()
+    public function canDelete()
     {
         if ($this->notificationsCount > 0) {
-            throw new AppException('Cannot delete template - in use.');
+            throw new AppException('Template is in use and can not be deleted!');
         }
-
-        return parent::delete();
     }
-
-
 }
