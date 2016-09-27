@@ -109,11 +109,16 @@ class Editor extends Webiny.Ui.Component {
 
         return this.entityApi.get('attributes', {entity}).then(apiResponse => {
             const options = apiResponse.getData();
+            const attributes = [];
             _.map(options, o => {
+                if (['createdBy', 'modifiedBy', 'deletedBy', 'createdOn', 'modifiedOn', 'deletedOn'].indexOf(o.name) > -1) {
+                    return;
+                }
                 o.key = o.name;
+                attributes.push(o);
             });
-            this.attributes[entity] = options;
-            return options;
+            this.attributes[entity] = attributes;
+            return attributes;
         });
     }
 
