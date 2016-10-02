@@ -48,7 +48,7 @@ List.defaultProps = {
             <Ui.View.List>
                 <Ui.View.Header title="Activity"/>
                 <Ui.View.Body>
-                    <Ui.List.ApiContainer ui="templateList" {...listProps}>
+                    <Ui.List ui="templateList" {...listProps}>
 
                         <Ui.List.FormFilters>
                             {(applyFilters, resetFilters) => (
@@ -66,7 +66,7 @@ List.defaultProps = {
                             )}
                         </Ui.List.FormFilters>
 
-                        <Table.Table>
+                        <Table>
                             <Table.Row>
                                 <Table.CaseField name="status" label="Status" align="left">
                                     <case value={0}>
@@ -102,10 +102,10 @@ List.defaultProps = {
                                 </Table.Field>
 
                             </Table.Row>
-                        </Table.Table>
+                        </Table>
 
                         <Ui.List.Pagination/>
-                    </Ui.List.ApiContainer>
+                    </Ui.List>
 
                 </Ui.View.Body>
             </Ui.View.List>

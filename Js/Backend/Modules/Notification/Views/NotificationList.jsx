@@ -36,7 +36,7 @@ NotificationList.defaultProps = {
                 </Ui.View.Header>
 
                 <Ui.View.Body>
-                    <Ui.List.ApiContainer ui="notificationList" {...listProps}>
+                    <Ui.List ui="notificationList" {...listProps}>
 
                         <Ui.List.FormFilters>
                             {(applyFilters, resetFilters) => (
@@ -51,7 +51,7 @@ NotificationList.defaultProps = {
                             )}
                         </Ui.List.FormFilters>
 
-                        <Table.Table>
+                        <Table>
                             <Table.Row>
                                 <Table.Field align="left" label="Title" sort="title" route="NotificationManager.Notification.Edit">
                                     {data => (
@@ -78,9 +78,9 @@ NotificationList.defaultProps = {
                                     <Table.DeleteAction/>
                                 </Table.Actions>
                             </Table.Row>
-                        </Table.Table>
+                        </Table>
                         <Ui.List.Pagination/>
-                    </Ui.List.ApiContainer>
+                    </Ui.List>
                 </Ui.View.Body>
             </Ui.View.List>
         );

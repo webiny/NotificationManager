@@ -33,7 +33,7 @@ TemplateList.defaultProps = {
                 </Ui.View.Header>
 
                 <Ui.View.Body>
-                    <Ui.List.ApiContainer ui="templateList" {...listProps}>
+                    <Ui.List ui="templateList" {...listProps}>
 
                         <Ui.List.FormFilters>
                             {(applyFilters, resetFilters) => (
@@ -48,7 +48,7 @@ TemplateList.defaultProps = {
                             )}
                         </Ui.List.FormFilters>
 
-                        <Table.Table>
+                        <Table>
                             <Table.Row>
                                 <Table.Field name="name" align="left" label="Name" sort="name" route="NotificationManager.Template.Edit"/>
                                 <Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
@@ -58,10 +58,10 @@ TemplateList.defaultProps = {
                                     <Table.DeleteAction/>
                                 </Table.Actions>
                             </Table.Row>
-                        </Table.Table>
+                        </Table>
 
                         <Ui.List.Pagination/>
-                    </Ui.List.ApiContainer>
+                    </Ui.List>
                 </Ui.View.Body>
             </Ui.View.List>
         );

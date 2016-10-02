@@ -27,7 +27,7 @@ TemplateForm.defaultProps = {
         };
 
         return (
-            <Ui.Form.Container ui="templateForm" {...formProps}>
+            <Ui.Form ui="templateForm" {...formProps}>
                 {(model, container) => (
                     <Ui.View.Form>
                         <Ui.View.Header title="Template"/>
@@ -78,7 +78,7 @@ TemplateForm.defaultProps = {
                         </Ui.View.Footer>
                     </Ui.View.Form>
                 )}
-            </Ui.Form.Container>
+            </Ui.Form>
         );
     }
 };

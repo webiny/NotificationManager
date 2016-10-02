@@ -19,8 +19,8 @@ SendingHistory.defaultProps = {
         };
 
         return (
-            <Ui.List.ApiContainer ui="templateList" {...listProps}>
-                <Table.Table>
+            <Ui.List ui="templateList" {...listProps}>
+                <Table>
                     <Table.Row>
                         <Table.Empty/>
                         <Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
@@ -30,9 +30,9 @@ SendingHistory.defaultProps = {
                         </Table.Field>
 
                     </Table.Row>
-                </Table.Table>
+                </Table>
                 <Ui.List.Pagination/>
-            </Ui.List.ApiContainer>
+            </Ui.List>
 
         );
     }

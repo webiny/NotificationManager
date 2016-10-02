@@ -82,13 +82,13 @@ NotificationForm.defaultProps = {
         };
 
         return (
-            <Ui.Form.Container ui="notificationForm" {...formProps}>
+            <Ui.Form ui="notificationForm" {...formProps}>
                 {(model, container) => (
                     <Ui.View.Form>
                         <Ui.View.Header title="Notification"/>
 
                         <Ui.View.Body noPadding={true}>
-                            <Ui.Tabs.Tabs size="large">
+                            <Ui.Tabs size="large">
                                 <Ui.Tabs.Tab label="General" icon="icon-settings">
                                     <Ui.Grid.Row>
                                         <Ui.Grid.Col all={6}>
@@ -188,7 +188,7 @@ NotificationForm.defaultProps = {
                                         </Ui.Dynamic.Empty>
                                     </Ui.Dynamic.Fieldset>
                                 </Ui.Tabs.Tab>
-                            </Ui.Tabs.Tabs>
+                            </Ui.Tabs>
                             <PreviewModal ui="previewModal"/>
                         </Ui.View.Body>
                         <Ui.View.Footer>
@@ -198,7 +198,7 @@ NotificationForm.defaultProps = {
                         </Ui.View.Footer>
                     </Ui.View.Form>
                 )}
-            </Ui.Form.Container>
+            </Ui.Form>
         );
     }
 };

@@ -15,7 +15,7 @@ SettingsForm.defaultProps = {
                             title="Notification Manager Settings"
                             description="Set your notification settings here"/>
                         <Ui.View.Body noPadding>
-                            <Ui.Tabs.Tabs size="large">
+                            <Ui.Tabs size="large">
                                 <Ui.Tabs.Tab label="General" icon="icon-settings">
                                     <Ui.Grid.Row>
                                         <Ui.Grid.Col all={6}>
@@ -313,7 +313,7 @@ SettingsForm.defaultProps = {
                                     </p>
                                     <Ui.Copy.Input value={webinyApiPath + '/services/notification-manager/mail-queue/send'}/>
                                 </Ui.Tabs.Tab>
-                            </Ui.Tabs.Tabs>
+                            </Ui.Tabs>
                         </Ui.View.Body>
                         <Ui.View.Footer align="right">
                             <Ui.Button type="primary" onClick={container.submit} label="Save settings"/>
