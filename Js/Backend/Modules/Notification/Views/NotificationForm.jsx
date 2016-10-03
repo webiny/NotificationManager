@@ -140,7 +140,7 @@ NotificationForm.defaultProps = {
                                     <Ui.Alert title="Important" type="warning">
                                         Changes you make to the variables are not saved until you save the notification!
                                     </Ui.Alert>
-                                    <Ui.Dynamic.Fieldset name="variables">
+                                    <Ui.Dynamic.Fieldset name="variables" ui="fieldset">
                                         <Ui.Dynamic.Header>
                                             {() => (
                                                 <Ui.Grid.Row>
@@ -152,9 +152,9 @@ NotificationForm.defaultProps = {
                                             )}
                                         </Ui.Dynamic.Header>
                                         <Ui.Dynamic.Row>
-                                            {function (record, index, actions) {
+                                            {function (record, actions) {
                                                 return (
-                                                    <Ui.Grid.Row key={index}>
+                                                    <Ui.Grid.Row>
                                                         <Ui.Grid.Col all={2}>
                                                             <Ui.Input placeholder="Key" name="key" validate="required"/>
                                                         </Ui.Grid.Col>
@@ -166,8 +166,8 @@ NotificationForm.defaultProps = {
                                                         </Ui.Grid.Col>
                                                         <Ui.Grid.Col all={3}>
                                                             <div className="btn-group">
-                                                                <Ui.Button type="primary" label="Add" onClick={actions.add(index)}/>
-                                                                <Ui.Button type="secondary" label="x" onClick={actions.remove(index)}/>
+                                                                <Ui.Button type="primary" label="Add" onClick={actions.add(record)}/>
+                                                                <Ui.Button type="secondary" label="x" onClick={actions.remove(record)}/>
                                                             </div>
                                                         </Ui.Grid.Col>
                                                     </Ui.Grid.Row>
@@ -180,7 +180,7 @@ NotificationForm.defaultProps = {
                                                     <Ui.Grid.Row>
                                                         <Ui.Grid.Col all={12}>
                                                             <h5>You have not defined any variables yet. Click "Add variable" to define your first variable!</h5>
-                                                            <Ui.Button type="primary" label="Add variable" onClick={actions.add(0)}/>
+                                                            <Ui.Button type="primary" label="Add variable" onClick={actions.add()}/>
                                                         </Ui.Grid.Col>
                                                     </Ui.Grid.Row>
                                                 )
