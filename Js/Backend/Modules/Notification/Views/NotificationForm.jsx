@@ -152,7 +152,7 @@ NotificationForm.defaultProps = {
                                             )}
                                         </Ui.Dynamic.Header>
                                         <Ui.Dynamic.Row>
-                                            {function (record, actions) {
+                                            {(record, actions) => {
                                                 return (
                                                     <Ui.Grid.Row>
                                                         <Ui.Grid.Col all={2}>
@@ -175,7 +175,7 @@ NotificationForm.defaultProps = {
                                             }}
                                         </Ui.Dynamic.Row>
                                         <Ui.Dynamic.Empty>
-                                            {function (actions) {
+                                            {actions => {
                                                 return (
                                                     <Ui.Grid.Row>
                                                         <Ui.Grid.Col all={12}>
@@ -183,7 +183,7 @@ NotificationForm.defaultProps = {
                                                             <Ui.Button type="primary" label="Add variable" onClick={actions.add()}/>
                                                         </Ui.Grid.Col>
                                                     </Ui.Grid.Row>
-                                                )
+                                                );
                                             }}
                                         </Ui.Dynamic.Empty>
                                     </Ui.Dynamic.Fieldset>

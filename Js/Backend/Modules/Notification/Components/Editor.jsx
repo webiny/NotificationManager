@@ -128,8 +128,7 @@ class Editor extends Webiny.Ui.Component {
         let variable = null;
 
         if (text.endsWith('}')) {
-            this.setOptions(null);
-            return;
+            return this.setOptions(null);
         }
 
         for (let i = selection.index - 1; i >= 0; i--) {
