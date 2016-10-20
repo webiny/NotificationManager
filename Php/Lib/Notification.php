@@ -31,15 +31,19 @@ class Notification
     }
 
     /**
-     * Set recipient
+     * Set one or more recipients
      *
-     * @param $recipient
+     * @param mixed $recipient
      *
      * @return $this
      */
     public function setRecipient($recipient)
     {
-        $this->recipients[] = $recipient;
+        if (is_array($recipient)) {
+            $this->recipients = array_merge($this->recipients, $recipient);
+        } else {
+            $this->recipients[] = $recipient;
+        }
 
         return $this;
     }
