@@ -1,61 +1,26 @@
 import Webiny from 'Webiny';
 import PreviewModal from './NotificationForm/PreviewModal';
 import SendingHistory from './NotificationForm/SendingHistory';
-import Editor from './../Components/Editor';
 const Ui = Webiny.Ui.Components;
 
 
 class NotificationForm extends Webiny.Ui.View {
-
-    constructor(props) {
-        super(props);
-
-        this.bindMethods('sendTestEmail');
-    }
-
-    sendTestEmail(model) {
-        const postBody = {
-            'email': Webiny.Model.get('User').email,
-            'content': model.email.content,
-            'subject': model.email.subject,
-            'fromAddress': model.email.fromAddress,
-            'fromName': model.email.fromName
-        };
-
-        const api = new Webiny.Api.Endpoint('/entities/notification-manager/notifications');
-
-        // show modal box
-        this.ui('previewModal').show();
-        this.ui('previewModal').setPending();
-        api.post(Webiny.Router.getParams('id') + '/preview', postBody).then((response) => {
-            if (response.data.data.status === true) {
-                this.ui('previewModal').setSuccess();
-            } else {
-                this.ui('previewModal').setError();
-            }
+    renderNotificationTabs(model, form) {
+        const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Tab');
+        return tabs.map(tab => {
+            return React.cloneElement(tab.value(model, form), {key: tab.name});
         });
     }
-
 }
 
 NotificationForm.defaultProps = {
     renderer() {
         const formProps = {
             api: '/entities/notification-manager/notifications',
-            fields: '*,variables,template',
+            fields: '*,variables',
             connectToRouter: true,
             onSubmitSuccess: () => Webiny.Router.goToRoute('NotificationManager.Notifications'),
             onCancel: () => Webiny.Router.goToRoute('NotificationManager.Notifications')
-        };
-
-        const templateSelect = {
-            ui: 'templateSelect',
-            api: '/entities/notification-manager/templates',
-            fields: 'name',
-            label: 'Template',
-            name: 'template',
-            placeholder: 'Select template',
-            allowClear: true
         };
 
         const entitySelect = {
@@ -83,7 +48,7 @@ NotificationForm.defaultProps = {
 
         return (
             <Ui.Form ui="notificationForm" {...formProps}>
-                {(model, container) => (
+                {(model, form) => (
                     <Ui.View.Form>
                         <Ui.View.Header title="Notification"/>
 
@@ -105,33 +70,6 @@ NotificationForm.defaultProps = {
                                         </Ui.Grid.Col>
                                     </Ui.Grid.Row>
                                 </Ui.Tabs.Tab>
-                                <Ui.Tabs.Tab label="Email content" icon="icon-doc-text">
-                                    <Ui.Grid.Row>
-                                        <Ui.Grid.Col all={4}>
-                                            <Ui.Input
-                                                label="Subject"
-                                                name="email.subject"
-                                                validate="required"/>
-                                            <Ui.Input
-                                                label="From Address"
-                                                name="email.fromAddress"
-                                                validate="email"
-                                                placeholder="Leave blank to use the default sender"/>
-                                            <Ui.Input
-                                                label="From Name"
-                                                name="email.fromName"
-                                                placeholder="Leave blank to use the default sender"/>
-                                            <Ui.Select {...templateSelect} validate="required"/>
-                                        </Ui.Grid.Col>
-                                        <Ui.Grid.Col all={8}>
-                                            <Editor
-                                                variables={model.variables}
-                                                label="Content"
-                                                name="email.content"
-                                                description="You can use Smarty syntax for your email content."/>
-                                        </Ui.Grid.Col>
-                                    </Ui.Grid.Row>
-                                </Ui.Tabs.Tab>
                                 <Ui.Tabs.Tab label="Variables" icon="icon-menu">
                                     <Ui.Alert title="About">
                                         This is a list of variables that you can use in your notification content.
@@ -145,14 +83,15 @@ NotificationForm.defaultProps = {
                                             {() => (
                                                 <Ui.Grid.Row>
                                                     <Ui.Grid.Col all={2}><Ui.Form.Fieldset title="Variable name"/></Ui.Grid.Col>
-                                                    <Ui.Grid.Col all={4}><Ui.Form.Fieldset title="Entity (leave blank for custom variables)"/></Ui.Grid.Col>
+                                                    <Ui.Grid.Col all={4}><Ui.Form.Fieldset
+                                                        title="Entity (leave blank for custom variables)"/></Ui.Grid.Col>
                                                     <Ui.Grid.Col all={3}><Ui.Form.Fieldset title="Description"/></Ui.Grid.Col>
                                                     <Ui.Grid.Col all={3}></Ui.Grid.Col>
                                                 </Ui.Grid.Row>
                                             )}
                                         </Ui.Dynamic.Header>
                                         <Ui.Dynamic.Row>
-                                            {function (record, actions) {
+                                            {(record, actions) => {
                                                 return (
                                                     <Ui.Grid.Row>
                                                         <Ui.Grid.Col all={2}>
@@ -175,26 +114,28 @@ NotificationForm.defaultProps = {
                                             }}
                                         </Ui.Dynamic.Row>
                                         <Ui.Dynamic.Empty>
-                                            {function (actions) {
+                                            {(actions) => {
                                                 return (
                                                     <Ui.Grid.Row>
                                                         <Ui.Grid.Col all={12}>
-                                                            <h5>You have not defined any variables yet. Click "Add variable" to define your first variable!</h5>
+                                                            <h5>You have not defined any variables yet. Click "Add variable" to define your
+                                                                first variable!</h5>
                                                             <Ui.Button type="primary" label="Add variable" onClick={actions.add()}/>
                                                         </Ui.Grid.Col>
                                                     </Ui.Grid.Row>
-                                                )
+                                                );
                                             }}
                                         </Ui.Dynamic.Empty>
                                     </Ui.Dynamic.Fieldset>
                                 </Ui.Tabs.Tab>
+                                {this.renderNotificationTabs(model, form)}
                             </Ui.Tabs>
-                            <PreviewModal ui="previewModal"/>
+                            <PreviewModal ui="previewModal" model={model}/>
                         </Ui.View.Body>
                         <Ui.View.Footer>
-                            <Ui.Button align="right" type="primary" onClick={container.submit}>Save Changes</Ui.Button>
-                            <Ui.Button align="right" type="secondary" onClick={() => this.sendTestEmail(model)}>Send Test Email</Ui.Button>
-                            <Ui.Button align="left" type="default" onClick={container.cancel}>Go Back</Ui.Button>
+                            <Ui.Button align="right" type="primary" onClick={form.submit}>Save Changes</Ui.Button>
+                            <Ui.Button align="right" type="secondary" onClick={this.ui('previewModal:show')}>Send Test</Ui.Button>
+                            <Ui.Button align="left" type="default" onClick={form.cancel}>Go Back</Ui.Button>
                         </Ui.View.Footer>
                     </Ui.View.Form>
                 )}

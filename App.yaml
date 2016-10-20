@@ -10,6 +10,9 @@ AuthorEmail: info@webiny.com
 Services:
     NotificationManager:
         Class: Apps\NotificationManager\Php\Lib\NotificationManager
+    EmailContentHandler:
+        Class: Apps\NotificationManager\Php\Lib\EmailNotificationHandler
+        Tags: ['notification-manager-handler']
 
 Storage:
     Services:

@@ -1,14 +1,11 @@
 import Webiny from 'Webiny';
 import Views from './Views/Views';
-import Components from './Components/Components';
 
 class Notification extends Webiny.Module {
 
     init() {
         const Menu = Webiny.Ui.Menu;
         const role = 'notification-manager';
-
-        this.registerComponents(Components);
 
         this.registerMenus(
             new Menu('Marketing Tools', [
