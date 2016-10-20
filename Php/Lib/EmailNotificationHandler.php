@@ -113,6 +113,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
         /* @var $template Template */
         $template = Template::findById($handler['template']);
         $content = str_replace('{_content_}', $handler['content'], $template->content);
+        $content = str_replace('{_hostName_}', $this->wConfig()->get('Application.WebPath'), $content);
 
         // get mailer
         /* @var $mailer Mailer */

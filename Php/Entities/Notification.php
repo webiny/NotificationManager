@@ -28,7 +28,7 @@ class Notification extends AbstractEntity
 {
     use WebinyTrait;
 
-    protected static $entityCollection = 'NotificationManagerNotification';
+    protected static $entityCollection = 'NotificationManagerNotifications';
     protected static $entityMask = '{title}';
 
     public function __construct()
