@@ -5,22 +5,21 @@ use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\Core\Php\DevTools\Exceptions\AppException;
 use Apps\Core\Php\Entities\Setting;
+use Apps\NotificationManager\Php\Lib\AbstractNotificationHandler;
 use Apps\NotificationManager\Php\Lib\NotificationException;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
-use Webiny\Component\TemplateEngine\TemplateEngineException;
 
 /**
  * Class Notification
  *
- * @property string   $id
- * @property string   $title
- * @property string   $description
- * @property string   $slug
- * @property array    $labels
- * @property object   $email
- * @property array    $variables
- * @property Template $template
+ * @property string $id
+ * @property string $title
+ * @property string $description
+ * @property string $slug
+ * @property array  $labels
+ * @property array  $handlers
+ * @property array  $variables
  *
  * @package Apps\Core\Php\Entities
  *
@@ -29,7 +28,7 @@ class Notification extends AbstractEntity
 {
     use WebinyTrait;
 
-    protected static $entityCollection = 'NotificationManagerNotification';
+    protected static $entityCollection = 'NotificationManagerNotifications';
     protected static $entityMask = '{title}';
 
     public function __construct()
@@ -55,23 +54,8 @@ class Notification extends AbstractEntity
         });
 
         $this->attr('labels')->arr()->setToArrayDefault();
-        $this->attr('email')->object()->setToArrayDefault()->onSet(function ($val) {
-            foreach ($val as $v) {
-                $this->validateVariables($v);
-            }
-
-            // validate content
-            $templateEngine = $this->wTemplateEngine();
-            try {
-                $templateEngine->fetch('eval:' . $val['content']);
-            } catch (TemplateEngineException $e) {
-                throw new AppException('Invalid template syntax: ' . $e->getMessage());
-            }
-
-            return $val;
-        })->setAfterPopulate();
-        $this->attr('template')->many2one()->setEntity('Apps\NotificationManager\Php\Entities\Template');
         $this->attr('variables')->arr();
+        $this->attr('handlers')->object()->setToArrayDefault();
 
         /**
          * @api.name Preview notification
@@ -79,7 +63,19 @@ class Notification extends AbstractEntity
         $this->api('post', '{id}/preview', function () {
             $data = $this->wRequest()->getRequestData();
 
-            return $this->preview($data);
+            $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
+            $handlers = $this->wService()->getServicesByTag('notification-manager-handler', $abstractHandler);
+
+            $results = [];
+            /* @var $handler AbstractNotificationHandler */
+            foreach ($handlers as $handler) {
+                $handler->setNotification($this);
+                if ($handler->canSend()) {
+                    $results[] = $handler->preview($data);
+                }
+            }
+
+            return $results;
         });
 
         /**
@@ -87,102 +83,29 @@ class Notification extends AbstractEntity
          * @api.body.title string New notification title
          */
         $this->api('post', '{id}/copy', function () {
-            $data = $this->wRequest()->getRequestData();
-
             $newNotification = new Notification();
+            $newNotification->title = uniqid($this->title . '-');
             $newNotification->description = $this->description;
-            $newNotification->title = $data['title'];
             $newNotification->labels = $this->labels;
-            $newNotification->template = $this->template;
             $newNotification->variables = $this->variables;
-            $newNotification->email = $this->email;
-
-            if ($data['slug'] ?? false) {
-                $newNotification->slug = $data['slug'];
-            }
-
+            $newNotification->handlers = $this->handlers;
             $newNotification->save();
 
             return $newNotification->toArray($this->wRequest()->getFields());
 
-        })->setBodyValidators(['title' => 'required']);
-    }
+        });
 
-    /**
-     * Send preview email
-     *
-     * @param array $data
-     *
-     * @return array
-     * @throws NotificationException
-     */
-    private function preview(array $data)
-    {
-        // we take the latest content from the post request
-        $content = $data['content'];
+        $this->onBeforeSave(function () {
+            $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
+            $handlers = $this->wService()->getServicesByTag('notification-manager-handler', $abstractHandler);
 
-        // we take the template from the current notification
-        $content = str_replace('{_content_}', $content, $this->template->content);
-        $content = str_replace('{_hostName_}', $this->wConfig()->get('Application.WebPath'), $content);
-
-        // get mailer
-        /* @var $mailer Mailer */
-        $mailer = $this->wService('NotificationManager')->getMailer();
-
-        // get settings
-        $settings = Setting::load('notification-manager');
-        if (!$settings) {
-            throw new NotificationException('Settings sendLimit not defined.');
-        }
-
-        // get sender
-        $senderEmail = !empty($data['fromAddress']) ? $data['fromAddress'] : $settings->settings->senderEmail;
-        $senderName = !empty($data['fromName']) ? $data['fromName'] : $settings->settings->senderName;
-
-        // populate
-        $msg = $mailer->getMessage();
-        $msg->setFrom(new Email($senderEmail, $senderName));
-        $msg->setSubject($data['subject'])->setBody($content)->setTo(new Email($data['email']));
-
-
-        if ($mailer->send($msg)) {
-            return ['status' => true];
-        }
-
-        return ['status' => false];
-    }
-
-    public function validateVariables($content)
-    {
-        // extract variables from the provided content
-        $variables = $this->str($content)->match('\{(.*?)\}');
-
-        if (!$variables || $variables->count() < 1) {
-            return true;
-        }
-
-        $missingVars = [];
-        foreach ($variables[1] as $v) {
-            // we need to explode the nested attributes
-            $v = $this->str($v)->explode('.')->first()->replace('$', '');
-
-            foreach ($this->variables as $av) {
-                if ($v == $av['key']) {
-                    // We have found or match, continue to the outer loop
-                    continue 2;
+            /* @var $handler AbstractNotificationHandler */
+            foreach ($handlers as $handler) {
+                $handler->setNotification($this);
+                if ($handler->canSend()) {
+                    $handler->validate();
                 }
             }
-            $missingVars[] = $v;
-        }
-
-        if (count($missingVars) > 0) {
-            throw new AppException('One or more variables present in the email content are not defined in the variables list. (' . join(', ',
-                    $missingVars) . ')');
-        }
-
-        return true;
-
+        });
     }
-
-
 }

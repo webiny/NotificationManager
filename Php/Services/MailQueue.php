@@ -28,13 +28,15 @@ class MailQueue extends AbstractService implements NoAuthorizationInterface
     public function sendEmails()
     {
         // calculate the max amount of emails we can send in one minute (that's the cron frequency)
-        $settings = Setting::findOne(['key' => 'notification-manager']);
+        $settings = Setting::load('notification-manager');
         if (!$settings) {
             throw new NotificationException('Settings sendLimit not defined.');
         }
 
-        $minuteLimit = $settings['settings']['sendLimit'] * 60;
-        $sleepTime = (1 / $settings['settings']['sendLimit']) * 1000000; // in microseconds
+        $settings = $settings['settings']['email'];
+
+        $minuteLimit = $settings['sendLimit'] * 60;
+        $sleepTime = (1 / $settings['sendLimit']) * 1000000; // in microseconds
 
         // get the max number of email we can send within 1 min limit
         // we want to keep the process active for the full minute, so we don't wait 60s to get the email
@@ -65,20 +67,21 @@ class MailQueue extends AbstractService implements NoAuthorizationInterface
         /* @var EmailLog $e */
         $emailLog = ['sent' => 0, 'errors' => 0];
         $storage = $this->wStorage('NotificationManager');
+        $emailNotification = $e->notification->handlers['email'];
         foreach ($emails as $e) {
             $msg = $mailer->getMessage();
 
             // get sender
-            $senderEmail = !empty($e->notification->email['fromAddress']) ? $e->notification->email['fromAddress'] : $settings['settings']['senderEmail'];
-            $senderName = !empty($e->notification->email['fromName']) ? $e->notification->email['fromName'] : $settings['settings']['senderName'];
+            $senderEmail = !empty($emailNotification['fromAddress']) ? $emailNotification['fromAddress'] : $settings['senderEmail'];
+            $senderName = !empty($emailNotification['fromName']) ? $emailNotification['fromName'] : $settings['senderName'];
 
             $msg->setFrom(new Email($senderEmail, $senderName));
             $msg->setSubject($e->subject)->setBody($e->content);
 
             // check if sending is rerouted
-            if($this->wConfig()->get('Application.NotificationManager.Reroute', false)){
+            if ($this->wConfig()->get('Application.NotificationManager.Reroute', false)) {
                 $msg->setTo(new Email($this->wConfig()->get('Application.NotificationManager.Reroute', false), $e->name));
-            }else{
+            } else {
                 $msg->setTo(new Email($e->email, $e->name));
             }
 

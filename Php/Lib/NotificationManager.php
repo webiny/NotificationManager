@@ -17,12 +17,12 @@ class NotificationManager
     public function __construct()
     {
         // load the mailer settings
-        $settings = Setting::findOne(['key' => 'notification-manager']);
+        $settings = Setting::load('notification-manager');
 
         if (empty($settings)) {
             throw new NotificationException(sprintf('Unable to load SMTP settings'));
         }
-        $settings = $settings['settings'];
+        $settings = $settings['settings']['email'];
 
         $config = [
             'Transport' => [
