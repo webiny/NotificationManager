@@ -116,6 +116,7 @@ class Notification extends AbstractEntity
 
         // we take the template from the current notification
         $content = str_replace('{_content_}', $content, $this->template->content);
+        $content = str_replace('{_hostName_}', $this->wConfig()->get('Application.WebPath'), $content);
 
         // get mailer
         /* @var $mailer Mailer */
