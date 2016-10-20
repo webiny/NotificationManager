@@ -87,18 +87,25 @@ class Notification extends AbstractEntity
          * @api.body.title string New notification title
          */
         $this->api('post', '{id}/copy', function () {
+            $data = $this->wRequest()->getRequestData();
+
             $newNotification = new Notification();
             $newNotification->description = $this->description;
-            $newNotification->title = uniqid($this->title . '-');
+            $newNotification->title = $data['title'];
             $newNotification->labels = $this->labels;
             $newNotification->template = $this->template;
             $newNotification->variables = $this->variables;
             $newNotification->email = $this->email;
+
+            if ($data['slug'] ?? false) {
+                $newNotification->slug = $data['slug'];
+            }
+
             $newNotification->save();
 
             return $newNotification->toArray($this->wRequest()->getFields());
 
-        });
+        })->setBodyValidators(['title' => 'required']);
     }
 
     /**
