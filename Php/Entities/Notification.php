@@ -3,12 +3,7 @@ namespace Apps\NotificationManager\Php\Entities;
 
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
-use Apps\Core\Php\DevTools\Exceptions\AppException;
-use Apps\Core\Php\Entities\Setting;
 use Apps\NotificationManager\Php\Lib\AbstractNotificationHandler;
-use Apps\NotificationManager\Php\Lib\NotificationException;
-use Webiny\Component\Mailer\Email;
-use Webiny\Component\Mailer\Mailer;
 
 /**
  * Class Notification

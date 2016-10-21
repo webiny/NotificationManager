@@ -5,10 +5,25 @@ const Ui = Webiny.Ui.Components;
 
 
 class NotificationForm extends Webiny.Ui.View {
+    constructor(props){
+        super(props);
+
+        this.preview = false;
+        this.bindMethods('saveAndPreview');
+    }
+
     renderNotificationTabs(model, form) {
         const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Tab');
         return tabs.map(tab => {
             return React.cloneElement(tab.value(model, form), {key: tab.name});
+        });
+    }
+
+    saveAndPreview() {
+        this.preview = true;
+        this.ui('notificationForm').submit().then(() => {
+            this.preview = false;
+            this.ui('previewModal').show();
         });
     }
 }
@@ -19,7 +34,11 @@ NotificationForm.defaultProps = {
             api: '/entities/notification-manager/notifications',
             fields: '*,variables',
             connectToRouter: true,
-            onSubmitSuccess: () => Webiny.Router.goToRoute('NotificationManager.Notifications'),
+            onSubmitSuccess: () => {
+                if (!this.preview) {
+                    Webiny.Router.goToRoute('NotificationManager.Notifications');
+                }
+            },
             onCancel: () => Webiny.Router.goToRoute('NotificationManager.Notifications')
         };
 
@@ -53,6 +72,7 @@ NotificationForm.defaultProps = {
                         <Ui.View.Header title="Notification"/>
 
                         <Ui.View.Body noPadding={true}>
+                            <PreviewModal ui="previewModal" model={model}/>
                             <Ui.Tabs size="large">
                                 <Ui.Tabs.Tab label="General" icon="icon-settings">
                                     <Ui.Grid.Row>
@@ -130,11 +150,10 @@ NotificationForm.defaultProps = {
                                 </Ui.Tabs.Tab>
                                 {this.renderNotificationTabs(model, form)}
                             </Ui.Tabs>
-                            <PreviewModal ui="previewModal" model={model}/>
                         </Ui.View.Body>
                         <Ui.View.Footer>
                             <Ui.Button align="right" type="primary" onClick={form.submit}>Save Changes</Ui.Button>
-                            <Ui.Button align="right" type="secondary" onClick={this.ui('previewModal:show')}>Send Test</Ui.Button>
+                            <Ui.Button align="right" type="secondary" onClick={this.saveAndPreview}>Save &amp; Send Preview</Ui.Button>
                             <Ui.Button align="left" type="default" onClick={form.cancel}>Go Back</Ui.Button>
                         </Ui.View.Footer>
                     </Ui.View.Form>

@@ -1,5 +1,5 @@
 import Webiny from 'Webiny';
-import Views from './Views/Views';
+import ActivityList from './ActivityList';
 
 class Overview extends Webiny.Module {
 
@@ -16,7 +16,7 @@ class Overview extends Webiny.Module {
         );
 
         this.registerRoutes(
-            new Webiny.Route('NotificationManager.Activity', '/notification-manager/activity', Views.List, 'Notification Manager - Activity').setRole(role)
+            new Webiny.Route('NotificationManager.Activity', '/notification-manager/activity', ActivityList, 'Notification Manager - Activity').setRole(role)
         );
     }
 }

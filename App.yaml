@@ -13,6 +13,9 @@ Services:
     EmailContentHandler:
         Class: Apps\NotificationManager\Php\Lib\EmailNotificationHandler
         Tags: ['notification-manager-handler']
+    SlackContentHandler:
+        Class: Apps\NotificationManager\Php\Lib\SlackNotificationHandler
+        Tags: ['notification-manager-handler']
 
 Storage:
     Services:

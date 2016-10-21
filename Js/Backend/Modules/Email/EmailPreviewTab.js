@@ -8,7 +8,11 @@ export default (model) => {
 
     return (
         <Ui.Tabs.Tab label="Email content" icon="fa-envelope">
-            <Ui.Input name="email.email" label="Email recipient" validate="required,email"/>
+            <Ui.Input
+                name="email.email"
+                label="Email recipient"
+                validate="email"
+                placeholder={`Leave empty to use ${Webiny.Model.get('User').email}`}/>
         </Ui.Tabs.Tab>
     );
 };

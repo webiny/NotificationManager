@@ -2,7 +2,7 @@ import Webiny from 'Webiny';
 const Ui = Webiny.Ui.Components;
 const Table = Ui.List.Table;
 
-class List extends Webiny.Ui.View {
+class ActivityList extends Webiny.Ui.View {
     constructor(props) {
         super(props);
 
@@ -24,7 +24,7 @@ class List extends Webiny.Ui.View {
     }
 }
 
-List.defaultProps = {
+ActivityList.defaultProps = {
 
     renderer() {
         const listProps = {
@@ -69,32 +69,32 @@ List.defaultProps = {
                         <Table>
                             <Table.Row>
                                 <Table.CaseField name="status" label="Status" align="left">
-                                    <case value={0}>
+                                    <case value="pending">
                                         <Ui.Label type="default">Pending</Ui.Label>
                                     </case>
-                                    <case value={1}>
+                                    <case value="error">
                                         <Ui.Label type="error">Error</Ui.Label>
                                     </case>
-                                    <case value={2}>
+                                    <case value="sent">
                                         <Ui.Label type="info">Sent</Ui.Label>
                                     </case>
-                                    <case value={3}>
+                                    <case value="delivered">
                                         <Ui.Label type="success">Delivered</Ui.Label>
                                     </case>
-                                    <case value={4}>
+                                    <case value="hard-bounce">
                                         <Ui.Label type="error">Hard Bounce</Ui.Label>
                                     </case>
-                                    <case value={5}>
+                                    <case value="soft-bounce">
                                         <Ui.Label type="warning">Soft Bounce</Ui.Label>
                                     </case>
-                                    <case value={6}>
+                                    <case value="complaint">
                                         <Ui.Label type="error">Complaint</Ui.Label>
                                     </case>
-                                    <case value={7}>
+                                    <case value="read">
                                         <Ui.Label type="success">Read</Ui.Label>
                                     </case>
                                 </Table.CaseField>
-                                <Table.TimeAgoField name="createdOn" align="left" label="Sent" sort="createdOn"/>
+                                <Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
                                 <Table.Field name="email" align="left" label="Email" sort="email"/>
                                 <Table.Field name="subject" align="left" label="Subject" sort="subject"/>
                                 <Table.Field align="right">
@@ -113,4 +113,4 @@ List.defaultProps = {
     }
 };
 
-export default List;
+export default ActivityList;

@@ -33,7 +33,11 @@ class EmailNotificationHandler extends AbstractNotificationHandler
     {
         $handler = $this->notification->handlers['email'] ?? null;
 
-        return $handler && $handler['send'];
+        if (!is_array($handler)) {
+            return false;
+        }
+
+        return $handler['send'];
     }
 
     public function send()
@@ -108,8 +112,8 @@ class EmailNotificationHandler extends AbstractNotificationHandler
 
     public function preview($data)
     {
-        $preview = $data['preview']['email'];
-        $handler = $data['handlers']['email'];
+        $preview = $data['email'] ?? null;
+        $handler = $this->notification->handlers['email'];
         /* @var $template Template */
         $template = Template::findById($handler['template']);
         $content = str_replace('{_content_}', $handler['content'], $template->content);
@@ -130,21 +134,22 @@ class EmailNotificationHandler extends AbstractNotificationHandler
         $senderName = !empty($handler['fromName']) ? $handler['fromName'] : $settings->settings->email['senderName'];
 
         // populate
+        $recipient = isset($preview['email']) && $preview['email'] != '' ? $preview['email'] : $this->wAuth()->getUser()->email;
         $msg = $mailer->getMessage();
         $msg->setFrom(new Email($senderEmail, $senderName));
-        $msg->setSubject($handler['subject'])->setBody($content)->setTo(new Email($preview['email']));
+        $msg->setSubject($handler['subject'])->setBody($content)->setTo(new Email($recipient));
 
 
         if ($mailer->send($msg)) {
             return [
-                'status' => true,
-                'message'    => 'Email was sent successfully! Check your ' . $preview['email'] . ' inbox.'
+                'status'  => true,
+                'message' => 'Email was sent successfully! Check your ' . $recipient . ' inbox.'
             ];
         }
 
         return [
-            'status' => false,
-            'message'    => 'Failed to send preview email to ' . $preview['email'] . '.'
+            'status'  => false,
+            'message' => 'Failed to send preview email to ' . $recipient . '.'
         ];
     }
 

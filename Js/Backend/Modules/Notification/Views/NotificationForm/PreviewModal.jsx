@@ -11,13 +11,19 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         this.bindMethods('submit');
     }
 
+    componentWillReceiveProps(props) {
+        super.componentWillReceiveProps(props);
+        this.setState({response: null});
+    }
+
     submit(preview) {
-        const handlers = this.props.model.handlers;
         const api = new Webiny.Api.Endpoint('/entities/notification-manager/notifications');
         this.setState({loading: true});
-        this.request = api.post(Webiny.Router.getParams('id') + '/preview', {handlers, preview}).then(apiResponse => {
+        this.request = api.post(Webiny.Router.getParams('id') + '/preview', preview).then(apiResponse => {
             this.setState({response: apiResponse.getData(), loading: false}, () => {
-                setTimeout(this.hide, 3000);
+                setTimeout(() => {
+                    this.hide();
+                }, 3000);
             });
         });
     }

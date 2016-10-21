@@ -1,5 +1,5 @@
 import Webiny from 'Webiny';
-import List from '../../../Activity/Views/List';
+import List from '../../../Activity/ActivityList';
 const Ui = Webiny.Ui.Components;
 const Table = Ui.List.Table;
 
