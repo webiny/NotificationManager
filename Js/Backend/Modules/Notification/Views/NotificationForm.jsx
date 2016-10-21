@@ -5,7 +5,7 @@ const Ui = Webiny.Ui.Components;
 
 
 class NotificationForm extends Webiny.Ui.View {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.preview = false;
@@ -19,9 +19,13 @@ class NotificationForm extends Webiny.Ui.View {
         });
     }
 
-    saveAndPreview() {
+    saveAndPreview(model, form) {
+        if (_.isEqual(model, form.getInitialModel())) {
+            return this.ui('previewModal').show();
+        }
+
         this.preview = true;
-        this.ui('notificationForm').submit().then(() => {
+        return form.submit().then(() => {
             this.preview = false;
             this.ui('previewModal').show();
         });
@@ -153,7 +157,8 @@ NotificationForm.defaultProps = {
                         </Ui.View.Body>
                         <Ui.View.Footer>
                             <Ui.Button align="right" type="primary" onClick={form.submit}>Save Changes</Ui.Button>
-                            <Ui.Button align="right" type="secondary" onClick={this.saveAndPreview}>Save &amp; Send Preview</Ui.Button>
+                            <Ui.Button align="right" type="secondary" onClick={() => this.saveAndPreview(model, form)}>Save &amp; Send
+                                Preview</Ui.Button>
                             <Ui.Button align="left" type="default" onClick={form.cancel}>Go Back</Ui.Button>
                         </Ui.View.Footer>
                     </Ui.View.Form>
