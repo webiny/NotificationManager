@@ -70,8 +70,6 @@ class Editor extends Webiny.Ui.Component {
                 return true;
             }
         });
-
-        window.qe = this.editor;
     }
 
     componentDidUpdate() {
