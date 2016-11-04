@@ -25,7 +25,7 @@ Storage:
                 Driver:
                     Object: \Webiny\Component\Storage\Driver\Local\LocalStorageDriver
                     ObjectArguments:
-                        - __DIR__/../../Temp/NotificationManager
-                        - __Application.WebPath__/uploads
-                        - false
-                        - true
+                        Config:
+                            Directory: __DIR__/../../Temp/NotificationManager
+                            PublicUrl: __Application.WebPath__/uploads
+                            Create: true
