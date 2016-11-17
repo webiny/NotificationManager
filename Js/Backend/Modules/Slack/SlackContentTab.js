@@ -7,7 +7,7 @@ export default (model, form) => {
             <Ui.Grid.Row>
                 <Ui.Grid.Col all={12}>
                     <Ui.Form.Fieldset title={<Ui.Checkbox {...form.bindTo('handlers.slack.send')} label="Send Slack message" grid={12}/>}/>
-                    <Ui.Hide if={!_.get(model, 'handlers.slack.send')}>
+                    <Ui.Logic.Hide if={!_.get(model, 'handlers.slack.send')}>
                         <Ui.Input
                             label="Channel/User"
                             name="handlers.slack.channel"
@@ -15,7 +15,7 @@ export default (model, form) => {
                             description="Specify a channel or username: #general or @mark"
                             />
                         <Ui.MarkdownEditor label="Message" name="handlers.slack.message" validate="required"/>
-                    </Ui.Hide>
+                    </Ui.Logic.Hide>
                 </Ui.Grid.Col>
             </Ui.Grid.Row>
         </Ui.Tabs.Tab>

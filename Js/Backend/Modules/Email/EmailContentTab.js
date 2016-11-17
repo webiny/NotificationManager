@@ -16,7 +16,7 @@ export default (model, form) => {
     return (
         <Ui.Tabs.Tab label="Email content" icon="fa-envelope">
             <Ui.Form.Fieldset title={<Ui.Checkbox {...form.bindTo('handlers.email.send')} label="Send email" grid={12}/>}/>
-            <Ui.Hide if={!_.get(model, 'handlers.email.send')}>
+            <Ui.Logic.Hide if={!_.get(model, 'handlers.email.send')}>
                 <Ui.Grid.Row>
                     <Ui.Grid.Col all={4}>
                         <Ui.Input
@@ -42,7 +42,7 @@ export default (model, form) => {
                             description="You can use Smarty syntax for your email content."/>
                     </Ui.Grid.Col>
                 </Ui.Grid.Row>
-            </Ui.Hide>
+            </Ui.Logic.Hide>
         </Ui.Tabs.Tab>
     );
 };
