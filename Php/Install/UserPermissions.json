@@ -24,11 +24,7 @@
                     }
                 },
                 "Apps\\NotificationManager\\Php\\Entities\\Setting": {
-                    "crudDelete": true,
-                    "crudUpdate": true,
-                    "crudRead": true,
-                    "crudCreate": true,
-                    "key/{key}": {
+                    "/": {
                         "get": true,
                         "patch": true
                     }
