@@ -12,12 +12,12 @@ export default () => {
 
                             <Ui.Input
                                 label="Server Name"
-                                name="settings.email.serverName"
+                                name="email.serverName"
                                 validate="required"
                                 description="For example: email-smtp.us-east-1.amazonaws.com"/>
-                            <Ui.Input label="Username" name="settings.email.username" validate="required"/>
-                            <Ui.Password label="Password" name="settings.email.password" validate="required"/>
-                            <Ui.Input label="Send limit (emails per second)" name="settings.email.sendLimit" validate="required"/>
+                            <Ui.Input label="Username" name="email.username" validate="required"/>
+                            <Ui.Password label="Password" name="email.password" validate="required"/>
+                            <Ui.Input label="Send limit (emails per second)" name="email.sendLimit" validate="required"/>
                         </Ui.Grid.Col>
                         <Ui.Grid.Col all={6}>
                             <Ui.Form.Fieldset title="AWS SNS Settings"/>
@@ -51,11 +51,11 @@ export default () => {
 
                             <Ui.Input
                                 label="Sender Name"
-                                name="settings.email.senderName"
+                                name="email.senderName"
                                 validate="required"/>
                             <Ui.Input
                                 label="Sender email"
-                                name="settings.email.senderEmail"
+                                name="email.senderEmail"
                                 validate="required,email"/>
                         </Ui.Grid.Col>
                     </Ui.Grid.Row>

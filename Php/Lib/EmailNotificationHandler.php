@@ -124,14 +124,14 @@ class EmailNotificationHandler extends AbstractNotificationHandler
         $mailer = $this->wService('NotificationManager')->getMailer();
 
         // get settings
-        $settings = Setting::load('notification-manager');
+        $settings = Setting::load();
         if (!$settings) {
             throw new NotificationException('Settings sendLimit not defined.');
         }
 
         // get sender
-        $senderEmail = !empty($handler['fromAddress']) ? $handler['fromAddress'] : $settings->settings->email['senderEmail'];
-        $senderName = !empty($handler['fromName']) ? $handler['fromName'] : $settings->settings->email['senderName'];
+        $senderEmail = !empty($handler['fromAddress']) ? $handler['fromAddress'] : $settings->email['senderEmail'];
+        $senderName = !empty($handler['fromName']) ? $handler['fromName'] : $settings->email['senderName'];
 
         // populate
         $recipient = isset($preview['email']) && $preview['email'] != '' ? $preview['email'] : $this->wAuth()->getUser()->email;

@@ -165,8 +165,8 @@ class SlackNotificationHandler extends AbstractNotificationHandler
 
     private function loadSettings()
     {
-        $settings = Setting::load('notification-manager');
-        $slackSettings = $settings->settings['slack'];
+        $settings = Setting::load();
+        $slackSettings = $settings['slack'];
         $this->username = $slackSettings['username'];
         $this->team = $slackSettings['team'];
         $this->token = $slackSettings['token'];

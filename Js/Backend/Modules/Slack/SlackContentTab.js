@@ -12,8 +12,7 @@ export default (model, form) => {
                             label="Channel/User"
                             name="handlers.slack.channel"
                             validate="required"
-                            description="Specify a channel or username: #general or @mark"
-                            />
+                            description="Specify a channel or username: #general or @mark"/>
                         <Ui.MarkdownEditor label="Message" name="handlers.slack.message" validate="required"/>
                     </Ui.Logic.Hide>
                 </Ui.Grid.Col>

@@ -13,7 +13,7 @@ class SettingsForm extends Webiny.Ui.View {
 SettingsForm.defaultProps = {
     renderer() {
         return (
-            <Ui.Settings id="notification-manager" api="/entities/notification-manager/settings">
+            <Ui.Settings api="/entities/notification-manager/settings">
                 {(model, form) => (
                     <Ui.View.Form>
                         <Ui.View.Header
