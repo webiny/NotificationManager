@@ -3,7 +3,7 @@
 namespace Apps\NotificationManager\Php\Lib;
 
 use Apps\Core\Php\DevTools\WebinyTrait;
-use Apps\NotificationManager\Php\Entities\Setting;
+use Apps\NotificationManager\Php\Entities\Settings;
 use Webiny\Component\Config\Config;
 
 class NotificationManager
@@ -17,7 +17,7 @@ class NotificationManager
     public function __construct()
     {
         // load the mailer settings
-        $settings = Setting::load();
+        $settings = Settings::load();
 
         if (empty($settings)) {
             throw new NotificationException(sprintf('Unable to load SMTP settings'));

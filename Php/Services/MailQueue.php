@@ -7,7 +7,7 @@ use Apps\Core\Php\DevTools\Interfaces\NoAuthorizationInterface;
 use Apps\Core\Php\DevTools\Services\AbstractService;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\NotificationManager\Php\Entities\EmailLog;
-use Apps\NotificationManager\Php\Entities\Setting;
+use Apps\NotificationManager\Php\Entities\Settings;
 use Apps\NotificationManager\Php\Lib\NotificationException;
 use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
@@ -28,7 +28,7 @@ class MailQueue extends AbstractService implements NoAuthorizationInterface
     public function sendEmails()
     {
         // calculate the max amount of emails we can send in one minute (that's the cron frequency)
-        $settings = Setting::load();
+        $settings = Settings::load();
         if (!$settings) {
             throw new NotificationException('Settings sendLimit not defined.');
         }

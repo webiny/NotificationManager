@@ -2,7 +2,7 @@
 namespace Apps\NotificationManager\Php\Lib;
 
 use Apps\Core\Php\DevTools\Exceptions\AppException;
-use Apps\NotificationManager\Php\Entities\Setting;
+use Apps\NotificationManager\Php\Entities\Settings;
 use Webiny\Component\TemplateEngine\TemplateEngineException;
 
 /**
@@ -165,7 +165,7 @@ class SlackNotificationHandler extends AbstractNotificationHandler
 
     private function loadSettings()
     {
-        $settings = Setting::load();
+        $settings = Settings::load();
         $slackSettings = $settings['slack'];
         $this->username = $slackSettings['username'];
         $this->team = $slackSettings['team'];

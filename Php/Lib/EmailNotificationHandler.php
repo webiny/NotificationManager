@@ -3,7 +3,7 @@ namespace Apps\NotificationManager\Php\Lib;
 
 use Apps\Core\Php\DevTools\Exceptions\AppException;
 use Apps\NotificationManager\Php\Entities\EmailLog;
-use Apps\NotificationManager\Php\Entities\Setting;
+use Apps\NotificationManager\Php\Entities\Settings;
 use Apps\NotificationManager\Php\Entities\Template;
 use Apps\NotificationManager\Php\Services\MailQueue;
 use Webiny\Component\Mailer\Email;
@@ -124,7 +124,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
         $mailer = $this->wService('NotificationManager')->getMailer();
 
         // get settings
-        $settings = Setting::load();
+        $settings = Settings::load();
         if (!$settings) {
             throw new NotificationException('Settings sendLimit not defined.');
         }
