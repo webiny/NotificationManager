@@ -23,7 +23,7 @@
                         "post": true
                     }
                 },
-                "Apps\\NotificationManager\\Php\\Entities\\Setting": {
+                "Apps\\NotificationManager\\Php\\Entities\\Settings": {
                     "/": {
                         "get": true,
                         "patch": true
