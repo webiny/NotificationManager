@@ -3,7 +3,6 @@ namespace Apps\NotificationManager\Php\Services;
 
 set_time_limit(0);
 
-use Apps\Core\Php\DevTools\Interfaces\NoAuthorizationInterface;
 use Apps\Core\Php\DevTools\Services\AbstractService;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\NotificationManager\Php\Entities\EmailLog;
@@ -13,7 +12,7 @@ use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 use Webiny\Component\Storage\File\File;
 
-class MailQueue extends AbstractService implements NoAuthorizationInterface
+class MailQueue extends AbstractService
 {
     use WebinyTrait;
 
