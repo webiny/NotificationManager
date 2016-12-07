@@ -4,17 +4,18 @@ namespace Apps\NotificationManager\Php\Entities;
 use Apps\Core\Php\DevTools\WebinyTrait;
 use Apps\Core\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Lib\AbstractNotificationHandler;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
  * Class Notification
  *
- * @property string $id
- * @property string $title
- * @property string $description
- * @property string $slug
- * @property array  $labels
- * @property array  $handlers
- * @property array  $variables
+ * @property string      $id
+ * @property string      $title
+ * @property string      $description
+ * @property string      $slug
+ * @property array       $labels
+ * @property ArrayObject $handlers
+ * @property array       $variables
  *
  * @package Apps\Core\Php\Entities
  *
@@ -102,5 +103,22 @@ class Notification extends AbstractEntity
                 }
             }
         });
+    }
+
+    /**
+     * Used for incrementing various stats for handlers (eg. email could have 'read' and 'bounced').
+     *
+     * @param string $handler
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function incrementHandlerStat($handler, $type)
+    {
+        $key = $handler . '.stats.' . $type;
+        $currentCount = $this->handlers->keyNested($key) ?: 0;
+        $this->handlers->keyNested($key, ++$currentCount);
+
+        return $this;
     }
 }
