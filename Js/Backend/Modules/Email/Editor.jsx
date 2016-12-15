@@ -104,7 +104,7 @@ class Editor extends Webiny.Ui.Component {
 
     loadAttributes(entity) {
         if (this.attributes[entity]) {
-            return Q(this.attributes[entity]);
+            return Promise.resolve(this.attributes[entity]);
         }
 
         return this.entityApi.get('attributes', {entity}).then(apiResponse => {
