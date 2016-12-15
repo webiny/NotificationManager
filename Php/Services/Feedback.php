@@ -36,9 +36,10 @@ class Feedback extends AbstractService implements PublicApiInterface
     {
         // get current status to see if we need to update global stats for the notification entity
         if ($emailLog->status != $emailLog::STATUS_READ && !$this->wRequest()->query('preview', false)) {
-            $emailLog->notification->email['read'] = empty($emailLog->notification->email['read']) ? 1 : $emailLog->notification->email['read'] + 1;
             $emailLog->status = $emailLog::STATUS_READ;
             $emailLog->save();
+
+            $emailLog->notification->incrementHandlerStat('email', 'read')->save();
         }
 
         // return 1px transparent gif
@@ -86,17 +87,18 @@ class Feedback extends AbstractService implements PublicApiInterface
                 } else {
                     $emailLog->status = $emailLog::STATUS_SOFT_BOUNCE;
                 }
-                $emailLog->notification->email['bounced'] = empty($emailLog->notification->email['bounced']) ? 1 : $emailLog->notification->email['bounced'] + 1;
+
+                $emailLog->notification->incrementHandlerStat('email', 'bounced');
                 break;
 
             case 'complaint':
                 $emailLog->status = $emailLog::STATUS_COMPLAINT;
-                $emailLog->notification->email['complaint'] = empty($emailLog->notification->email['complaint']) ? 1 : $emailLog->notification->email['complaint'] + 1;
+                $emailLog->notification->incrementHandlerStat('email', 'complaint');
                 break;
 
             case 'delivery':
                 $emailLog->status = $emailLog::STATUS_DELIVERED;
-                $emailLog->notification->email['delivered'] = empty($emailLog->notification->email['delivered']) ? 1 : $emailLog->notification->email['delivered'] + 1;
+                $emailLog->notification->incrementHandlerStat('email', 'delivered');
                 break;
         }
 
@@ -104,4 +106,5 @@ class Feedback extends AbstractService implements PublicApiInterface
 
         return true;
     }
+
 }
