@@ -33,12 +33,19 @@ class Notification
     /**
      * Set one or more recipients
      *
-     * @param mixed $recipient
+     * @param mixed   $recipient
+     * @param boolean $append Append to the list of existing recipients
      *
      * @return $this
      */
-    public function setRecipient($recipient)
+    public function setRecipient($recipient, $append = true)
     {
+        if (!$append) {
+            $this->recipients = is_array($recipient) ? $recipient : [$recipient];
+
+            return $this;
+        }
+
         if (is_array($recipient)) {
             $this->recipients = array_merge($this->recipients, $recipient);
         } else {
