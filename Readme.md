@@ -19,7 +19,9 @@ $notification = $nm->getNotification('test');
 $file = new File('webiny.json', $this->wStorage('YourStorage'));
 $notification->addAttachment($file, 'custom.json', 'application/json');
 
-$notification->setRecipient('client@email.com', 'Client');
+// the recipient needs to be instance of Recipients\Email, based on that notification manager know what type of notification to send
+$recipient = new \Apps\NotificationManager\Php\Lib\Recipients\Email('client@gmail.com', 'ClientName');
+$notification->setRecipient($recipient);
 $notification->send();
 ```
 
