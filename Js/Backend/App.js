@@ -1,3 +1,4 @@
+import 'Assets/styles.scss';
 import Webiny from 'Webiny';
 import Activity from './Modules/Activity';
 import Email from './Modules/Email';
