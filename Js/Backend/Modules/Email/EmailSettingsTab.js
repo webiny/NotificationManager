@@ -83,7 +83,7 @@ export default () => {
                             <strong> Create New User </strong>
                             .
                         </li>
-                        <li>Give it a username, for example "webiny" and click
+                        <li>Give it a username, for example &quot;webiny&quot; and click
                             <strong> Create </strong>
                             .
                         </li>
@@ -103,7 +103,7 @@ export default () => {
                             Once your user is created, go back to the
                             <strong> Users </strong>
                             list and click on
-                            your user to go to the user's detail page.
+                            your user to go to the user&lsquo;s detail page.
                             <br/>
                         </li>
                         <li>
