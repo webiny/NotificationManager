@@ -2,11 +2,12 @@
 namespace Apps\NotificationManager\Php\Lib;
 
 use Apps\Core\Php\DevTools\Exceptions\AppException;
+use Apps\Core\Php\RequestHandlers\ApiException;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\Settings;
 use Apps\NotificationManager\Php\Entities\Template;
+use Apps\NotificationManager\Php\Lib\Recipients\Email;
 use Apps\NotificationManager\Php\Services\MailQueue;
-use Webiny\Component\Mailer\Email;
 use Webiny\Component\Mailer\Mailer;
 use Webiny\Component\Storage\File\File;
 use Webiny\Component\TemplateEngine\TemplateEngineException;
@@ -155,6 +156,11 @@ class EmailNotificationHandler extends AbstractNotificationHandler
 
     private function scheduleForSending()
     {
+
+        if(count($this->recipients)<1){
+            throw new ApiException('An email notification has to have at least 1 recipient.');
+        }
+
         /* @var $r Email */
         foreach ($this->recipients as $r) {
             // start email log
