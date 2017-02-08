@@ -1,7 +1,7 @@
 import Webiny from 'Webiny';
 import ActivityList from './ActivityList';
 
-class Overview extends Webiny.Module {
+class Activity extends Webiny.Module {
 
     init() {
         const Menu = Webiny.Ui.Menu;
@@ -21,4 +21,4 @@ class Overview extends Webiny.Module {
     }
 }
 
-export default Overview;
+export default Activity;
