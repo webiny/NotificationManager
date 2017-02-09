@@ -4,6 +4,7 @@ import Views from './Views/Views';
 class Templates extends Webiny.Module {
 
     init() {
+        this.name = 'Templates';
         const Menu = Webiny.Ui.Menu;
         const role = 'notification-manager';
 

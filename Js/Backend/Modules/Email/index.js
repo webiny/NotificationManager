@@ -6,6 +6,7 @@ import EmailPreviewTab from './EmailPreviewTab';
 class Email extends Webiny.Module {
 
     init() {
+        this.name = 'Email';
         Webiny.Injector.register('emailSettingsTab', EmailSettingsTab, ['NotificationManager.SettingsForm.Tab']);
         Webiny.Injector.register('emailContentTab', EmailContentTab, ['NotificationManager.NotificationForm.Tab']);
         Webiny.Injector.register('emailPreviewTab', EmailPreviewTab, ['NotificationManager.NotificationForm.Preview']);

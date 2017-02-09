@@ -4,6 +4,7 @@ import ActivityList from './ActivityList';
 class Activity extends Webiny.Module {
 
     init() {
+        this.name = 'Activity';
         const Menu = Webiny.Ui.Menu;
         const role = 'notification-manager';
 
