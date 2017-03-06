@@ -1,24 +1,25 @@
 import Webiny from 'Webiny';
-import Views from './Views/Views';
+import ActivityList from './ActivityList';
 
-class Settings extends Webiny.Module {
+class Activity extends Webiny.Module {
 
     init() {
+        this.name = 'Activity';
         const Menu = Webiny.Ui.Menu;
         const role = 'notification-manager';
 
         this.registerMenus(
             new Menu('Marketing Tools', [
                 new Menu('Notification Manager', [
-                    new Menu('Settings', 'NotificationManager.Settings')
+                    new Menu('Activity', 'NotificationManager.Activity')
                 ]).setRole(role)
             ], 'icon-bell')
         );
 
         this.registerRoutes(
-            new Webiny.Route('NotificationManager.Settings', '/notification-manager/settings', Views.SettingsForm, 'Notification Manager - Settings').setRole(role)
+            new Webiny.Route('NotificationManager.Activity', '/notification-manager/activity', ActivityList, 'Notification Manager - Activity').setRole(role)
         );
     }
 }
 
-export default Settings;
+export default Activity;

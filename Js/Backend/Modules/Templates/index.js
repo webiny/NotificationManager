@@ -1,9 +1,10 @@
 import Webiny from 'Webiny';
 import Views from './Views/Views';
 
-class Template extends Webiny.Module {
+class Templates extends Webiny.Module {
 
     init() {
+        this.name = 'Templates';
         const Menu = Webiny.Ui.Menu;
         const role = 'notification-manager';
 
@@ -23,4 +24,4 @@ class Template extends Webiny.Module {
     }
 }
 
-export default Template;
+export default Templates;
