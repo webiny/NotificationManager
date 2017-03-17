@@ -6,7 +6,7 @@ export default (model, form) => {
         <Ui.Tabs.Tab label="Slack message" icon="fa-slack">
             <Ui.Grid.Row>
                 <Ui.Grid.Col all={12}>
-                    <Ui.Form.Fieldset title={<Ui.Checkbox {...form.bindTo('handlers.slack.send')} label="Send Slack message" grid={12}/>}/>
+                    <Ui.Form.Section title={<Ui.Checkbox {...form.bindTo('handlers.slack.send')} label="Send Slack message" grid={12}/>}/>
                     <Ui.Logic.Hide if={!_.get(model, 'handlers.slack.send')}>
                         <Ui.Input
                             label="Channel/User"

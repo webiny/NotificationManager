@@ -8,7 +8,7 @@ export default () => {
                 <Ui.Tabs.Tab label="General" icon="icon-settings">
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={6}>
-                            <Ui.Form.Fieldset title="SMTP Settings"/>
+                            <Ui.Form.Section title="SMTP Settings"/>
 
                             <Ui.Input
                                 label="Server Name"
@@ -20,7 +20,7 @@ export default () => {
                             <Ui.Input label="Send limit (emails per second)" name="email.sendLimit" validate="required"/>
                         </Ui.Grid.Col>
                         <Ui.Grid.Col all={6}>
-                            <Ui.Form.Fieldset title="AWS SNS Settings"/>
+                            <Ui.Form.Section title="AWS SNS Settings"/>
                             <Ui.Alert title="AWS SES" close={false}>
                                 If you are using AWS SES to send emails, please check the setup guide in the next tab.
                             </Ui.Alert>
@@ -47,7 +47,7 @@ export default () => {
                     </Ui.Grid.Row>
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={6}>
-                            <Ui.Form.Fieldset title="Default Sender"/>
+                            <Ui.Form.Section title="Default Sender"/>
 
                             <Ui.Input
                                 label="Sender Name"
@@ -62,7 +62,7 @@ export default () => {
                 </Ui.Tabs.Tab>
 
                 <Ui.Tabs.Tab label="AWS SES Setup Guide" icon="icon-info-circle">
-                    <Ui.Form.Fieldset title="Step 1: Sign up for AWS and get your access credentials"/>
+                    <Ui.Form.Section title="Step 1: Sign up for AWS and get your access credentials"/>
 
                     <ol>
                         <li>Create an AWS Console account (
@@ -123,7 +123,7 @@ export default () => {
                         </li>
                     </ol>
 
-                    <Ui.Form.Fieldset title="Step 2: Setup AWS SES (Simple Email Service)"/>
+                    <Ui.Form.Section title="Step 2: Setup AWS SES (Simple Email Service)"/>
                     <ol>
                         <li>In the top menu click
                             <strong> Services </strong>
@@ -184,7 +184,7 @@ export default () => {
                         </li>
                     </ol>
 
-                    <Ui.Form.Fieldset title="Step 3: Setup AWS SNS (Simple Notification Service)"/>
+                    <Ui.Form.Section title="Step 3: Setup AWS SNS (Simple Notification Service)"/>
                     <ol>
                         <li>
                             At this point you are already able to send emails,
@@ -253,7 +253,7 @@ export default () => {
                         </li>
                     </ol>
 
-                    <Ui.Form.Fieldset title="Step 4: Configure notifications"/>
+                    <Ui.Form.Section title="Step 4: Configure notifications"/>
 
                     <ol>
                         <li>
@@ -284,7 +284,7 @@ export default () => {
                 </Ui.Tabs.Tab>
 
                 <Ui.Tabs.Tab label="Cron Setup Guide" icon="icon-info-circle">
-                    <Ui.Form.Fieldset title="About"/>
+                    <Ui.Form.Section title="About"/>
 
                     <p>
                         Notification manager sends all the emails in a background process,

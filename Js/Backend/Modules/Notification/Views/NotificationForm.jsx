@@ -81,7 +81,7 @@ NotificationForm.defaultProps = {
                                 <Ui.Tabs.Tab label="General" icon="icon-settings">
                                     <Ui.Grid.Row>
                                         <Ui.Grid.Col all={6}>
-                                            <Ui.Form.Fieldset title="Notification Settings"/>
+                                            <Ui.Form.Section title="Notification Settings"/>
 
                                             <Ui.Input label="Title" name="title" validate="required"/>
                                             <Ui.Input label="Slug" name="slug" readOnly={true}/>
@@ -89,7 +89,7 @@ NotificationForm.defaultProps = {
                                             <Ui.Tags label="Labels" name="labels" placeholder="Add Label"/>
                                         </Ui.Grid.Col>
                                         <Ui.Grid.Col all={6}>
-                                            <Ui.Form.Fieldset title="Sending History"/>
+                                            <Ui.Form.Section title="Sending History"/>
                                             <SendingHistory/>
                                         </Ui.Grid.Col>
                                     </Ui.Grid.Row>
@@ -106,10 +106,10 @@ NotificationForm.defaultProps = {
                                         <Ui.Dynamic.Header>
                                             {() => (
                                                 <Ui.Grid.Row>
-                                                    <Ui.Grid.Col all={2}><Ui.Form.Fieldset title="Variable name"/></Ui.Grid.Col>
-                                                    <Ui.Grid.Col all={4}><Ui.Form.Fieldset
+                                                    <Ui.Grid.Col all={2}><Ui.Form.Section title="Variable name"/></Ui.Grid.Col>
+                                                    <Ui.Grid.Col all={4}><Ui.Form.Section
                                                         title="Entity (leave blank for custom variables)"/></Ui.Grid.Col>
-                                                    <Ui.Grid.Col all={3}><Ui.Form.Fieldset title="Description"/></Ui.Grid.Col>
+                                                    <Ui.Grid.Col all={3}><Ui.Form.Section title="Description"/></Ui.Grid.Col>
                                                     <Ui.Grid.Col all={3}></Ui.Grid.Col>
                                                 </Ui.Grid.Row>
                                             )}

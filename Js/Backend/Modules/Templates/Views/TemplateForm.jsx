@@ -36,7 +36,7 @@ TemplateForm.defaultProps = {
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={8}>
 
-                                    <Ui.Form.Fieldset title="Template"/>
+                                    <Ui.Form.Section title="Template"/>
 
                                     <Ui.Input label="Name" name="name" validate="required"/>
                                     <Ui.CodeEditor label="Content" name="content" description="Enter plain text or HTML content"/>
@@ -45,7 +45,7 @@ TemplateForm.defaultProps = {
 
                                 <Ui.Grid.Col all={4}>
 
-                                    <Ui.Form.Fieldset title="System Tags"/>
+                                    <Ui.Form.Section title="System Tags"/>
 
                                     <dl>
                                         <dt>&#123;_hostName_&#125;</dt>
