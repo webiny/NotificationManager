@@ -58,12 +58,13 @@ class EmailNotificationHandler extends AbstractNotificationHandler
         // append tracker
         $markReadUrl = '/services/notification-manager/feedback/email/mark-read/{emailLog}/1px';
         $trackerPath = $this->wConfig()->get('Application.ApiPath') . $markReadUrl;
-        $tracker = '<img src="' . $trackerPath . '" style="border:none; width:1px; height:1px; position: absolute" />';
+        $tracker = '<img src="' . $trackerPath . '" style="height:1px !important; width:1px !important; border: 0 !important; margin: 0 !important; padding: 0 !important" width="1" height="1" border="0">';
         $this->emailContent .= $tracker;
 
         // combine the template and the content
         $replace = [
             '{_content_}'  => $this->emailContent,
+            '{_subject_}'  => $this->emailSubject,
             '{_hostName_}' => $this->wConfig()->get('Application.WebPath')
         ];
 
@@ -157,7 +158,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
     private function scheduleForSending()
     {
 
-        if(count($this->recipients)<1){
+        if (count($this->recipients) < 1) {
             throw new ApiException('An email notification has to have at least 1 recipient.');
         }
 

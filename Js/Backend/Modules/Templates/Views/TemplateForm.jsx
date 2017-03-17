@@ -60,6 +60,11 @@ TemplateForm.defaultProps = {
                                     </dl>
 
                                     <dl>
+                                        <dt>&#123;_subject_&#125;</dt>
+                                        <dd>Variable containing notification subject.</dd>
+                                    </dl>
+
+                                    <dl>
                                         <dt>Notification variables</dt>
                                         <dd>Additionally you can include any of the variables that are available inside your
                                             notification, that will be using this template.
