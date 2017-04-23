@@ -14,7 +14,7 @@ export default (model, form) => {
                                 {...form.bindTo('slack.token')}
                                 description={
                                     <span>
-                                        Bot token to use when sending notifications.
+                                        Bot token to use when sending notifications.&nbsp;
                                         <a target="_blank" href="https://api.slack.com/bot-users">Create your Slack bot here.</a>
                                     </span>
                                 }/>
