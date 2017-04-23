@@ -1,6 +1,4 @@
 import Webiny from 'Webiny';
-const Ui = Webiny.Ui.Components;
-const Table = Ui.List.Table;
 
 class TemplateList extends Webiny.Ui.View {
     constructor(props) {
@@ -24,46 +22,45 @@ TemplateList.defaultProps = {
         };
 
         return (
-            <Ui.View.List>
-                <Ui.View.Header title="Templates">
-                    <Ui.Link type="primary" align="right" route="NotificationManager.Template.Create">
-                        <Ui.Icon icon="icon-plus-circled"/>
-                        Create new Template
-                    </Ui.Link>
-                </Ui.View.Header>
-
-                <Ui.View.Body>
-                    <Ui.List ui="templateList" {...listProps}>
-
-                        <Ui.List.FormFilters>
-                            {(applyFilters, resetFilters) => (
-                                <Ui.Grid.Row>
-                                    <Ui.Grid.Col all={10}>
-                                        <Ui.Input {...searchProps} onEnter={applyFilters()}/>
-                                    </Ui.Grid.Col>
-                                    <Ui.Grid.Col all={2}>
-                                        <Ui.Button type="secondary" align="right" label="Reset Filter" onClick={resetFilters()}/>
-                                    </Ui.Grid.Col>
-                                </Ui.Grid.Row>
-                            )}
-                        </Ui.List.FormFilters>
-
-                        <Table>
-                            <Table.Row>
-                                <Table.Field name="name" align="left" label="Name" sort="name" route="NotificationManager.Template.Edit"/>
-                                <Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
-
-                                <Table.Actions>
-                                    <Table.EditAction route="NotificationManager.Template.Edit"/>
-                                    <Table.DeleteAction/>
-                                </Table.Actions>
-                            </Table.Row>
-                        </Table>
-
-                        <Ui.List.Pagination/>
-                    </Ui.List>
-                </Ui.View.Body>
-            </Ui.View.List>
+            <Webiny.Ui.LazyLoad modules={['View', 'Grid', 'Link', 'Icon', 'List', 'Input', 'Button']}>
+                {({View, Grid, Link, Icon, List, Input, Button}) => (
+                    <View.List>
+                        <View.Header title="Templates">
+                            <Link type="primary" align="right" route="NotificationManager.Template.Create">
+                                <Icon icon="icon-plus-circled"/>
+                                Create new Template
+                            </Link>
+                        </View.Header>
+                        <View.Body>
+                            <List ui="templateList" {...listProps}>
+                                <List.FormFilters>
+                                    {(applyFilters, resetFilters) => (
+                                        <Grid.Row>
+                                            <Grid.Col all={10}>
+                                                <Input {...searchProps} onEnter={applyFilters()}/>
+                                            </Grid.Col>
+                                            <Grid.Col all={2}>
+                                                <Button type="secondary" align="right" label="Reset Filter" onClick={resetFilters()}/>
+                                            </Grid.Col>
+                                        </Grid.Row>
+                                    )}
+                                </List.FormFilters>
+                                <List.Table>
+                                    <List.Table.Row>
+                                        <List.Table.Field name="name" align="left" label="Name" sort="name" route="NotificationManager.Template.Edit"/>
+                                        <List.Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
+                                        <List.Table.Actions>
+                                            <List.Table.EditAction route="NotificationManager.Template.Edit"/>
+                                            <List.Table.DeleteAction/>
+                                        </List.Table.Actions>
+                                    </List.Table.Row>
+                                </List.Table>
+                                <List.Pagination/>
+                            </List>
+                        </View.Body>
+                    </View.List>
+                )}
+            </Webiny.Ui.LazyLoad>
         );
     }
 };

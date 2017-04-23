@@ -1,8 +1,6 @@
 import Webiny from 'Webiny';
 import PreviewModal from './NotificationForm/PreviewModal';
 import SendingHistory from './NotificationForm/SendingHistory';
-const Ui = Webiny.Ui.Components;
-
 
 class NotificationForm extends Webiny.Ui.View {
     constructor(props) {
@@ -12,10 +10,12 @@ class NotificationForm extends Webiny.Ui.View {
         this.bindMethods('saveAndPreview');
     }
 
-    renderNotificationTabs(model, form) {
+    registerTabs(model, form) {
+        const {Tabs} = this.props;
         const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Tab');
         return tabs.map(tab => {
-            return React.cloneElement(tab.value(model, form), {key: tab.name});
+            const tabProps = _.assign({key: tab.name}, tab.value(model, form));
+            return <Tabs.Tab {...tabProps}/>
         });
     }
 
@@ -69,104 +69,112 @@ NotificationForm.defaultProps = {
             }
         };
 
+        const {Form, View, Tabs, Grid, Section, Input, Textarea, Tags, Alert, Dynamic, Select, Button} = this.props;
+
         return (
-            <Ui.Form ui="notificationForm" {...formProps}>
+            <Form ui="notificationForm" {...formProps}>
                 {(model, form) => (
-                    <Ui.View.Form>
-                        <Ui.View.Header title="Notification"/>
+                    <View.Form>
+                        <View.Header title="Notification"/>
 
-                        <Ui.View.Body noPadding={true}>
-                            <PreviewModal ui="previewModal" model={model}/>
-                            <Ui.Tabs size="large">
-                                <Ui.Tabs.Tab label="General" icon="icon-settings">
-                                    <Ui.Grid.Row>
-                                        <Ui.Grid.Col all={6}>
-                                            <Ui.Form.Section title="Notification Settings"/>
+                        <View.Body noPadding={true}>
+                            <PreviewModal ui="previewModal" model={model} form={form}/>
+                            <Tabs size="large">
+                                <Tabs.Tab label="General" icon="icon-settings">
+                                    <Grid.Row>
+                                        <Grid.Col all={6}>
+                                            <Section title="Notification Settings"/>
 
-                                            <Ui.Input label="Title" name="title" validate="required"/>
-                                            <Ui.Input label="Slug" name="slug" readOnly={true}/>
-                                            <Ui.Textarea label="Description" name="description"/>
-                                            <Ui.Tags label="Labels" name="labels" placeholder="Add Label"/>
-                                        </Ui.Grid.Col>
-                                        <Ui.Grid.Col all={6}>
-                                            <Ui.Form.Section title="Sending History"/>
+                                            <Input label="Title" name="title" validate="required"/>
+                                            <Input label="Slug" name="slug" readOnly={true}/>
+                                            <Textarea label="Description" name="description"/>
+                                            <Tags label="Labels" name="labels" placeholder="Add Label"/>
+                                        </Grid.Col>
+                                        <Grid.Col all={6}>
+                                            <Section title="Sending History"/>
                                             <SendingHistory/>
-                                        </Ui.Grid.Col>
-                                    </Ui.Grid.Row>
-                                </Ui.Tabs.Tab>
-                                <Ui.Tabs.Tab label="Variables" icon="icon-menu">
-                                    <Ui.Alert title="About">
+                                        </Grid.Col>
+                                    </Grid.Row>
+                                </Tabs.Tab>
+                                <Tabs.Tab label="Variables" icon="icon-menu">
+                                    <Alert title="About">
                                         This is a list of variables that you can use in your notification content.
                                         The list also defines the data source from where the variable value will be pulled.
-                                    </Ui.Alert>
-                                    <Ui.Alert title="Important" type="warning">
+                                    </Alert>
+                                    <Alert title="Important" type="warning">
                                         Changes you make to the variables are not saved until you save the notification!
-                                    </Ui.Alert>
-                                    <Ui.Dynamic.Fieldset name="variables" ui="fieldset">
-                                        <Ui.Dynamic.Header>
+                                    </Alert>
+                                    <Dynamic.Fieldset name="variables" ui="fieldset">
+                                        <Dynamic.Header>
                                             {() => (
-                                                <Ui.Grid.Row>
-                                                    <Ui.Grid.Col all={2}><Ui.Form.Section title="Variable name"/></Ui.Grid.Col>
-                                                    <Ui.Grid.Col all={4}><Ui.Form.Section
-                                                        title="Entity (leave blank for custom variables)"/></Ui.Grid.Col>
-                                                    <Ui.Grid.Col all={3}><Ui.Form.Section title="Description"/></Ui.Grid.Col>
-                                                    <Ui.Grid.Col all={3}></Ui.Grid.Col>
-                                                </Ui.Grid.Row>
+                                                <Grid.Row>
+                                                    <Grid.Col all={2}><Section title="Variable name"/></Grid.Col>
+                                                    <Grid.Col all={4}><Section
+                                                        title="Entity (leave blank for custom variables)"/></Grid.Col>
+                                                    <Grid.Col all={3}><Section title="Description"/></Grid.Col>
+                                                    <Grid.Col all={3}/>
+                                                </Grid.Row>
                                             )}
-                                        </Ui.Dynamic.Header>
-                                        <Ui.Dynamic.Row>
+                                        </Dynamic.Header>
+                                        <Dynamic.Row>
                                             {(record, actions) => {
                                                 return (
-                                                    <Ui.Grid.Row>
-                                                        <Ui.Grid.Col all={2}>
-                                                            <Ui.Input placeholder="Key" name="key" validate="required"/>
-                                                        </Ui.Grid.Col>
-                                                        <Ui.Grid.Col all={4}>
-                                                            <Ui.Select {...entitySelect} label={null}/>
-                                                        </Ui.Grid.Col>
-                                                        <Ui.Grid.Col all={3}>
-                                                            <Ui.Input placeholder="Description" name="description"/>
-                                                        </Ui.Grid.Col>
-                                                        <Ui.Grid.Col all={3}>
+                                                    <Grid.Row>
+                                                        <Grid.Col all={2}>
+                                                            <Input placeholder="Key" name="key" validate="required"/>
+                                                        </Grid.Col>
+                                                        <Grid.Col all={4}>
+                                                            <Select {...entitySelect} label={null}/>
+                                                        </Grid.Col>
+                                                        <Grid.Col all={3}>
+                                                            <Input placeholder="Description" name="description"/>
+                                                        </Grid.Col>
+                                                        <Grid.Col all={3}>
                                                             <div className="btn-group">
-                                                                <Ui.Button type="primary" label="Add" onClick={actions.add(record)}/>
-                                                                <Ui.Button type="secondary" label="x" onClick={actions.remove(record)}/>
+                                                                <Button type="primary" label="Add"
+                                                                        onClick={actions.add(record)}/>
+                                                                <Button type="secondary" label="x"
+                                                                        onClick={actions.remove(record)}/>
                                                             </div>
-                                                        </Ui.Grid.Col>
-                                                    </Ui.Grid.Row>
+                                                        </Grid.Col>
+                                                    </Grid.Row>
                                                 );
                                             }}
-                                        </Ui.Dynamic.Row>
-                                        <Ui.Dynamic.Empty>
+                                        </Dynamic.Row>
+                                        <Dynamic.Empty>
                                             {(actions) => {
                                                 return (
-                                                    <Ui.Grid.Row>
-                                                        <Ui.Grid.Col all={12}>
-                                                            <h5>You have not defined any variables yet. Click "Add variable" to define your
+                                                    <Grid.Row>
+                                                        <Grid.Col all={12}>
+                                                            <h5>You have not defined any variables yet. Click "Add variable" to
+                                                                define your
                                                                 first variable!</h5>
-                                                            <Ui.Button type="primary" label="Add variable" onClick={actions.add()}/>
-                                                        </Ui.Grid.Col>
-                                                    </Ui.Grid.Row>
+                                                            <Button type="primary" label="Add variable" onClick={actions.add()}/>
+                                                        </Grid.Col>
+                                                    </Grid.Row>
                                                 );
                                             }}
-                                        </Ui.Dynamic.Empty>
-                                    </Ui.Dynamic.Fieldset>
-                                </Ui.Tabs.Tab>
-                                {this.renderNotificationTabs(model, form)}
-                            </Ui.Tabs>
-                        </Ui.View.Body>
-                        <Ui.View.Footer>
-                            <Ui.Button align="right" type="primary" onClick={form.submit}>Save Changes</Ui.Button>
-                            <Ui.Button align="right" type="secondary" onClick={() => this.saveAndPreview(model, form)}>Save &amp; Send
-                                Preview</Ui.Button>
-                            <Ui.Button align="left" type="default" onClick={form.cancel}>Go Back</Ui.Button>
-                        </Ui.View.Footer>
-                    </Ui.View.Form>
+                                        </Dynamic.Empty>
+                                    </Dynamic.Fieldset>
+                                </Tabs.Tab>
+                                {this.registerTabs(model, form)}
+                            </Tabs>
+                        </View.Body>
+                        <View.Footer>
+                            <Button align="right" type="primary" onClick={form.submit}>Save Changes</Button>
+                            <Button align="right" type="secondary" onClick={() => this.saveAndPreview(model, form)}>
+                                Save &amp; Send Preview
+                            </Button>
+                            <Button align="left" type="default" onClick={form.cancel}>Go Back</Button>
+                        </View.Footer>
+                    </View.Form>
                 )}
-            </Ui.Form>
+            </Form>
         );
     }
 };
 
 
-export default NotificationForm;
+export default Webiny.createComponent(NotificationForm, {
+    modules: ['Form', 'View', 'Tabs', 'Grid', 'Section', 'Input', 'Textarea', 'Tags', 'Alert', 'Dynamic', 'Select', 'Button']
+});

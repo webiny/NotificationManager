@@ -1,5 +1,4 @@
 import Webiny from 'Webiny';
-const Ui = Webiny.Ui.Components;
 
 class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
 
@@ -16,37 +15,39 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
             }
         };
 
+        const {Modal, Form, Grid, Input, Textarea, Button} = this.props;
+
         return (
-            <Ui.Modal.Dialog>
-                <Ui.Modal.Header title="New Notification"/>
-                <Ui.Modal.Body>
-                    <Ui.Form {...formProps}>
+            <Modal.Dialog>
+                <Modal.Header title="New Notification"/>
+                <Modal.Body>
+                    <Form {...formProps}>
                         {() => (
-                            <Ui.Grid.Row>
-                                <Ui.Grid.Col all={12}>
-                                    <Ui.Input label="Title" name="title" validate="required"/>
-                                </Ui.Grid.Col>
-                                <Ui.Grid.Col all={12}>
-                                    <Ui.Input
+                            <Grid.Row>
+                                <Grid.Col all={12}>
+                                    <Input label="Title" name="title" validate="required"/>
+                                </Grid.Col>
+                                <Grid.Col all={12}>
+                                    <Input
                                         label="Slug"
                                         name="slug"
                                         placeholder="Leave blank for automatic slug"
                                         description="This cannot be changed later."/>
-                                </Ui.Grid.Col>
-                                <Ui.Grid.Col all={12}>
-                                    <Ui.Textarea label="Description" name="description"/>
-                                </Ui.Grid.Col>
-                            </Ui.Grid.Row>
+                                </Grid.Col>
+                                <Grid.Col all={12}>
+                                    <Textarea label="Description" name="description"/>
+                                </Grid.Col>
+                            </Grid.Row>
                         )}
-                    </Ui.Form>
-                </Ui.Modal.Body>
-                <Ui.Modal.Footer>
-                    <Ui.Button type="secondary" label="Cancel" onClick={this.hide}/>
-                    <Ui.Button type="primary" label="Add Notification" onClick={this.ui('newNotificationForm:submit')}/>
-                </Ui.Modal.Footer>
-            </Ui.Modal.Dialog>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button type="secondary" label="Cancel" onClick={this.hide}/>
+                    <Button type="primary" label="Add Notification" onClick={this.ui('newNotificationForm:submit')}/>
+                </Modal.Footer>
+            </Modal.Dialog>
         );
     }
 }
 
-export default NotificationCreateNewModal;
+export default Webiny.createComponent(NotificationCreateNewModal, {modules: ['Modal', 'Form', 'Grid', 'Input', 'Textarea', 'Button']});

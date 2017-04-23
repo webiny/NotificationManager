@@ -1,5 +1,5 @@
 import Webiny from 'Webiny';
-import Views from './Views/Views';
+import SettingsForm from './SettingsForm';
 
 class Settings extends Webiny.Module {
 
@@ -17,7 +17,7 @@ class Settings extends Webiny.Module {
         );
 
         this.registerRoutes(
-            new Webiny.Route('NotificationManager.Settings', '/notification-manager/settings', Views.SettingsForm, 'Notification Manager - Settings').setRole(role)
+            new Webiny.Route('NotificationManager.Settings', '/notification-manager/settings', SettingsForm, 'Notification Manager - Settings').setRole(role)
         );
     }
 }

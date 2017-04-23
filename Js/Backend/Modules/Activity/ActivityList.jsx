@@ -1,6 +1,4 @@
 import Webiny from 'Webiny';
-const Ui = Webiny.Ui.Components;
-const Table = Ui.List.Table;
 
 class ActivityList extends Webiny.Ui.View {
     constructor(props) {
@@ -45,70 +43,69 @@ ActivityList.defaultProps = {
         };
 
         return (
-            <Ui.View.List>
-                <Ui.View.Header title="Activity"/>
-                <Ui.View.Body>
-                    <Ui.List ui="templateList" {...listProps}>
-
-                        <Ui.List.FormFilters>
-                            {(applyFilters, resetFilters) => (
-                                <Ui.Grid.Row>
-                                    <Ui.Grid.Col all={5}>
-                                        <Ui.Input {...searchProps} onEnter={applyFilters()}/>
-                                    </Ui.Grid.Col>
-                                    <Ui.Grid.Col all={5}>
-                                        <Ui.Date {...dateProps} onEnter={applyFilters()}/>
-                                    </Ui.Grid.Col>
-                                    <Ui.Grid.Col all={2}>
-                                        <Ui.Button type="secondary" align="right" label="Reset Filters" onClick={resetFilters()}/>
-                                    </Ui.Grid.Col>
-                                </Ui.Grid.Row>
-                            )}
-                        </Ui.List.FormFilters>
-
-                        <Table>
-                            <Table.Row>
-                                <Table.CaseField name="status" label="Status" align="left">
-                                    <case value="pending">
-                                        <Ui.Label type="default">Pending</Ui.Label>
-                                    </case>
-                                    <case value="error">
-                                        <Ui.Label type="error">Error</Ui.Label>
-                                    </case>
-                                    <case value="sent">
-                                        <Ui.Label type="info">Sent</Ui.Label>
-                                    </case>
-                                    <case value="delivered">
-                                        <Ui.Label type="success">Delivered</Ui.Label>
-                                    </case>
-                                    <case value="hard-bounce">
-                                        <Ui.Label type="error">Hard Bounce</Ui.Label>
-                                    </case>
-                                    <case value="soft-bounce">
-                                        <Ui.Label type="warning">Soft Bounce</Ui.Label>
-                                    </case>
-                                    <case value="complaint">
-                                        <Ui.Label type="error">Complaint</Ui.Label>
-                                    </case>
-                                    <case value="read">
-                                        <Ui.Label type="success">Read</Ui.Label>
-                                    </case>
-                                </Table.CaseField>
-                                <Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
-                                <Table.Field name="email" align="left" label="Email" sort="email"/>
-                                <Table.Field name="subject" align="left" label="Subject" sort="subject"/>
-                                <Table.Field align="right">
-                                    {data => <Ui.Button type="default" label="Show Content" onClick={() => this.showContent(data.id)}/>}
-                                </Table.Field>
-
-                            </Table.Row>
-                        </Table>
-
-                        <Ui.List.Pagination/>
-                    </Ui.List>
-
-                </Ui.View.Body>
-            </Ui.View.List>
+            <Webiny.Ui.LazyLoad modules={['View', 'List', 'Grid', 'Button', 'Input', 'Date', 'Label']}>
+                {(Ui) => (
+                    <Ui.View.List>
+                        <Ui.View.Header title="Activity"/>
+                        <Ui.View.Body>
+                            <Ui.List ui="templateList" {...listProps}>
+                                <Ui.List.FormFilters>
+                                    {(applyFilters, resetFilters) => (
+                                        <Ui.Grid.Row>
+                                            <Ui.Grid.Col all={5}>
+                                                <Ui.Input {...searchProps} onEnter={applyFilters()}/>
+                                            </Ui.Grid.Col>
+                                            <Ui.Grid.Col all={5}>
+                                                <Ui.Date {...dateProps} onEnter={applyFilters()}/>
+                                            </Ui.Grid.Col>
+                                            <Ui.Grid.Col all={2}>
+                                                <Ui.Button type="secondary" align="right" label="Reset Filters" onClick={resetFilters()}/>
+                                            </Ui.Grid.Col>
+                                        </Ui.Grid.Row>
+                                    )}
+                                </Ui.List.FormFilters>
+                                <Ui.List.Table>
+                                    <Ui.List.Table.Row>
+                                        <Ui.List.Table.CaseField name="status" label="Status" align="left">
+                                            <case value="pending">
+                                                <Ui.Label type="default">Pending</Ui.Label>
+                                            </case>
+                                            <case value="error">
+                                                <Ui.Label type="error">Error</Ui.Label>
+                                            </case>
+                                            <case value="sent">
+                                                <Ui.Label type="info">Sent</Ui.Label>
+                                            </case>
+                                            <case value="delivered">
+                                                <Ui.Label type="success">Delivered</Ui.Label>
+                                            </case>
+                                            <case value="hard-bounce">
+                                                <Ui.Label type="error">Hard Bounce</Ui.Label>
+                                            </case>
+                                            <case value="soft-bounce">
+                                                <Ui.Label type="warning">Soft Bounce</Ui.Label>
+                                            </case>
+                                            <case value="complaint">
+                                                <Ui.Label type="error">Complaint</Ui.Label>
+                                            </case>
+                                            <case value="read">
+                                                <Ui.Label type="success">Read</Ui.Label>
+                                            </case>
+                                        </Ui.List.Table.CaseField>
+                                        <Ui.List.Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
+                                        <Ui.List.Table.Field name="email" align="left" label="Email" sort="email"/>
+                                        <Ui.List.Table.Field name="subject" align="left" label="Subject" sort="subject"/>
+                                        <Ui.List.Table.Field align="right">
+                                            {data => <Ui.Button type="default" label="Show Content" onClick={() => this.showContent(data.id)}/>}
+                                        </Ui.List.Table.Field>
+                                    </Ui.List.Table.Row>
+                                </Ui.List.Table>
+                                <Ui.List.Pagination/>
+                            </Ui.List>
+                        </Ui.View.Body>
+                    </Ui.View.List>
+                )}
+            </Webiny.Ui.LazyLoad>
         );
     }
 };

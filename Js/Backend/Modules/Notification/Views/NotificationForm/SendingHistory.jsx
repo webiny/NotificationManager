@@ -1,10 +1,25 @@
 import Webiny from 'Webiny';
-import List from '../../../Activity/ActivityList';
-const Ui = Webiny.Ui.Components;
-const Table = Ui.List.Table;
 
-class SendingHistory extends List {
+class SendingHistory extends Webiny.Ui.View {
+    constructor(props) {
+        super(props);
 
+        this.bindMethods('showContent');
+    }
+
+    showContent(id) {
+        const myWindow = window.open('', '_blank', 'width=800,height=600');
+        const api = new Webiny.Api.Endpoint('/entities/notification-manager/email-log').setQuery({'_fields': 'content'});
+
+        api.get('/' + id).then((response) => {
+            // tell to the feedback service not to mark email as read on the preview
+            response.data.data.content = response.data.data.content.replace(/\/1px/, '/1px?preview=true');
+
+            // show the preview window
+            myWindow.document.write(response.data.data.content);
+            myWindow.focus();
+        });
+    }
 }
 
 SendingHistory.defaultProps = {
@@ -19,21 +34,24 @@ SendingHistory.defaultProps = {
         };
 
         return (
-            <Ui.List ui="templateList" {...listProps}>
-                <Table>
-                    <Table.Row>
-                        <Table.Empty/>
-                        <Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
-                        <Table.Field name="email" align="left" label="Email" sort="email"/>
-                        <Table.Field align="right">
-                            {data => <Ui.Link type="default" onClick={() => this.showContent(data.id)}>Show Content</Ui.Link>}
-                        </Table.Field>
+            <Webiny.Ui.LazyLoad modules={['List', 'Link']}>
+                {({List, Link}) => (
+                    <List ui="templateList" {...listProps}>
+                        <List.Table>
+                            <List.Table.Row>
+                                <List.Table.Empty/>
+                                <List.Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
+                                <List.Table.Field name="email" align="left" label="Email" sort="email"/>
+                                <List.Table.Field align="right">
+                                    {data => <Link type="default" onClick={() => this.showContent(data.id)}>Show Content</Link>}
+                                </List.Table.Field>
 
-                    </Table.Row>
-                </Table>
-                <Ui.List.Pagination/>
-            </Ui.List>
-
+                            </List.Table.Row>
+                        </List.Table>
+                        <List.Pagination/>
+                    </List>
+                )}
+            </Webiny.Ui.LazyLoad>
         );
     }
 };

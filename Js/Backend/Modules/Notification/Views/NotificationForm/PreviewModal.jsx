@@ -1,5 +1,4 @@
 import Webiny from 'Webiny';
-const Ui = Webiny.Ui.Components;
 
 class PreviewModal extends Webiny.Ui.ModalComponent {
 
@@ -32,43 +31,47 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Preview');
         let content = null;
 
+        const {Alert, Tabs, Modal, Form, Button} = this.props;
+
         if (this.state.response) {
             content = this.state.response.map((r, i) => {
                 return (
-                    <Ui.Alert key={i} type={r.status ? 'success' : 'danger'}>{r.message}</Ui.Alert>
+                    <Alert key={i} type={r.status ? 'success' : 'danger'}>{r.message}</Alert>
                 );
             });
         }
 
         if (!this.state.response) {
             content = (
-                <Ui.Tabs position="left">
+                <Tabs position="left">
                     {tabs.map(tab => {
-                        const tabContent = tab.value(this.props.model);
-                        return tabContent ? React.cloneElement(tabContent, {key: tab.name}) : null;
+                        const tabProps = tab.value(this.props.model, this.props.form);
+                        return tabProps ? <Tabs.Tab key={tab.name} {...tabProps}/> : null;
                     })}
-                </Ui.Tabs>
+                </Tabs>
             );
         }
 
         return (
-            <Ui.Modal.Dialog><Ui.Form onSubmit={this.submit}>
-                {(model, form) => (
-                    <wrapper>
-                        {this.state.loading ? <Ui.Loader/> : null}
-                        <Ui.Modal.Header title="Preview Notification"/>
-                        <Ui.Modal.Body noPadding={!this.state.response}>
-                            {content}
-                        </Ui.Modal.Body>
-                        <Ui.Modal.Footer>
-                            <Ui.Button type="default" label="Close" onClick={this.hide}/>
-                            <Ui.Button type="primary" label="Send Preview" onClick={form.submit}/>
-                        </Ui.Modal.Footer>
-                    </wrapper>
-                )}
-            </Ui.Form></Ui.Modal.Dialog>
+            <Modal.Dialog>
+                <Form onSubmit={this.submit}>
+                    {(model, form) => (
+                        <wrapper>
+                            {this.state.loading ? <Loader/> : null}
+                            <Modal.Header title="Preview Notification"/>
+                            <Modal.Body noPadding={!this.state.response}>
+                                {content}
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button type="default" label="Close" onClick={this.hide}/>
+                                <Button type="primary" label="Send Preview" onClick={form.submit}/>
+                            </Modal.Footer>
+                        </wrapper>
+                    )}
+                </Form>
+            </Modal.Dialog>
         );
     }
 }
 
-export default PreviewModal;
+export default Webiny.createComponent(PreviewModal, {modules: ['Alert', 'Tabs', 'Modal', 'Form', 'Button']});

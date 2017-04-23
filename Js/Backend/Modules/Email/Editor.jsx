@@ -1,11 +1,11 @@
 import Webiny from 'Webiny';
-const Ui = Webiny.Ui.Components;
 
 class Editor extends Webiny.Ui.Component {
     constructor(props) {
         super(props);
 
         this.bindMethods(
+            'setup',
             'detectVariable',
             'renderOption',
             'selectItem',
@@ -24,10 +24,26 @@ class Editor extends Webiny.Ui.Component {
         this.attributes = {};
     }
 
-    componentDidMount() {
-        super.componentDidMount();
+    componentDidUpdate() {
+        super.componentDidUpdate();
+        if (this.state.options) {
+            // Make sure the list is scrolled to selected item
+            const list = ReactDOM.findDOMNode(this).querySelector('.autosuggest');
+            const item = ReactDOM.findDOMNode(this).querySelector('li.selected');
+            const itemBottom = item.offsetTop + item.offsetHeight;
+            const itemTop = item.offsetTop;
+            if (itemBottom >= list.scrollTop + list.offsetHeight) {
+                list.scrollTop = itemBottom - list.offsetHeight;
+            }
 
-        this.editor = this.refs.editor.getEditor();
+            if (itemTop < list.scrollTop) {
+                list.scrollTop = itemTop;
+            }
+        }
+    }
+
+    setup(htmlEditor) {
+        this.editor = htmlEditor.getEditor();
 
         this.editor.on('text-change', (delta, oldDelta, source) => {
             if (source === 'user') {
@@ -70,26 +86,6 @@ class Editor extends Webiny.Ui.Component {
                 return true;
             }
         });
-
-        window.qe = this.editor;
-    }
-
-    componentDidUpdate() {
-        super.componentDidUpdate();
-        if (this.state.options) {
-            // Make sure the list is scrolled to selected item
-            const list = ReactDOM.findDOMNode(this).querySelector('.autosuggest');
-            const item = ReactDOM.findDOMNode(this).querySelector('li.selected');
-            const itemBottom = item.offsetTop + item.offsetHeight;
-            const itemTop = item.offsetTop;
-            if (itemBottom >= list.scrollTop + list.offsetHeight) {
-                list.scrollTop = itemBottom - list.offsetHeight;
-            }
-
-            if (itemTop < list.scrollTop) {
-                list.scrollTop = itemTop;
-            }
-        }
     }
 
     setOptions(options) {
@@ -195,20 +191,22 @@ class Editor extends Webiny.Ui.Component {
 
         const type = <span className="type">{_.has(item, 'entity') ? item.entity : item.type}</span>;
 
+        const {Grid, Icon} = this.props;
+
         return (
             <li key={index} className={this.classSet(itemClasses)} {...linkProps}>
-                <Ui.Grid.Row>
-                    <Ui.Grid.Col all={1}>
-                        <Ui.Icon icon={_.has(item, 'entity') ? 'fa-database' : 'fa-cube'}/>
-                    </Ui.Grid.Col>
-                    <Ui.Grid.Col all={6}>
+                <Grid.Row>
+                    <Grid.Col all={1}>
+                        <Icon icon={_.has(item, 'entity') ? 'fa-database' : 'fa-cube'}/>
+                    </Grid.Col>
+                    <Grid.Col all={6}>
                         <span className="title">{item.key}</span>
                         {type}
-                    </Ui.Grid.Col>
-                    <Ui.Grid.Col all={5} className="text-right">
+                    </Grid.Col>
+                    <Grid.Col all={5} className="text-right">
                         {item.description ? <span className="description">{item.description || ''}</span> : null}
-                    </Ui.Grid.Col>
-                </Ui.Grid.Row>
+                    </Grid.Col>
+                </Grid.Row>
             </li>
         );
     }
@@ -317,13 +315,15 @@ Editor.defaultProps = {
             );
         }
 
+        const {HtmlEditor} = this.props;
+
         return (
             <div className="notification-manager-editor">
-                <Ui.HtmlEditor ref="editor" {..._.omit(this.props, ['renderer', 'children', 'variables'])}/>
+                <HtmlEditor onComponentDidMount={editor => this.setup(editor)} {..._.omit(this.props, ['renderer', 'children', 'variables'])}/>
                 {dropdownMenu}
             </div>
         );
     }
 };
 
-export default Editor;
+export default Webiny.createComponent(Editor, {modules: ['Grid', 'Icon', 'HtmlEditor']});
