@@ -37,8 +37,8 @@ class SlackNotificationHandler extends AbstractNotificationHandler
     {
         $this->loadSettings();
         $slack = $this->notification->handlers['slack'];
-        $this->channel = $slack['channel'];
-        $this->message = $slack['message'];
+        $this->channel = $slack['channel'] ?? '';
+        $this->message = $slack['message'] ?? '';
         $variables = $this->parseVariables();
         $this->message = $this->templateInstance->fetch('eval:' . $this->message, $variables);
         $this->sendMessage();
@@ -64,7 +64,7 @@ class SlackNotificationHandler extends AbstractNotificationHandler
 
         // validate message
         try {
-            $this->templateInstance->fetch('eval:' . $handler['message']);
+            $this->templateInstance->fetch('eval:' . $handler['message'] ?? '');
         } catch (TemplateEngineException $e) {
             throw new AppException('Invalid template syntax: ' . $e->getMessage());
         }

@@ -34,10 +34,8 @@ NotificationList.defaultProps = {
                             </Ui.Button>
                             <NotificationCreateNewModal ui="notificationCreateNewModal"/>
                         </Ui.View.Header>
-
                         <Ui.View.Body>
                             <Ui.List ui="notificationList" {...listProps}>
-
                                 <Ui.List.FormFilters>
                                     {(applyFilters, resetFilters) => (
                                         <Ui.Grid.Row>
@@ -50,7 +48,6 @@ NotificationList.defaultProps = {
                                         </Ui.Grid.Row>
                                     )}
                                 </Ui.List.FormFilters>
-
                                 <Ui.List.Table>
                                     <Ui.List.Table.Row>
                                         <Ui.List.Table.Field align="left" label="Title" sort="title" route="NotificationManager.Notification.Edit">
