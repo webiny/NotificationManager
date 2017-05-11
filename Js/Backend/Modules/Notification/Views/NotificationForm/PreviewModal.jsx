@@ -31,7 +31,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Preview');
         let content = null;
 
-        const {Alert, Tabs, Modal, Form, Button} = this.props;
+        const {Alert, Tabs, Modal, Form, Button, Loader} = this.props;
 
         if (this.state.response) {
             content = this.state.response.map((r, i) => {
@@ -74,4 +74,4 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
     }
 }
 
-export default Webiny.createComponent(PreviewModal, {modules: ['Alert', 'Tabs', 'Modal', 'Form', 'Button']});
+export default Webiny.createComponent(PreviewModal, {modules: ['Alert', 'Tabs', 'Modal', 'Form', 'Button', 'Loader']});
