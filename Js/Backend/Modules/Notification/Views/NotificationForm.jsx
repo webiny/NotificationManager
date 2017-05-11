@@ -86,7 +86,7 @@ NotificationForm.defaultProps = {
                                             <Section title="Notification Settings"/>
 
                                             <Input label="Title" name="title" validate="required"/>
-                                            <Input label="Slug" name="slug" readOnly={true}/>
+                                            <Input label="Slug" name="slug"/>
                                             <Textarea label="Description" name="description"/>
                                             <Tags label="Labels" name="labels" placeholder="Add Label"/>
                                         </Grid.Col>

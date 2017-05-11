@@ -1,4 +1,5 @@
 <?php
+
 namespace Apps\NotificationManager\Php\Entities;
 
 use Apps\Core\Php\DevTools\WebinyTrait;
@@ -43,7 +44,7 @@ class Notification extends AbstractEntity
 
         $this->attr('description')->char()->setToArrayDefault();
 
-        $this->attr('slug')->char()->setToArrayDefault()->setOnce()->setValidators('required,unique')->setValidationMessages([
+        $this->attr('slug')->char()->setToArrayDefault()->setValidators('required,unique')->setValidationMessages([
             'unique' => 'A notification with the same slug already exists.'
         ])->onSet(function ($val) {
             return $this->str($val)->slug()->val();
@@ -82,8 +83,8 @@ class Notification extends AbstractEntity
             $data = $this->wRequest()->getRequestData();
 
             $newNotification = new Notification();
-            $newNotification->slug = $data['slug'] ?? '';
-            $newNotification->title = $data['title'];
+            $newNotification->slug = $this->slug . '-copy';
+            $newNotification->title = $this->title . ' Copy';
             $newNotification->description = $this->description;
             $newNotification->labels = $this->labels;
             $newNotification->variables = $this->variables;
@@ -92,7 +93,7 @@ class Notification extends AbstractEntity
 
             return $newNotification->toArray($this->wRequest()->getFields());
 
-        })->setBodyValidators(['title' => 'required']);
+        });
 
         $this->onBeforeSave(function () {
             $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
