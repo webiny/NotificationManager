@@ -9,17 +9,23 @@ export default (model, form) => {
                 {(Ui) => (
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
-                            <Ui.Input
-                                label="Token"
-                                {...form.bindTo('slack.token')}
-                                description={
-                                    <span>
-                                        Bot token to use when sending notifications.&nbsp;
-                                        <a target="_blank" href="https://api.slack.com/bot-users">Create your Slack bot here.</a>
-                                    </span>
-                                }/>
-                            <Ui.Input label="Team" name="slack.team"/>
-                            <Ui.Input label="Username" name="slack.username"/>
+                            {form.bindTo(
+                                <Ui.Input
+                                    label="Token"
+                                    name="slack.token"
+                                    description={
+                                        <span>
+                                            Bot token to use when sending notifications.&nbsp;
+                                            <a target="_blank" href="https://api.slack.com/bot-users">Create your Slack bot here.</a>
+                                        </span>
+                                    }/>
+                            )}
+                            {form.bindTo(
+                                <Ui.Input label="Team" name="slack.team"/>
+                            )}
+                            {form.bindTo(
+                                <Ui.Input label="Username" name="slack.username"/>
+                            )}
                         </Ui.Grid.Col>
                     </Ui.Grid.Row>
                 )}

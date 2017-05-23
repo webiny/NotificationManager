@@ -13,23 +13,31 @@ export default (model, form) => {
                 {(Ui) => (
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
-                            <Ui.Input
-                                label="Token"
-                                {...form.bindTo('slack.token')}
-                                placeholder="Leave empty to use Slack settings"/>
-                            <Ui.Input
-                                label="Team"
-                                {...form.bindTo('slack.team')}
-                                placeholder="Leave empty to use Slack settings"/>
-                            <Ui.Input
-                                label="Username"
-                                {...form.bindTo('slack.username')}
-                                placeholder="Leave empty to use Slack settings"/>
-                            <Ui.Input
-                                label="Channel/User"
-                                {...form.bindTo('slack.channel')}
-                                placeholder="Leave empty to use Slack message channel"
-                                description="Specify a channel or username: #general or @mark"/>
+                            {form.bindTo(
+                                <Ui.Input
+                                    label="Token"
+                                    name="slack.token"
+                                    placeholder="Leave empty to use Slack settings"/>
+                            )}
+                            {form.bindTo(
+                                <Ui.Input
+                                    label="Team"
+                                    name="slack.team"
+                                    placeholder="Leave empty to use Slack settings"/>
+                            )}
+                            {form.bindTo(
+                                <Ui.Input
+                                    label="Username"
+                                    name="slack.username"
+                                    placeholder="Leave empty to use Slack settings"/>
+                            )}
+                            {form.bindTo(
+                                <Ui.Input
+                                    label="Channel/User"
+                                    name="slack.channel"
+                                    placeholder="Leave empty to use Slack message channel"
+                                    description="Specify a channel or username: #general or @mark"/>
+                            )}
                         </Ui.Grid.Col>
                     </Ui.Grid.Row>
                 )}

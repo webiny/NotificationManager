@@ -19,31 +19,44 @@ export default (model, form) => {
                 {(Ui) => (
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
-                            <Ui.Section title={<Ui.Checkbox {...form.bindTo('handlers.email.send')} label="Send email" grid={12}/>}/>
+                            <Ui.Section title={form.bindTo(<Ui.Checkbox name="handlers.email.send" label="Send email" grid={12}/>)}/>
                             <Ui.Logic.Hide if={!_.get(model, 'handlers.email.send')}>
                                 <Ui.Grid.Row>
                                     <Ui.Grid.Col all={4}>
-                                        <Ui.Input
-                                            label="Subject"
-                                            {...form.bindTo('handlers.email.subject')}
-                                            validate="required"/>
-                                        <Ui.Input
-                                            label="From Address"
-                                            {...form.bindTo('handlers.email.fromAddress')}
-                                            validate="email"
-                                            placeholder="Leave blank to use the default sender"/>
-                                        <Ui.Input
-                                            label="From Name"
-                                            {...form.bindTo('handlers.email.fromName')}
-                                            placeholder="Leave blank to use the default sender"/>
-                                        <Ui.Select {...templateSelect} validate="required" {...form.bindTo('handlers.email.template')}/>
+                                        {form.bindTo(
+                                            <Ui.Input
+                                                label="Subject"
+                                                name="handlers.email.subject"
+                                                validate="required"/>
+                                        )}
+                                        {form.bindTo(
+                                            <Ui.Input
+                                                label="From Address"
+                                                name="handlers.email.fromAddress"
+                                                validate="email"
+                                                placeholder="Leave blank to use the default sender"/>
+                                        )}
+                                        {form.bindTo(
+                                            <Ui.Input
+                                                label="From Name"
+                                                name="handlers.email.fromName"
+                                                placeholder="Leave blank to use the default sender"/>
+                                        )}
+                                        {form.bindTo(
+                                            <Ui.Select
+                                                {...templateSelect}
+                                                validate="required"
+                                                name="handlers.email.template"/>
+                                        )}
                                     </Ui.Grid.Col>
                                     <Ui.Grid.Col all={8}>
-                                        <Editor
-                                            variables={model.variables}
-                                            label="Content"
-                                            {...form.bindTo('handlers.email.content')}
-                                            description="You can use Smarty syntax for your email content."/>
+                                        {form.bindTo(
+                                            <Editor
+                                                variables={model.variables}
+                                                label="Content"
+                                                name="handlers.email.content"
+                                                description="You can use Smarty syntax for your email content."/>
+                                        )}
                                     </Ui.Grid.Col>
                                 </Ui.Grid.Row>
                             </Ui.Logic.Hide>

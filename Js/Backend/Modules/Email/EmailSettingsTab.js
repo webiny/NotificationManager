@@ -12,23 +12,31 @@ export default (model, form) => {
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={6}>
                                     <Ui.Section title="SMTP Settings"/>
-                                    <Ui.Input
-                                        label="Server Name"
-                                        {...form.bindTo('email.serverName')}
-                                        validate="required"
-                                        description="For example: email-smtp.us-east-1.amazonaws.com"/>
-                                    <Ui.Input
-                                        label="Username"
-                                        {...form.bindTo('email.username')}
-                                        validate="required"/>
-                                    <Ui.Password
-                                        label="Password"
-                                        {...form.bindTo('email.password')}
-                                        validate="required"/>
-                                    <Ui.Input
-                                        label="Send limit (emails per second)"
-                                        {...form.bindTo('email.sendLimit')}
-                                        validate="required"/>
+                                    {form.bindTo(
+                                        <Ui.Input
+                                            label="Server Name"
+                                            name="email.serverName"
+                                            validate="required"
+                                            description="For example: email-smtp.us-east-1.amazonaws.com"/>
+                                    )}
+                                    {form.bindTo(
+                                        <Ui.Input
+                                            label="Username"
+                                            name="email.username"
+                                            validate="required"/>
+                                    )}
+                                    {form.bindTo(
+                                        <Ui.Password
+                                            label="Password"
+                                            name="email.password"
+                                            validate="required"/>
+                                    )}
+                                    {form.bindTo(
+                                        <Ui.Input
+                                            label="Send limit (emails per second)"
+                                            name="email.sendLimit"
+                                            validate="required"/>
+                                    )}
                                 </Ui.Grid.Col>
                                 <Ui.Grid.Col all={6}>
                                     <Ui.Section title="AWS SNS Settings"/>
@@ -59,15 +67,18 @@ export default (model, form) => {
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={6}>
                                     <Ui.Section title="Default Sender"/>
-
-                                    <Ui.Input
-                                        label="Sender Name"
-                                        {...form.bindTo('email.senderName')}
-                                        validate="required"/>
-                                    <Ui.Input
-                                        label="Sender email"
-                                        {...form.bindTo('email.senderEmail')}
-                                        validate="required,email"/>
+                                    {form.bindTo(
+                                        <Ui.Input
+                                            label="Sender Name"
+                                            name="email.senderName"
+                                            validate="required"/>
+                                    )}
+                                    {form.bindTo(
+                                        <Ui.Input
+                                            label="Sender email"
+                                            name="email.senderEmail"
+                                            validate="required,email"/>
+                                    )}
                                 </Ui.Grid.Col>
                             </Ui.Grid.Row>
                         </Ui.Tabs.Tab>

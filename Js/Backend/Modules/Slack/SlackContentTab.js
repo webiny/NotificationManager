@@ -9,19 +9,17 @@ export default (model, form) => {
                 {(Ui) => (
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
-                            <Ui.Section
-                                title={<Ui.Checkbox {...form.bindTo('handlers.slack.send')} label="Send Slack message" grid={12}/>}/>
+                            <Ui.Section title={form.bindTo(<Ui.Checkbox name="handlers.slack.send" label="Send Slack message" grid={12}/>)}/>
                             <Ui.Logic.Hide if={!_.get(model, 'handlers.slack.send')}>
-                                <Ui.Input
-                                    label="Channel/User"
-                                    {...form.bindTo('handlers.slack.channel')}
-                                    validate="required"
-                                    description="Specify a channel or username: #general or @mark"/>
+                                {form.bindTo(
+                                    <Ui.Input
+                                        label="Channel/User"
+                                        name="handlers.slack.channel"
+                                        validate="required"
+                                        description="Specify a channel or username: #general or @mark"/>
+                                )}
                                 <Ui.DelayedOnChange>
-                                    <Ui.MarkdownEditor
-                                        label="Message"
-                                        {...form.bindTo('handlers.slack.message')}
-                                        validate="required"/>
+                                    {form.bindTo(<Ui.MarkdownEditor label="Message" name="handlers.slack.message" validate="required"/>)}
                                 </Ui.DelayedOnChange>
                             </Ui.Logic.Hide>
                         </Ui.Grid.Col>

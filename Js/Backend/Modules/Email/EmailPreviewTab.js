@@ -10,9 +10,9 @@ export default (model, form) => {
         icon: 'fa-envelope',
         children: (
             <Webiny.Ui.LazyLoad modules={['Input']}>
-                {(Ui) => (
+                {(Ui) => form.bindTo(
                     <Ui.Input
-                        {...form.bindTo('email.email')}
+                        name="email.email"
                         label="Email recipient"
                         validate="email"
                         placeholder={`Leave empty to use ${Webiny.Model.get('User').email}`}/>
