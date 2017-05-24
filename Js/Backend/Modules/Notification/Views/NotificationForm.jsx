@@ -50,7 +50,7 @@ NotificationForm.defaultProps = {
             name: 'entity',
             placeholder: 'Select Entity',
             allowClear: true,
-            api: '/services/core/entities',
+            api: '/services/webiny/entities',
             fields: 'class,name',
             perPage: 2,
             valueAttr: 'class',

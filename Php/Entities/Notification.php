@@ -2,8 +2,8 @@
 
 namespace Apps\NotificationManager\Php\Entities;
 
-use Apps\Core\Php\DevTools\WebinyTrait;
-use Apps\Core\Php\DevTools\Entity\AbstractEntity;
+use Apps\Webiny\Php\DevTools\WebinyTrait;
+use Apps\Webiny\Php\DevTools\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Lib\AbstractNotificationHandler;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
@@ -18,7 +18,7 @@ use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
  * @property ArrayObject $handlers
  * @property array       $variables
  *
- * @package Apps\Core\Php\Entities
+ * @package Apps\Webiny\Php\Entities
  *
  */
 class Notification extends AbstractEntity

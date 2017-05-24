@@ -1,8 +1,8 @@
 <?php
 namespace Apps\NotificationManager\Php\Entities;
 
-use Apps\Core\Php\DevTools\WebinyTrait;
-use Apps\Core\Php\DevTools\Entity\AbstractEntity;
+use Apps\Webiny\Php\DevTools\WebinyTrait;
+use Apps\Webiny\Php\DevTools\Entity\AbstractEntity;
 
 /**
  * Class EmailLog
@@ -18,7 +18,7 @@ use Apps\Core\Php\DevTools\Entity\AbstractEntity;
  * @property string       $log
  * @property Notification $notification
  *
- * @package Apps\Core\Php\Entities
+ * @package Apps\Webiny\Php\Entities
  *
  */
 class EmailLog extends AbstractEntity

@@ -3,8 +3,8 @@ namespace Apps\NotificationManager\Php\Services;
 
 set_time_limit(0);
 
-use Apps\Core\Php\DevTools\Services\AbstractService;
-use Apps\Core\Php\DevTools\WebinyTrait;
+use Apps\Webiny\Php\DevTools\Services\AbstractService;
+use Apps\Webiny\Php\DevTools\WebinyTrait;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\Settings;
 use Apps\NotificationManager\Php\Lib\NotificationException;

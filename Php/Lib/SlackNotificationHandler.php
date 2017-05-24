@@ -1,7 +1,7 @@
 <?php
 namespace Apps\NotificationManager\Php\Lib;
 
-use Apps\Core\Php\DevTools\Exceptions\AppException;
+use Apps\Webiny\Php\DevTools\Exceptions\AppException;
 use Apps\NotificationManager\Php\Entities\Settings;
 use Webiny\Component\TemplateEngine\TemplateEngineException;
 
@@ -12,7 +12,7 @@ use Webiny\Component\TemplateEngine\TemplateEngineException;
 class SlackNotificationHandler extends AbstractNotificationHandler
 {
     /**
-     * @var \Apps\Core\Php\DevTools\TemplateEngine
+     * @var \Apps\Webiny\Php\DevTools\TemplateEngine
      */
     protected $templateInstance;
     private $message;

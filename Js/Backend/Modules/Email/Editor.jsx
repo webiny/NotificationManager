@@ -20,7 +20,7 @@ class Editor extends Webiny.Ui.Component {
             selectedOption: null
         };
 
-        this.entityApi = new Webiny.Api.Endpoint('/services/core/entities');
+        this.entityApi = new Webiny.Api.Endpoint('/services/webiny/entities');
         this.attributes = {};
     }
 
@@ -279,7 +279,7 @@ class Editor extends Webiny.Ui.Component {
 }
 
 Editor.defaultProps = {
-    imageApi: '/entities/core/images',
+    imageApi: '/entities/webiny/images',
     accept: ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'],
     sizeLimit: 2485760,
     label: null,

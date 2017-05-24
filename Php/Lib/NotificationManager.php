@@ -2,7 +2,7 @@
 
 namespace Apps\NotificationManager\Php\Lib;
 
-use Apps\Core\Php\DevTools\WebinyTrait;
+use Apps\Webiny\Php\DevTools\WebinyTrait;
 use Apps\NotificationManager\Php\Entities\Settings;
 use Webiny\Component\Config\Config;
 

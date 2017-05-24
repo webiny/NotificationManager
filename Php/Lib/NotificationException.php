@@ -2,7 +2,7 @@
 
 namespace Apps\NotificationManager\Php\Lib;
 
-use Apps\Core\Php\DevTools\Exceptions\AppException;
+use Apps\Webiny\Php\DevTools\Exceptions\AppException;
 
 class NotificationException extends AppException
 {

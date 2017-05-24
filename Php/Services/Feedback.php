@@ -1,10 +1,10 @@
 <?php
 namespace Apps\NotificationManager\Php\Services;
 
-use Apps\Core\Php\DevTools\Interfaces\PublicApiInterface;
-use Apps\Core\Php\DevTools\Services\AbstractService;
-use Apps\Core\Php\DevTools\WebinyTrait;
-use Apps\Core\Php\DevTools\Exceptions\AppException;
+use Apps\Webiny\Php\DevTools\Interfaces\PublicApiInterface;
+use Apps\Webiny\Php\DevTools\Services\AbstractService;
+use Apps\Webiny\Php\DevTools\WebinyTrait;
+use Apps\Webiny\Php\DevTools\Exceptions\AppException;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 
 

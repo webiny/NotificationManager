@@ -1,9 +1,9 @@
 <?php
 namespace Apps\NotificationManager\Php\Entities;
 
-use Apps\Core\Php\DevTools\Exceptions\AppException;
-use Apps\Core\Php\DevTools\WebinyTrait;
-use Apps\Core\Php\DevTools\Entity\AbstractEntity;
+use Apps\Webiny\Php\DevTools\Exceptions\AppException;
+use Apps\Webiny\Php\DevTools\WebinyTrait;
+use Apps\Webiny\Php\DevTools\Entity\AbstractEntity;
 
 /**
  * Class Template
@@ -13,7 +13,7 @@ use Apps\Core\Php\DevTools\Entity\AbstractEntity;
  * @property string $content
  * @property int    $notificationsCount
  *
- * @package Apps\Core\Php\Entities
+ * @package Apps\Webiny\Php\Entities
  *
  */
 class Template extends AbstractEntity

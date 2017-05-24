@@ -2,8 +2,8 @@
 
 namespace Apps\NotificationManager\Php\Lib;
 
-use Apps\Core\Php\DevTools\WebinyTrait;
-use Apps\Core\Php\DevTools\Entity\AbstractEntity;
+use Apps\Webiny\Php\DevTools\WebinyTrait;
+use Apps\Webiny\Php\DevTools\Entity\AbstractEntity;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\Storage\File\File;
 use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
