@@ -46,7 +46,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
         // assign content and subject
         $email = $this->notification->handlers['email'];
         $this->emailSubject = $email['subject'];
-        $this->emailContent = $email['content'];
+        $this->emailContent = $email['content'] ?? '';
 
         // parse variables
         $variables = $this->parseVariables();
