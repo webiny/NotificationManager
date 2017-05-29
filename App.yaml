@@ -13,9 +13,11 @@ Services:
     EmailContentHandler:
         Class: Apps\NotificationManager\Php\Lib\EmailNotificationHandler
         Tags: ['notification-manager-handler']
+        Scope: prototype
     SlackContentHandler:
         Class: Apps\NotificationManager\Php\Lib\SlackNotificationHandler
         Tags: ['notification-manager-handler']
+        Scope: prototype
 
 Storage:
     Services:
