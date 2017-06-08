@@ -91,7 +91,7 @@ class Notification extends AbstractEntity
             $newNotification->handlers = $this->handlers;
             $newNotification->save();
 
-            return $newNotification->toArray($this->wRequest()->getFields());
+            return $this->apiFormatEntity($newNotification, $this->wRequest()->getFields());
 
         });
 
