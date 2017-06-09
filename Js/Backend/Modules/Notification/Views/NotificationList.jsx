@@ -24,7 +24,7 @@ NotificationList.defaultProps = {
         };
 
         return (
-            <Webiny.Ui.LazyLoad modules={['View', 'Button', 'Icon', 'List', 'Grid', 'Input', 'Dropdown']}>
+            <Webiny.Ui.LazyLoad modules={['View', 'Button', 'Icon', 'List', 'Grid', 'Input', 'Dropdown', 'Label']}>
                 {(Ui) => (
                     <Ui.View.List>
                         <Ui.View.Header title="Notifications">
