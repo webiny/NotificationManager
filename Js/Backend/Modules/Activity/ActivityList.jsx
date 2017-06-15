@@ -11,12 +11,12 @@ class ActivityList extends Webiny.Ui.View {
         const myWindow = window.open('', '_blank', 'width=800,height=600');
         const api = new Webiny.Api.Endpoint('/entities/notification-manager/email-log').setQuery({'_fields': 'content'});
 
-        api.get('/' + id).then((response) => {
+        api.get('/' + id).then(response => {
             // tell to the feedback service not to mark email as read on the preview
-            response.data.data.content = response.data.data.content.replace(/\/1px/, '/1px?preview=true');
+            let content = response.getData('entity.content').replace(/\/1px/, '/1px?preview=true');
 
             // show the preview window
-            myWindow.document.write(response.data.data.content);
+            myWindow.document.write(content);
             myWindow.focus();
         });
     }
@@ -29,7 +29,8 @@ ActivityList.defaultProps = {
             api: '/entities/notification-manager/email-log',
             fields: 'id,status,email,name,subject,createdOn',
             searchFields: 'email,name,subject',
-            connectToRouter: true
+            connectToRouter: true,
+            sort: '-createdOn'
         };
 
         const searchProps = {

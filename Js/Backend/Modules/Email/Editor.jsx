@@ -120,6 +120,9 @@ class Editor extends Webiny.Ui.Component {
 
     detectVariable() {
         const selection = this.editor.getSelection();
+        if (!selection) {
+            return;
+        }
         const text = this.editor.getText(0, selection.index);
         let variable = null;
 
