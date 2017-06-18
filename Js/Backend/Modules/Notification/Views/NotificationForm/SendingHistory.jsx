@@ -36,7 +36,7 @@ SendingHistory.defaultProps = {
         return (
             <Webiny.Ui.LazyLoad modules={['List', 'Link']}>
                 {({List, Link}) => (
-                    <List ui="templateList" {...listProps}>
+                    <List {...listProps}>
                         <List.Table>
                             <List.Table.Row>
                                 <List.Table.Empty/>

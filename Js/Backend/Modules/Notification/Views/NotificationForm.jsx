@@ -6,28 +6,29 @@ class NotificationForm extends Webiny.Ui.View {
     constructor(props) {
         super(props);
 
+        this.state = {
+            tabs: []
+        };
         this.preview = false;
         this.bindMethods('saveAndPreview');
     }
 
     registerTabs(model, form) {
-        const {Tabs} = this.props;
-        const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Tab');
-        return tabs.map(tab => {
-            const tabProps = _.assign({key: tab.name}, tab.value(model, form));
-            return <Tabs.Tab {...tabProps}/>
+        return this.props.plugins.map((pl, index) => {
+            const tab = pl(model, form);
+            return React.cloneElement(tab, {key: index});
         });
     }
 
     saveAndPreview(model, form) {
         if (_.isEqual(model, form.getInitialModel())) {
-            return this.ui('previewModal').show();
+            return this.previewModal.show();
         }
 
         this.preview = true;
         return form.submit().then(() => {
             this.preview = false;
-            this.ui('previewModal').show();
+            this.previewModal.show();
         });
     }
 }
@@ -72,13 +73,12 @@ NotificationForm.defaultProps = {
         const {Form, View, Tabs, Grid, Section, Input, Textarea, Tags, Alert, Dynamic, Select, Button} = this.props;
 
         return (
-            <Form ui="notificationForm" {...formProps}>
+            <Form {...formProps}>
                 {(model, form) => (
                     <View.Form>
                         <View.Header title="Notification"/>
-
                         <View.Body noPadding={true}>
-                            <PreviewModal ui="previewModal" model={model} form={form}/>
+                            <PreviewModal ref={ref => this.previewModal = ref} model={model} form={form}/>
                             <Tabs size="large">
                                 <Tabs.Tab label="General" icon="icon-settings">
                                     <Grid.Row>
@@ -104,7 +104,7 @@ NotificationForm.defaultProps = {
                                     <Alert title="Important" type="warning">
                                         Changes you make to the variables are not saved until you save the notification!
                                     </Alert>
-                                    <Dynamic.Fieldset name="variables" ui="fieldset">
+                                    <Dynamic.Fieldset name="variables">
                                         <Dynamic.Header>
                                             {() => (
                                                 <Grid.Row>
@@ -176,5 +176,14 @@ NotificationForm.defaultProps = {
 
 
 export default Webiny.createComponent(NotificationForm, {
-    modules: ['Form', 'View', 'Tabs', 'Grid', 'Section', 'Input', 'Textarea', 'Tags', 'Alert', 'Dynamic', 'Select', 'Button']
+    modules: [
+        'Form', 'View', 'Tabs', 'Grid', 'Section', 'Input', 'Textarea', 'Tags', 'Alert', 'Dynamic', 'Select', 'Button',
+        {
+            plugins: () => {
+                const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Tab');
+                const promises = tabs.map(tab => tab.value());
+                return Promise.all(promises);
+            }
+        }
+    ]
 });

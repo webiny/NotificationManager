@@ -28,14 +28,14 @@ NotificationList.defaultProps = {
                 {(Ui) => (
                     <Ui.View.List>
                         <Ui.View.Header title="Notifications">
-                            <Ui.Button type="primary" align="right" onClick={this.ui('notificationCreateNewModal:show')}>
+                            <Ui.Button type="primary" align="right" onClick={() => this.notificationCreateNewModal.show()}>
                                 <Ui.Icon icon="icon-plus-circled"/>
                                 Create notification
                             </Ui.Button>
-                            <NotificationCreateNewModal ui="notificationCreateNewModal"/>
+                            <NotificationCreateNewModal ref={ref => this.notificationCreateNewModal = ref}/>
                         </Ui.View.Header>
                         <Ui.View.Body>
-                            <Ui.List ui="notificationList" {...listProps}>
+                            <Ui.List {...listProps}>
                                 <Ui.List.FormFilters>
                                     {(applyFilters, resetFilters) => (
                                         <Ui.Grid.Row>

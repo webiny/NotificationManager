@@ -26,8 +26,8 @@ TemplateForm.defaultProps = {
         const {Ui} = this.props;
 
         return (
-            <Ui.Form ui="templateForm" {...formProps}>
-                {(model, container) => (
+            <Ui.Form {...formProps}>
+                {(model, form) => (
                     <Ui.View.Form>
                         <Ui.View.Header title="Template"/>
                         <Ui.View.Body>
@@ -63,9 +63,9 @@ TemplateForm.defaultProps = {
                             </Ui.Grid.Row>
                         </Ui.View.Body>
                         <Ui.View.Footer>
-                            <Ui.Button align="right" type="primary" onClick={container.submit}>Save Changes</Ui.Button>
+                            <Ui.Button align="right" type="primary" onClick={form.submit}>Save Changes</Ui.Button>
                             <Ui.Button align="right" type="secondary" onClick={() => this.previewTemplate(model.content)}>Preview Template</Ui.Button>
-                            <Ui.Button align="left" type="default" onClick={container.cancel}>Go Back</Ui.Button>
+                            <Ui.Button align="left" type="default" onClick={form.cancel}>Go Back</Ui.Button>
                         </Ui.View.Footer>
                     </Ui.View.Form>
                 )}

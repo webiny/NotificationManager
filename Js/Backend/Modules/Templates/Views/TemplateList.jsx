@@ -32,7 +32,7 @@ TemplateList.defaultProps = {
                     </Link>
                 </View.Header>
                 <View.Body>
-                    <List ui="templateList" {...listProps}>
+                    <List {...listProps}>
                         <List.FormFilters>
                             {(applyFilters, resetFilters) => (
                                 <Grid.Row>
@@ -47,8 +47,12 @@ TemplateList.defaultProps = {
                         </List.FormFilters>
                         <List.Table>
                             <List.Table.Row>
-                                <List.Table.Field name="name" align="left" label="Name" sort="name"
-                                                  route="NotificationManager.Template.Edit"/>
+                                <List.Table.Field
+                                    name="name"
+                                    align="left"
+                                    label="Name"
+                                    sort="name"
+                                    route="NotificationManager.Template.Edit"/>
                                 <List.Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
                                 <List.Table.Actions>
                                     <List.Table.EditAction route="NotificationManager.Template.Edit"/>

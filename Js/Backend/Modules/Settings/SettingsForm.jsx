@@ -1,14 +1,11 @@
 import Webiny from 'Webiny';
 
 class SettingsForm extends Webiny.Ui.View {
-    renderNotificationSettingsTabs(model, form) {
-        const {Tabs} = this.props;
-        const tabs = Webiny.Injector.getByTag('NotificationManager.SettingsForm.Tab');
-        return tabs.map(tab => {
-            const tabProps = _.assign({key: tab.name}, tab.value(model, form));
-            return <Tabs.Tab {...tabProps}/>
+    registerTabs(model, form) {
+        return this.props.plugins.map((pl, index) => {
+            const tab = pl(model, form);
+            return React.cloneElement(tab, {key: index});
         });
-
     }
 }
 
@@ -24,7 +21,7 @@ SettingsForm.defaultProps = {
                             description="Set your notification settings here"/>
                         <View.Body noPadding>
                             <Tabs size="large" position="left">
-                                {this.renderNotificationSettingsTabs(model, form)}
+                                {this.registerTabs(model, form)}
                             </Tabs>
                         </View.Body>
                         <View.Footer align="right">
@@ -37,4 +34,12 @@ SettingsForm.defaultProps = {
     }
 };
 
-export default Webiny.createComponent(SettingsForm, {modules: ['Settings', 'View', 'Tabs', 'Button']});
+export default Webiny.createComponent(SettingsForm, {
+    modules: ['Settings', 'View', 'Tabs', 'Button', {
+        plugins: () => {
+            const tabs = Webiny.Injector.getByTag('NotificationManager.SettingsForm.Tab');
+            const promises = tabs.map(tab => tab.value());
+            return Promise.all(promises);
+        }
+    }]
+});

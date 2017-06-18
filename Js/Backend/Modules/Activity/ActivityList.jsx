@@ -49,7 +49,7 @@ ActivityList.defaultProps = {
                     <Ui.View.List>
                         <Ui.View.Header title="Activity"/>
                         <Ui.View.Body>
-                            <Ui.List ui="templateList" {...listProps}>
+                            <Ui.List {...listProps}>
                                 <Ui.List.FormFilters>
                                     {(applyFilters, resetFilters) => (
                                         <Ui.Grid.Row>
