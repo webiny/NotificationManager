@@ -191,7 +191,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
             $log->save();
 
             // check if instant send it active
-            if ($this->wConfig()->get('Application.NotificationManager.InstantSend', false)) {
+            if ($this->wConfig()->get('NotificationManager.InstantSend', false)) {
                 $mailQueue = new MailQueue();
                 $mailQueue->sendEmails();
             }

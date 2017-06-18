@@ -27,13 +27,12 @@ $notification->send();
 
 ## Instant Send
 
-If you don't want your emails to be added to the queue, but you want them to be sent instantly, just set `Application.NotificationManager.InstantSend`
+If you don't want your emails to be added to the queue, but you want them to be sent instantly, just set `NotificationManager.InstantSend`
 to `true` in your config. This is useful for development, so you don't wait for the cron job to trigger for in order to receive your email.
 
 ```yaml
-Application:
-  NotificationManager:
-      InstantSend: true
+NotificationManager:
+  InstantSend: true
 ```
 
 ## Reroute sending
@@ -43,9 +42,8 @@ to accidentally send an email to that customer. You can tell to the notification
 regardless to what the email queue says.
 
 ```yaml
-Application:
-  NotificationManager:
-      Reroute: me@mail.com
+NotificationManager:
+  Reroute: me@mail.com
 ```
 
 All notifications will now be sent to `me@mail.com`.

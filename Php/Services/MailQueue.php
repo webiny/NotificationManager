@@ -78,8 +78,8 @@ class MailQueue extends AbstractService
             $msg->setSubject($e->subject)->setBody($e->content);
 
             // check if sending is rerouted
-            if ($this->wConfig()->get('Application.NotificationManager.Reroute', false)) {
-                $msg->setTo(new Email($this->wConfig()->get('Application.NotificationManager.Reroute', false), $e->name));
+            if ($this->wConfig()->get('NotificationManager.Reroute', false)) {
+                $msg->setTo(new Email($this->wConfig()->get('NotificationManager.Reroute', false), $e->name));
             } else {
                 $msg->setTo(new Email($e->email, $e->name));
             }
