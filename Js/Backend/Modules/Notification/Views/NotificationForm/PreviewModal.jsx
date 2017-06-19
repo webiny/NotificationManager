@@ -56,7 +56,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
             <Modal.Dialog>
                 <Form onSubmit={this.submit}>
                     {(model, form) => (
-                        <wrapper>
+                        <Modal.Content>
                             {this.state.loading ? <Loader/> : null}
                             <Modal.Header title="Preview Notification"/>
                             <Modal.Body noPadding={!this.state.response}>
@@ -66,7 +66,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
                                 <Button type="default" label="Close" onClick={this.hide}/>
                                 <Button type="primary" label="Send Preview" onClick={form.submit}/>
                             </Modal.Footer>
-                        </wrapper>
+                        </Modal.Content>
                     )}
                 </Form>
             </Modal.Dialog>

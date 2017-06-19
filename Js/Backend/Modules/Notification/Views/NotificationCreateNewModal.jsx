@@ -21,7 +21,7 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
             <Modal.Dialog>
                 <Form {...formProps}>
                     {(model, form) => (
-                        <wrapper>
+                        <Modal.Content>
                             <Form.Loader/>
                             <Modal.Header title="New Notification"/>
                             <Modal.Body>
@@ -45,7 +45,7 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
                                 <Button type="secondary" label="Cancel" onClick={this.hide}/>
                                 <Button type="primary" label="Add Notification" onClick={form.submit}/>
                             </Modal.Footer>
-                        </wrapper>
+                        </Modal.Content>
                     )}
                 </Form>
             </Modal.Dialog>
