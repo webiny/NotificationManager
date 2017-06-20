@@ -10,11 +10,6 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         this.bindMethods('submit');
     }
 
-    componentWillReceiveProps(props) {
-        super.componentWillReceiveProps(props);
-        this.setState({response: null});
-    }
-
     submit(preview) {
         const api = new Webiny.Api.Endpoint('/entities/notification-manager/notifications');
         this.setState({loading: true});
@@ -53,7 +48,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         }
 
         return (
-            <Modal.Dialog>
+            <Modal.Dialog onHide={() => this.setState({response: null})}>
                 <Form onSubmit={this.submit}>
                     {(model, form) => (
                         <Modal.Content>
