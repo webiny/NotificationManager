@@ -66,7 +66,7 @@ NotificationList.defaultProps = {
                                                 new Webiny.Api.Endpoint(listProps.api).post(`/${row.id}/copy`).then(response => {
                                                     Webiny.Growl.success(this.i18n('Notification copied successfully!'));
                                                     Webiny.Router.goToRoute('NotificationManager.Notification.Edit', {
-                                                        id: response.getData('id')
+                                                        id: response.getData('entity').id
                                                     });
                                                 });
                                             }}/>
