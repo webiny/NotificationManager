@@ -3,16 +3,29 @@
   .search {
     position: absolute;
     border: none;
+
     .autosuggest {
       max-height: 400px;
       overflow-y: scroll;
       display: block;
+      border: 1px solid #cdcdcd;
+      box-shadow: 0 10px 12px rgba(0, 0, 0, 0.176);
+      background-color: #fff;
       top: 0;
       .plain-search {
          ul {
+           list-style: none;
+           padding: 0;
+           margin: 0;
            li {
+             list-style: none;
              padding: 10px;
              line-height: 100%;
+             &:hover, &.selected{
+               text-decoration: none;
+               background-color: #FBFBFB;
+               cursor: pointer;
+             }
            }
          }
       }
