@@ -17,9 +17,7 @@ class NotificationForm extends Webiny.Ui.View {
     componentDidMount() {
         super.componentDidMount();
         new Webiny.Api.Endpoint('/services/webiny/entities').get('/', {_fields: 'class,name'}).then(apiResponse => {
-            this.setState({entityOptions: apiResponse.getData()}, () => {
-                console.log(this.state)
-            });
+            this.setState({entityOptions: apiResponse.getData()});
         });
     }
 
