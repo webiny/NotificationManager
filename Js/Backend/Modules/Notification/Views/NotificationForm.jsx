@@ -7,10 +7,20 @@ class NotificationForm extends Webiny.Ui.View {
         super(props);
 
         this.state = {
-            tabs: []
+            tabs: [],
+            entityOptions: []
         };
         this.preview = false;
         this.bindMethods('saveAndPreview');
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        new Webiny.Api.Endpoint('/services/webiny/entities').get('/', {_fields: 'class,name'}).then(apiResponse => {
+            this.setState({entityOptions: apiResponse.getData()}, () => {
+                console.log(this.state)
+            });
+        });
     }
 
     registerTabs(model, form) {
@@ -51,11 +61,9 @@ NotificationForm.defaultProps = {
             name: 'entity',
             placeholder: 'Select Entity',
             allowClear: true,
-            api: '/services/webiny/entities',
-            fields: 'class,name',
-            perPage: 2,
             valueAttr: 'class',
             minimumResultsForSearch: 5,
+            options: this.state.entityOptions,
             optionRenderer: option => {
                 return (
                     <div>
