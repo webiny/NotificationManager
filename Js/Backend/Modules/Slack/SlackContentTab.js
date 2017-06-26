@@ -9,7 +9,7 @@ export default () => Webiny.import(modules).then(Ui => {
                 <Ui.Grid.Row>
                     <Ui.Grid.Col all={12}>
                         <Ui.Section
-                            title={form.bindTo(<Ui.Checkbox name="handlers.slack.send" label="Send Slack message" grid={12}/>)}/>
+                            title={form.bindTo(<Ui.Checkbox name="handlers.slack.send" label="Send Slack message"/>)}/>
                         <Ui.Logic.Hide if={!_.get(model, 'handlers.slack.send')}>
                             <Ui.Input
                                 label="Channel/User"

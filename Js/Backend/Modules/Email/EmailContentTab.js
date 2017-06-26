@@ -16,7 +16,7 @@ export default () => {
                 <Ui.Tabs.Tab label="Email content" icon="fa-envelope">
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
-                            <Ui.Section title={form.bindTo(<Ui.Checkbox name="handlers.email.send" label="Send email" grid={12}/>)}/>
+                            <Ui.Section title={form.bindTo(<Ui.Checkbox name="handlers.email.send" label="Send email"/>)}/>
                             <Ui.Logic.Hide if={!_.get(model, 'handlers.email.send')}>
                                 <Ui.Grid.Row>
                                     <Ui.Grid.Col all={4}>
