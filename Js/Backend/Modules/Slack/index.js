@@ -1,15 +1,14 @@
 import Webiny from 'Webiny';
-import SlackSettingsTab from './SlackSettingsTab';
-import SlackContentTab from './SlackContentTab';
-import SlackPreviewTab from './SlackPreviewTab';
 
-class Slack extends Webiny.Module {
+class Slack extends Webiny.App.Module {
 
     init() {
         this.name = 'Slack';
-        Webiny.Injector.register('slackSettingsTab', SlackSettingsTab, ['NotificationManager.SettingsForm.Tab']);
-        Webiny.Injector.register('slackContentTab', SlackContentTab, ['NotificationManager.NotificationForm.Tab']);
-        Webiny.Injector.register('slackPreviewTab', SlackPreviewTab, ['NotificationManager.NotificationForm.Preview']);
+        Webiny.registerModule(
+            new Webiny.Module('SlackSettingsTab', () => import('./SlackSettingsTab')).setTags('NotificationManager.SettingsForm.Tab'),
+            new Webiny.Module('SlackContentTab', () => import('./SlackContentTab')).setTags('NotificationManager.NotificationForm.Tab'),
+            new Webiny.Module('SlackPreviewTab', () => import('./SlackPreviewTab')).setTags('NotificationManager.NotificationForm.Preview')
+        );
     }
 }
 

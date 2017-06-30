@@ -1,15 +1,14 @@
 import Webiny from 'Webiny';
-import EmailSettingsTab from './EmailSettingsTab';
-import EmailContentTab from './EmailContentTab';
-import EmailPreviewTab from './EmailPreviewTab';
 
-class Email extends Webiny.Module {
+class Email extends Webiny.App.Module {
 
     init() {
         this.name = 'Email';
-        Webiny.Injector.register('emailSettingsTab', EmailSettingsTab, ['NotificationManager.SettingsForm.Tab']);
-        Webiny.Injector.register('emailContentTab', EmailContentTab, ['NotificationManager.NotificationForm.Tab']);
-        Webiny.Injector.register('emailPreviewTab', EmailPreviewTab, ['NotificationManager.NotificationForm.Preview']);
+        Webiny.registerModule(
+            new Webiny.Module('EmailSettingsTab', () => import('./EmailSettingsTab')).setTags('NotificationManager.SettingsForm.Tab'),
+            new Webiny.Module('EmailContentTab', () => import('./EmailContentTab')).setTags('NotificationManager.NotificationForm.Tab'),
+            new Webiny.Module('EmailPreviewTab', () => import('./EmailPreviewTab')).setTags('NotificationManager.NotificationForm.Preview')
+        );
     }
 }
 

@@ -186,9 +186,10 @@ export default Webiny.createComponent(NotificationForm, {
         'Form', 'View', 'Tabs', 'Grid', 'Section', 'Input', 'Textarea', 'Tags', 'Alert', 'Dynamic', 'Select', 'Button',
         {
             plugins: () => {
-                const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Tab');
-                const promises = tabs.map(tab => tab.value());
-                return Promise.all(promises);
+                return Webiny.importByTag('NotificationManager.NotificationForm.Tab').then(modules => {
+                    const promises = Object.values(modules).map(tab => tab());
+                    return Promise.all(promises);
+                });
             }
         }
     ]

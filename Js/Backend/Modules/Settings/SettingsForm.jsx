@@ -37,9 +37,10 @@ SettingsForm.defaultProps = {
 export default Webiny.createComponent(SettingsForm, {
     modules: ['Settings', 'View', 'Tabs', 'Button', {
         plugins: () => {
-            const tabs = Webiny.Injector.getByTag('NotificationManager.SettingsForm.Tab');
-            const promises = tabs.map(tab => tab.value());
-            return Promise.all(promises);
+            return Webiny.importByTag('NotificationManager.SettingsForm.Tab').then(modules => {
+                const promises = Object.values(modules).map(tab => tab());
+                return Promise.all(promises);
+            });
         }
     }]
 });

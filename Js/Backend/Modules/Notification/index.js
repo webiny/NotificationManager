@@ -1,7 +1,7 @@
 import Webiny from 'Webiny';
 import Views from './Views/Views';
 
-class Notification extends Webiny.Module {
+class Notification extends Webiny.App.Module {
 
     init() {
         this.name = 'Notification';

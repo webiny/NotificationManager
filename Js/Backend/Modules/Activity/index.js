@@ -1,7 +1,7 @@
 import Webiny from 'Webiny';
 import ActivityList from './ActivityList';
 
-class Activity extends Webiny.Module {
+class Activity extends Webiny.App.Module {
 
     init() {
         this.name = 'Activity';
