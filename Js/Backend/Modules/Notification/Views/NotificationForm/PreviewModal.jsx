@@ -1,3 +1,4 @@
+import React from 'react';
 import Webiny from 'Webiny';
 
 class PreviewModal extends Webiny.Ui.ModalComponent {

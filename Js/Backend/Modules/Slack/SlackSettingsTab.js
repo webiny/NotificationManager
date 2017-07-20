@@ -1,3 +1,4 @@
+import React from 'react';
 import Webiny from 'Webiny';
 
 export default () => Webiny.import(['Tabs', 'Grid', 'Input']).then(Ui => {
