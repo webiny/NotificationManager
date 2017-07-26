@@ -1,5 +1,5 @@
 import 'Assets/styles.scss';
-import Webiny from 'Webiny';
+import Webiny from 'webiny';
 import Activity from './Modules/Activity';
 import Email from './Modules/Email';
 import Notification from './Modules/Notification';

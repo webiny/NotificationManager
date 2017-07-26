@@ -1,5 +1,5 @@
 import React from 'react';
-import Webiny from 'Webiny';
+import Webiny from 'webiny';
 
 export default () => Webiny.import(['Tabs', 'Grid', 'Input']).then(Ui => {
     return (model, form) => {

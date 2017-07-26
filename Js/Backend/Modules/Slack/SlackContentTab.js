@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import Webiny from 'Webiny';
+import Webiny from 'webiny';
 
 const modules = ['Tabs', 'Grid', 'Section', 'Logic', 'Input', 'MarkdownEditor', 'Checkbox', 'DelayedOnChange'];
 

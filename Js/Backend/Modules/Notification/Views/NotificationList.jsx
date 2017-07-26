@@ -1,5 +1,5 @@
 import React from 'react';
-import Webiny from 'Webiny';
+import Webiny from 'webiny';
 import NotificationCreateNewModal from './NotificationCreateNewModal';
 
 class NotificationList extends Webiny.Ui.View {

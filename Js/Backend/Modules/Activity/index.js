@@ -1,4 +1,4 @@
-import Webiny from 'Webiny';
+import Webiny from 'webiny';
 import ActivityList from './ActivityList';
 
 class Activity extends Webiny.App.Module {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Webiny from 'Webiny';
+import Webiny from 'webiny';
 
 class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
 
@@ -24,7 +24,7 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
                     {(model, form) => (
                         <Modal.Content>
                             <Form.Loader/>
-                            <Modal.Header title="New Notification"/>
+                            <Modal.Header title="New Notification" onClose={this.hide}/>
                             <Modal.Body>
                                 <Grid.Row>
                                     <Grid.Col all={12}>
@@ -43,7 +43,7 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
                                 </Grid.Row>
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button type="secondary" label="Cancel" onClick={this.hide}/>
+                                <Button type="default" label="Cancel" onClick={this.hide}/>
                                 <Button type="primary" label="Add Notification" onClick={form.submit}/>
                             </Modal.Footer>
                         </Modal.Content>
@@ -54,4 +54,6 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
     }
 }
 
-export default Webiny.createComponent(NotificationCreateNewModal, {modules: ['Modal', 'Form', 'Grid', 'Input', 'Textarea', 'Button']});
+export default Webiny.createComponent(NotificationCreateNewModal, {
+    modules: ['Modal', 'Form', 'Grid', 'Input', 'Textarea', 'Button']
+});

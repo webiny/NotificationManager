@@ -1,5 +1,5 @@
 import React from 'react';
-import Webiny from 'Webiny';
+import Webiny from 'webiny';
 
 export default () => {
     return Webiny.import(['Tabs', 'Grid', 'Section', 'Input', 'Password', 'Alert', 'Copy']).then(Ui => {

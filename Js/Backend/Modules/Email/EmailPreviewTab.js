@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import Webiny from 'Webiny';
+import Webiny from 'webiny';
 
 export default (model, form) => {
     if (!_.get(model, 'handlers.email.send')) {
