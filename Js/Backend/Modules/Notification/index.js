@@ -24,3 +24,12 @@ class Notification extends Webiny.App.Module {
 }
 
 export default Notification;
+
+/*
+this.registerMenus(
+    <Menu label="Marketing Tools" icon="fa-bell">
+        <Menu label="Notification Manager" role={role}>
+            <Menu label="Notifications" route="NotificationManager.Notifications"/>
+        </Menu>
+    </Menu>
+);*/
