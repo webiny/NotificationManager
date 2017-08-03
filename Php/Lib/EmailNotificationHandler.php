@@ -144,12 +144,14 @@ class EmailNotificationHandler extends AbstractNotificationHandler
 
         if ($mailer->send($msg)) {
             return [
+                'handler' => 'email',
                 'status'  => true,
                 'message' => 'Email was sent successfully! Check your ' . $recipient . ' inbox.'
             ];
         }
 
         return [
+            'handler' => 'email',
             'status'  => false,
             'message' => 'Failed to send preview email to ' . $recipient . '.'
         ];

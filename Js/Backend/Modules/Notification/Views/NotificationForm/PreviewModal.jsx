@@ -23,30 +23,29 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         });
     }
 
-    renderDialog() {
-        const tabs = Webiny.Injector.getByTag('NotificationManager.NotificationForm.Preview');
-        let content = null;
-
-        const {Alert, Tabs, Modal, Form, Button, Loader} = this.props;
+    renderContent(model, form) {
+        const {Alert, Tabs, plugins} = this.props;
 
         if (this.state.response) {
-            content = this.state.response.map((r, i) => {
+            return this.state.response.map((r, i) => {
                 return (
                     <Alert key={i} type={r.status ? 'success' : 'danger'}>{r.message}</Alert>
                 );
             });
         }
 
-        if (!this.state.response) {
-            content = (
-                <Tabs position="left">
-                    {tabs.map(tab => {
-                        const tabProps = tab.value(this.props.model, this.props.form);
-                        return tabProps ? <Tabs.Tab key={tab.name} {...tabProps}/> : null;
-                    })}
-                </Tabs>
-            );
-        }
+        return (
+            <Tabs position="left">
+                {plugins.map((pl, index) => {
+                    const tab = pl(model, form, this.props.model);
+                    return React.isValidElement(tab) ? React.cloneElement(tab, {key: index}) : null;
+                })}
+            </Tabs>
+        );
+    }
+
+    renderDialog() {
+        const {Modal, Form, Button, Loader} = this.props;
 
         return (
             <Modal.Dialog onHide={() => this.setState({response: null})}>
@@ -56,7 +55,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
                             {this.state.loading ? <Loader/> : null}
                             <Modal.Header title="Preview Notification"/>
                             <Modal.Body noPadding={!this.state.response}>
-                                {content}
+                                {this.renderContent(model, form)}
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button type="default" label="Close" onClick={this.hide}/>
@@ -70,4 +69,13 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
     }
 }
 
-export default Webiny.createComponent(PreviewModal, {modules: ['Alert', 'Tabs', 'Modal', 'Form', 'Button', 'Loader']});
+export default Webiny.createComponent(PreviewModal, {
+    modules: ['Alert', 'Tabs', 'Modal', 'Form', 'Button', 'Loader', {
+        plugins: () => {
+            return Webiny.importByTag('NotificationManager.NotificationForm.Preview').then(modules => {
+                const promises = Object.values(modules).map(tab => tab());
+                return Promise.all(promises);
+            });
+        }
+    }]
+});

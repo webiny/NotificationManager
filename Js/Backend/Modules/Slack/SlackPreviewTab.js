@@ -2,17 +2,15 @@ import React from 'react';
 import _ from 'lodash';
 import Webiny from 'webiny';
 
-export default (model, form) => {
-    if (!_.get(model, 'handlers.slack.send')) {
-        return null;
-    }
+export default () => {
+    return Webiny.import(['Grid', 'Input', 'Tabs']).then(Ui => {
+        return (model, form, notification) => {
+            if (!_.get(notification, 'handlers.slack.send')) {
+                return null;
+            }
 
-    return {
-        label: 'Slack message',
-        icon: 'fa-slack',
-        children: (
-            <Webiny.Ui.LazyLoad modules={['Grid', 'Input']}>
-                {(Ui) => (
+            return (
+                <Ui.Tabs.Tab label="Slack message" icon="fa-slack">
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
                             {form.bindTo(
@@ -42,8 +40,8 @@ export default (model, form) => {
                             )}
                         </Ui.Grid.Col>
                     </Ui.Grid.Row>
-                )}
-            </Webiny.Ui.LazyLoad>
-        )
-    };
+                </Ui.Tabs.Tab>
+            );
+        }
+    });
 };

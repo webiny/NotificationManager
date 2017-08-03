@@ -87,12 +87,14 @@ class SlackNotificationHandler extends AbstractNotificationHandler
 
         if ($this->sendMessage()) {
             return [
+                'handler' => 'slack',
                 'status'  => true,
                 'message' => 'Slack message was sent successfully to ' . $this->channel . '.'
             ];
         }
 
         return [
+            'handler' => 'slack',
             'status'  => false,
             'message' => 'Failed to send preview message to ' . $this->channel . '.'
         ];
