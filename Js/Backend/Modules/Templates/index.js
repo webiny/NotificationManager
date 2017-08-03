@@ -1,3 +1,4 @@
+import React from 'react';
 import Webiny from 'webiny';
 import Views from './Views/Views';
 
@@ -9,11 +10,11 @@ class Templates extends Webiny.App.Module {
         const role = 'notification-manager';
 
         this.registerMenus(
-            new Menu('Marketing Tools', [
-                new Menu('Notification Manager', [
-                    new Menu('Templates', 'NotificationManager.Templates')
-                ]).setRole(role)
-            ], 'icon-bell')
+            <Menu label="Marketing Tools" icon="fa-bell">
+                <Menu label="Notification Manager" role={role}>
+                    <Menu label="Templates" route="NotificationManager.Templates"/>
+                </Menu>
+            </Menu>
         );
 
         this.registerRoutes(
