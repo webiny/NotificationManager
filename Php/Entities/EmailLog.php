@@ -42,7 +42,7 @@ class EmailLog extends AbstractEntity
     {
         parent::__construct();
 
-        $this->index(new SingleIndex('createdOn', 'createdOn', false, false, false, 5184000)); // expire after 30 days
+        $this->index(new SingleIndex('createdOn', 'createdOn', false, false, false, 5184000)); // expire after 60 days
 
         $this->attr('messageId')->char()->setToArrayDefault();
         $this->attr('subject')->char()->setToArrayDefault();
