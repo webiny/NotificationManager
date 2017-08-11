@@ -3,6 +3,7 @@ namespace Apps\NotificationManager\Php\Entities;
 
 use Apps\Webiny\Php\DevTools\WebinyTrait;
 use Apps\Webiny\Php\DevTools\Entity\AbstractEntity;
+use Webiny\Component\Mongo\Index\SingleIndex;
 
 /**
  * Class EmailLog
@@ -40,6 +41,8 @@ class EmailLog extends AbstractEntity
     public function __construct()
     {
         parent::__construct();
+
+        $this->index(new SingleIndex('createdOn', 'createdOn', false, false, false, 5184000)); // expire after 60 days
 
         $this->attr('messageId')->char()->setToArrayDefault();
         $this->attr('subject')->char()->setToArrayDefault();
