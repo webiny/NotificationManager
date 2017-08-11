@@ -78,7 +78,7 @@ NotificationForm.defaultProps = {
             }
         };
 
-        const {Form, View, Tabs, Grid, Section, Input, Textarea, Tags, Alert, Dynamic, Select, Button} = this.props;
+        const {Form, View, Tabs, Grid, Section, Input, Textarea, Tags, Alert, Dynamic, Select, Button, ButtonGroup} = this.props;
 
         return (
             <Form {...formProps}>
@@ -138,12 +138,12 @@ NotificationForm.defaultProps = {
                                                             <Input placeholder="Description" name="description"/>
                                                         </Grid.Col>
                                                         <Grid.Col all={3}>
-                                                            <div className="btn-group">
+                                                            <ButtonGroup>
                                                                 <Button type="primary" label="Add"
                                                                         onClick={actions.add(record)}/>
                                                                 <Button type="secondary" label="x"
                                                                         onClick={actions.remove(record)}/>
-                                                            </div>
+                                                            </ButtonGroup>
                                                         </Grid.Col>
                                                     </Grid.Row>
                                                 );
@@ -185,7 +185,7 @@ NotificationForm.defaultProps = {
 
 export default Webiny.createComponent(NotificationForm, {
     modules: [
-        'Form', 'View', 'Tabs', 'Grid', 'Section', 'Input', 'Textarea', 'Tags', 'Alert', 'Dynamic', 'Select', 'Button',
+        'Form', 'View', 'Tabs', 'Grid', 'Section', 'Input', 'Textarea', 'Tags', 'Alert', 'Dynamic', 'Select', 'Button', 'ButtonGroup',
         {
             plugins: () => {
                 return Webiny.importByTag('NotificationManager.NotificationForm.Tab').then(modules => {
