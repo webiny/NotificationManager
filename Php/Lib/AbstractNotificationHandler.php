@@ -91,8 +91,8 @@ abstract class AbstractNotificationHandler
         $values = [];
         foreach ($this->notification->variables as $v) {
             if (!empty($v['entity']) && !isset($this->entityVariables[$v['entity']])) {
-                $error = 'Entity "%s", that is required by "%s" variable, is missing.';
-                throw new NotificationException(sprintf($error, $v['entity'], $v['key']));
+                $error = 'Entity "%s", that is required by "%s" variable, is missing for notification "%s".';
+                throw new NotificationException(sprintf($error, $v['entity'], $v['key'], $this->notification->slug));
             }
 
             $values[$v['key']] = !empty($v['entity']) ? $this->entityVariables[$v['entity']] : $this->customVariables[$v['key']];

@@ -292,9 +292,10 @@ Editor.defaultProps = {
     description: null,
     info: null,
     tooltip: null,
+    cropper: false,
     toolbar: [
         ['bold', 'italic', 'underline', 'strike'],
-        ['link'],
+        ['link', 'image'],
         [{'list': 'ordered'}, {'list': 'bullet'}],
         [{'indent': '-1'}, {'indent': '+1'}],
         [{'size': ['small', false, 'large', 'huge']}],
