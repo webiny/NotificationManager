@@ -2,9 +2,11 @@ import React from 'react';
 import _ from 'lodash';
 import Webiny from 'webiny';
 
-const modules = ['Tabs', 'Grid', 'Section', 'Logic', 'Input', 'MarkdownEditor', 'Checkbox', 'DelayedOnChange'];
+const modules = ['Tabs', 'Grid', 'Section', 'Logic', 'Input', 'Textarea', 'Checkbox'];
 
 export default () => Webiny.import(modules).then(Ui => {
+    const slackMessages = 'https://api.slack.com/docs/messages';
+
     return (model, form) => {
         return (
             <Ui.Tabs.Tab label="Slack message" icon="fa-slack">
@@ -18,7 +20,11 @@ export default () => Webiny.import(modules).then(Ui => {
                                 name="handlers.slack.channel"
                                 validate="required"
                                 description="Specify a channel or username: #general or @mark"/>
-                            <Ui.DelayedOnChange><Ui.MarkdownEditor label="Message" name="handlers.slack.message" validate="required"/></Ui.DelayedOnChange>
+                                <Ui.Textarea
+                                    label="Message"
+                                    name="handlers.slack.message"
+                                    validate="required"
+                                    description={<span>Read about <a href={slackMessages} target="_blank">Slack messages</a> and how to compose them</span>}/>
                         </Ui.Logic.Hide>
                     </Ui.Grid.Col>
                 </Ui.Grid.Row>
