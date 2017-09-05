@@ -1,7 +1,7 @@
 <?php
 namespace Apps\NotificationManager\Php\Lib;
 
-use Apps\Webiny\Php\DevTools\WebinyTrait;
+use Apps\Webiny\Php\Lib\WebinyTrait;
 use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
 use Webiny\Component\StdLib\StdLibTrait;
 

@@ -1,8 +1,8 @@
 <?php
 namespace Apps\NotificationManager\Php\Entities;
 
-use Apps\Webiny\Php\DevTools\WebinyTrait;
-use Apps\Webiny\Php\DevTools\Entity\AbstractEntity;
+use Apps\Webiny\Php\Lib\WebinyTrait;
+use Apps\Webiny\Php\Lib\Entity\AbstractEntity;
 use Webiny\Component\Mongo\Index\SingleIndex;
 
 /**

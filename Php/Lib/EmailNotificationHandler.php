@@ -1,7 +1,7 @@
 <?php
 namespace Apps\NotificationManager\Php\Lib;
 
-use Apps\Webiny\Php\DevTools\Exceptions\AppException;
+use Apps\Webiny\Php\Lib\Exceptions\AppException;
 use Apps\Webiny\Php\RequestHandlers\ApiException;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\Settings;
@@ -21,7 +21,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
     protected $emailContent = '';
     protected $emailSubject = '';
     /**
-     * @var \Apps\Webiny\Php\DevTools\TemplateEngine
+     * @var \Apps\Webiny\Php\Lib\TemplateEngine
      */
     protected $templateInstance;
 
