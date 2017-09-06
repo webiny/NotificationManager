@@ -1,6 +1,5 @@
 import 'Assets/styles.scss';
 import Webiny from 'webiny';
-import Activity from './Modules/Activity';
 import Email from './Modules/Email';
 import Notification from './Modules/Notification';
 import Settings from './Modules/Settings';
@@ -11,7 +10,6 @@ class NotificationManager extends Webiny.App {
     constructor() {
         super('NotificationManager.Backend');
         this.modules = [
-            new Activity(this),
             new Email(this),
             new Notification(this),
             new Settings(this),

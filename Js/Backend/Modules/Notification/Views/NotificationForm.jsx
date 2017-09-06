@@ -2,7 +2,6 @@ import React from 'react';
 import _ from 'lodash';
 import Webiny from 'webiny';
 import PreviewModal from './NotificationForm/PreviewModal';
-import SendingHistory from './NotificationForm/SendingHistory';
 
 class NotificationForm extends Webiny.Ui.View {
     constructor(props) {
@@ -90,17 +89,12 @@ NotificationForm.defaultProps = {
                             <Tabs size="large">
                                 <Tabs.Tab label="General" icon="icon-settings">
                                     <Grid.Row>
-                                        <Grid.Col all={6}>
+                                        <Grid.Col all={12}>
                                             <Section title="Notification Settings"/>
-
                                             <Input label="Title" name="title" validate="required"/>
                                             <Input label="Slug" name="slug"/>
                                             <Textarea label="Description" name="description"/>
                                             <Tags label="Labels" name="labels" placeholder="Add Label"/>
-                                        </Grid.Col>
-                                        <Grid.Col all={6}>
-                                            <Section title="Sending History"/>
-                                            <SendingHistory/>
                                         </Grid.Col>
                                     </Grid.Row>
                                 </Tabs.Tab>
