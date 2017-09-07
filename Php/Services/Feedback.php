@@ -1,36 +1,34 @@
 <?php
 namespace Apps\NotificationManager\Php\Services;
 
+use Apps\Webiny\Php\Lib\Api\ApiContainer;
 use Apps\Webiny\Php\Lib\Interfaces\PublicApiInterface;
 use Apps\Webiny\Php\Lib\Services\AbstractService;
-use Apps\Webiny\Php\Lib\WebinyTrait;
 use Apps\Webiny\Php\Lib\Exceptions\AppException;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 
 
 class Feedback extends AbstractService implements PublicApiInterface
 {
-    use WebinyTrait;
-
-    function __construct()
+    protected function serviceApi(ApiContainer $api)
     {
-        parent::__construct();
-        $this->api('get', 'email/mark-read/{emailLog}/1px', function (EmailLog $emailLog) {
+        $api->get('email/mark-read/{emailLog}/1px', function (EmailLog $emailLog) {
             return $this->markRead($emailLog);
         });
 
-        $this->api('post', 'email/bounce', function () {
+        $api->post('email/bounce', function () {
             return $this->parse();
         });
 
-        $this->api('post', 'email/complaint', function () {
+        $api->post('email/complaint', function () {
             return $this->parse();
         });
 
-        $this->api('post', 'email/delivery', function () {
+        $api->post('email/delivery', function () {
             return $this->parse();
         });
     }
+
 
     public function markRead(EmailLog $emailLog)
     {

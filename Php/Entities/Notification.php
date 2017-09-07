@@ -2,7 +2,7 @@
 
 namespace Apps\NotificationManager\Php\Entities;
 
-use Apps\Webiny\Php\Lib\WebinyTrait;
+use Apps\Webiny\Php\Lib\Api\ApiContainer;
 use Apps\Webiny\Php\Lib\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Lib\AbstractNotificationHandler;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
@@ -23,8 +23,6 @@ use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
  */
 class Notification extends AbstractEntity
 {
-    use WebinyTrait;
-
     protected static $entityCollection = 'NotificationManagerNotifications';
     protected static $entityMask = '{title}';
 
@@ -54,10 +52,28 @@ class Notification extends AbstractEntity
         $this->attr('variables')->arr();
         $this->attr('handlers')->object()->setToArrayDefault();
 
+        $this->onBeforeSave(function () {
+            $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
+            $handlers = $this->wService()->getServicesByTag('notification-manager-handler', $abstractHandler);
+
+            /* @var $handler AbstractNotificationHandler */
+            foreach ($handlers as $handler) {
+                $handler->setNotification($this);
+                if ($handler->canSend()) {
+                    $handler->validate();
+                }
+            }
+        });
+    }
+
+    protected function entityApi(ApiContainer $api)
+    {
+        parent::entityApi($api);
+
         /**
          * @api.name Preview notification
          */
-        $this->api('post', '{id}/preview', function () {
+        $api->post('{id}/preview', function () {
             $data = $this->wRequest()->getRequestData();
 
             $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
@@ -79,9 +95,7 @@ class Notification extends AbstractEntity
          * @api.name Copy notification
          * @api.body.title string New notification title
          */
-        $this->api('post', '{id}/copy', function () {
-            $data = $this->wRequest()->getRequestData();
-
+        $api->post('{id}/copy', function () {
             $newNotification = new Notification();
             $newNotification->slug = $this->slug . '-copy';
             $newNotification->title = $this->title . ' Copy';
@@ -92,22 +106,9 @@ class Notification extends AbstractEntity
             $newNotification->save();
 
             return $this->apiFormatEntity($newNotification, $this->wRequest()->getFields());
-
-        });
-
-        $this->onBeforeSave(function () {
-            $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
-            $handlers = $this->wService()->getServicesByTag('notification-manager-handler', $abstractHandler);
-
-            /* @var $handler AbstractNotificationHandler */
-            foreach ($handlers as $handler) {
-                $handler->setNotification($this);
-                if ($handler->canSend()) {
-                    $handler->validate();
-                }
-            }
         });
     }
+
 
     /**
      * Used for incrementing various stats for handlers (eg. email could have 'read' and 'bounced').

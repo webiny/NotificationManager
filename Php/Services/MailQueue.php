@@ -1,10 +1,11 @@
 <?php
+
 namespace Apps\NotificationManager\Php\Services;
 
 set_time_limit(0);
 
+use Apps\Webiny\Php\Lib\Api\ApiContainer;
 use Apps\Webiny\Php\Lib\Services\AbstractService;
-use Apps\Webiny\Php\Lib\WebinyTrait;
 use Apps\NotificationManager\Php\Entities\EmailLog;
 use Apps\NotificationManager\Php\Entities\Settings;
 use Apps\NotificationManager\Php\Lib\NotificationException;
@@ -14,15 +15,13 @@ use Webiny\Component\Storage\File\File;
 
 class MailQueue extends AbstractService
 {
-    use WebinyTrait;
-
-    function __construct()
+    protected function serviceApi(ApiContainer $api)
     {
-        parent::__construct();
-        $this->api('get', 'send', function () {
+        $api->get('send', function () {
             return $this->sendEmails();
         });
     }
+
 
     public function sendEmails()
     {

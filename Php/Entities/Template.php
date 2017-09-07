@@ -2,7 +2,6 @@
 namespace Apps\NotificationManager\Php\Entities;
 
 use Apps\Webiny\Php\Lib\Exceptions\AppException;
-use Apps\Webiny\Php\Lib\WebinyTrait;
 use Apps\Webiny\Php\Lib\Entity\AbstractEntity;
 
 /**
@@ -18,8 +17,6 @@ use Apps\Webiny\Php\Lib\Entity\AbstractEntity;
  */
 class Template extends AbstractEntity
 {
-    use WebinyTrait;
-
     protected static $entityCollection = 'NotificationManagerTemplate';
     protected static $entityMask = '{name}';
 
