@@ -2,6 +2,7 @@
     {
         "name": "Notification manager",
         "slug": "notification-manager",
+        "isAdminRole": true,
         "description": "This role allows user to manage all system notifications",
         "permissions": [
             "notification-manager-manage-all"
