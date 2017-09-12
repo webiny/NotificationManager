@@ -53,8 +53,7 @@ class Notification extends AbstractEntity
         $this->attr('handlers')->object()->setToArrayDefault();
 
         $this->onBeforeSave(function () {
-            $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
-            $handlers = $this->wService()->getServicesByTag('notification-manager-handler', $abstractHandler);
+            $handlers = $this->wService()->getServicesByTag('notification-manager-handler', AbstractNotificationHandler::class);
 
             /* @var $handler AbstractNotificationHandler */
             foreach ($handlers as $handler) {
@@ -76,8 +75,7 @@ class Notification extends AbstractEntity
         $api->post('{id}/preview', function () {
             $data = $this->wRequest()->getRequestData();
 
-            $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
-            $handlers = $this->wService()->getServicesByTag('notification-manager-handler', $abstractHandler);
+            $handlers = $this->wService()->getServicesByTag('notification-manager-handler', AbstractNotificationHandler::class);
 
             $results = [];
             /* @var $handler AbstractNotificationHandler */

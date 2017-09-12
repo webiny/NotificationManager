@@ -49,9 +49,7 @@ class EmailLog extends AbstractEntity
         $this->attr('name')->char()->setToArrayDefault();
         $this->attr('log')->char();
         $this->attr('status')->char()->setDefaultValue(self::STATUS_PENDING)->setToArrayDefault();
-
-        $notification = 'Apps\NotificationManager\Php\Entities\Notification';
-        $this->attr('notification')->many2one('Notification')->setEntity($notification);
+        $this->attr('notification')->many2one()->setEntity(Notification::class);
     }
 
     protected static function entityIndexes(IndexContainer $indexes)

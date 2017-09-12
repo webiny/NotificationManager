@@ -117,8 +117,7 @@ class Notification
             throw new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
         }
 
-        $abstractHandler = '\Apps\NotificationManager\Php\Lib\AbstractNotificationHandler';
-        $handlers = $this->wService()->getServicesByTag('notification-manager-handler', $abstractHandler);
+        $handlers = $this->wService()->getServicesByTag('notification-manager-handler', AbstractNotificationHandler::class);
 
         /* @var $handler AbstractNotificationHandler */
         foreach ($handlers as $handler) {
