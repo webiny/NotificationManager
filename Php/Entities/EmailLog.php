@@ -19,9 +19,6 @@ use Webiny\Component\Mongo\Index\SingleIndex;
  * @property string       $name
  * @property string       $log
  * @property Notification $notification
- *
- * @package Apps\Webiny\Php\Entities
- *
  */
 class EmailLog extends AbstractEntity
 {
@@ -34,6 +31,7 @@ class EmailLog extends AbstractEntity
     const STATUS_COMPLAINT = 'complaint';
     const STATUS_READ = 'read';
 
+    protected static $classId = 'NotificationManager.Entities.EmailLog';
     protected static $entityCollection = 'NotificationManagerEmailLog';
     protected static $entityMask = '{messageId}';
 

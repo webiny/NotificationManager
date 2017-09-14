@@ -17,12 +17,10 @@ use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
  * @property array       $labels
  * @property ArrayObject $handlers
  * @property array       $variables
- *
- * @package Apps\Webiny\Php\Entities
- *
  */
 class Notification extends AbstractEntity
 {
+    protected static $classId = 'NotificationManager.Entities.Notification';
     protected static $entityCollection = 'NotificationManagerNotifications';
     protected static $entityMask = '{title}';
 

@@ -73,7 +73,7 @@ class Notification
      * Add custom variable
      *
      * @param string $name
-     * @param string $value
+     * @param mixed  $value
      *
      * @return $this
      */

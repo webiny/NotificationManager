@@ -1,4 +1,5 @@
 <?php
+
 namespace Apps\NotificationManager\Php\Services;
 
 use Apps\Webiny\Php\Lib\Api\ApiContainer;
@@ -10,6 +11,8 @@ use Apps\NotificationManager\Php\Entities\EmailLog;
 
 class Feedback extends AbstractService implements PublicApiInterface
 {
+    protected static $classId = 'NotificationManager.Services.Feedback';
+
     protected function serviceApi(ApiContainer $api)
     {
         $api->get('email/mark-read/{emailLog}/1px', function (EmailLog $emailLog) {
@@ -104,5 +107,4 @@ class Feedback extends AbstractService implements PublicApiInterface
 
         return true;
     }
-
 }

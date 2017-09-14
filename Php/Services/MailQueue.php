@@ -15,13 +15,14 @@ use Webiny\Component\Storage\File\File;
 
 class MailQueue extends AbstractService
 {
+    protected static $classId = 'NotificationManager.Services.MailQueue';
+
     protected function serviceApi(ApiContainer $api)
     {
         $api->get('send', function () {
             return $this->sendEmails();
         });
     }
-
 
     public function sendEmails()
     {
@@ -123,5 +124,4 @@ class MailQueue extends AbstractService
 
         return $emailLog;
     }
-
 }
