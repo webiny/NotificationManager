@@ -106,7 +106,7 @@ class Editor extends Webiny.Ui.Component {
             return Promise.resolve(this.attributes[entity]);
         }
 
-        return this.entityApi.get('attributes', {entity}).then(apiResponse => {
+        return this.entityApi.get('attributes', {classId: entity}).then(apiResponse => {
             const options = apiResponse.getData();
             const attributes = [];
             _.map(options, o => {
