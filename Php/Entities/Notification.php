@@ -21,8 +21,8 @@ use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 class Notification extends AbstractEntity
 {
     protected static $classId = 'NotificationManager.Entities.Notification';
-    protected static $entityCollection = 'NotificationManagerNotifications';
-    protected static $entityMask = '{title}';
+    protected static $collection = 'NotificationManagerNotifications';
+    protected static $mask = '{title}';
 
     public function __construct()
     {
