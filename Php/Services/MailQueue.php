@@ -65,7 +65,7 @@ class MailQueue extends AbstractService
         $mailer = $this->wService('NotificationManager')->getMailer();
         /* @var EmailLog $e */
         $emailLog = ['sent' => 0, 'errors' => 0];
-        $storage = $this->wStorage('NotificationManager');
+        $storage = $this->wStorage($this->wConfig()->get('NotificationManager.Storage', 'Temp'));
         $emailNotification = $e->notification->handlers['email'];
         foreach ($emails as $e) {
             $msg = $mailer->getMessage();

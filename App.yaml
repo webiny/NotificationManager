@@ -1,11 +1,11 @@
 Name: NotificationManager
 Version: 0.1.0
-Link: http://www.webiny.com/store/webiny/notification-manager/
-Description:
-
-AuthorName: Webiny LTD
-AuthorLink: http://www.webiny.com
-AuthorEmail: info@webiny.com
+Link: https://github.com/Webiny/NotificationManager
+Description: Manage your notifications, emails, slack messages and custom plugins with ease.
+Author:
+    Name: Webiny LTD
+    Email: info@webiny.com
+    Link: https://www.webiny.com
 
 Services:
     NotificationManager:
@@ -19,15 +19,4 @@ Services:
         Tags: ['notification-manager-handler']
         Scope: prototype
 
-Storage:
-    Services:
-        NotificationManager:
-            Class: \Webiny\Component\Storage\Storage
-            Arguments:
-                Driver:
-                    Object: \Webiny\Component\Storage\Driver\Local\LocalStorageDriver
-                    ObjectArguments:
-                        Config:
-                            Directory: __DIR__/../../Temp/NotificationManager
-                            PublicUrl: __Application.WebPath__/uploads
-                            Create: true
+Storage: Temp

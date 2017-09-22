@@ -46,19 +46,19 @@ export default () => {
                                         <dt>SNS Bounce Endpoint</dt>
                                         <dd>
                                             <Ui.Copy.Input
-                                                value={`${Webiny.Config.ApiPath}/services/notification-manager/feedback/email/bounce`}/>
+                                                value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/bounce`}/>
                                         </dd>
 
                                         <dt>SNS Complaint Endpoint</dt>
                                         <dd>
                                             <Ui.Copy.Input
-                                                value={`${Webiny.Config.ApiPath}/services/notification-manager/feedback/email/complaint`}/>
+                                                value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/complaint`}/>
                                         </dd>
 
                                         <dt>SNS Delivery Endpoint (optional)</dt>
                                         <dd>
                                             <Ui.Copy.Input
-                                                value={`${Webiny.Config.ApiPath}/services/notification-manager/feedback/email/delivery`}/>
+                                                value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/delivery`}/>
                                         </dd>
                                     </dl>
                                 </Ui.Grid.Col>
@@ -321,7 +321,7 @@ export default () => {
                             <p>
                                 The cron should be configured so it executes the following script every minute:
                             </p>
-                            <Ui.Copy.Input context="cron-job" value={Webiny.Config.ApiPath + '/services/notification-manager/mail-queue/send'}/>
+                            <Ui.Copy.Input context="cron-job" value={Webiny.Config.ApiUrl + '/services/notification-manager/mail-queue/send'}/>
                         </Ui.Tabs.Tab>
                     </Ui.Tabs>
                 </Ui.Tabs.Tab>

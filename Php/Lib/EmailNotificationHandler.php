@@ -1,4 +1,5 @@
 <?php
+
 namespace Apps\NotificationManager\Php\Lib;
 
 use Apps\Webiny\Php\Lib\Exceptions\AppException;
@@ -57,7 +58,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
 
         // append tracker
         $markReadUrl = '/services/notification-manager/feedback/email/mark-read/{emailLog}/1px';
-        $trackerPath = $this->wConfig()->get('Application.ApiPath') . $markReadUrl;
+        $trackerPath = $this->wConfig()->get('Webiny.ApiUrl') . $markReadUrl;
         $tracker = '<img src="' . $trackerPath . '" style="height:1px !important; width:1px !important; border: 0 !important; margin: 0 !important; padding: 0 !important" width="1" height="1" border="0">';
         $this->emailContent .= $tracker;
 
@@ -65,7 +66,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
         $replace = [
             '{_content_}'  => $this->emailContent,
             '{_subject_}'  => $this->emailSubject,
-            '{_hostName_}' => $this->wConfig()->get('Application.WebPath')
+            '{_hostName_}' => $this->wConfig()->get('Webiny.WebUrl')
         ];
 
         /* @var $template Template */
@@ -119,7 +120,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
         /* @var $template Template */
         $template = Template::findById($handler['template']);
         $content = str_replace('{_content_}', $handler['content'], $template->content);
-        $content = str_replace('{_hostName_}', $this->wConfig()->get('Application.WebPath'), $content);
+        $content = str_replace('{_hostName_}', $this->wConfig()->get('Webiny.WebUrl'), $content);
 
         // get mailer
         /* @var $mailer Mailer */
@@ -177,7 +178,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
 
             // copy attachments to temporary storage
             /* @var File $att */
-            $storage = $this->wStorage('NotificationManager');
+            $storage = $this->wStorage($this->wConfig()->get('NotificationManager.Storage', 'Temp'));
             foreach ($this->attachments as $index => $att) {
                 $key = $log->id . '-' . $index . '.tmp';
                 $storage->setContents($key, $att['file']->getContents());
