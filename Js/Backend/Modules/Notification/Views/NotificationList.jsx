@@ -51,7 +51,11 @@ NotificationList.defaultProps = {
                                 </Ui.List.FormFilters>
                                 <Ui.List.Table>
                                     <Ui.List.Table.Row>
-                                        <Ui.List.Table.Field align="left" label="Title" sort="title" route="NotificationManager.Notification.Edit">
+                                        <Ui.List.Table.Field
+                                            align="left"
+                                            label="Title"
+                                            sort="title"
+                                            route="NotificationManager.Notification.Edit">
                                             {({data}) => (
                                                 <span>
                                                     <strong>{data.title}</strong>
@@ -63,14 +67,17 @@ NotificationList.defaultProps = {
                                         <Ui.List.Table.Field name="description" align="left" label="Description" sort="description"/>
                                         <Ui.List.Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
                                         <Ui.List.Table.Actions>
-                                            <Ui.List.Table.Action label={this.i18n(`Copy`)} icon="fa-files-o" onClick={({data, actions}) => {
-                                                actions.api.post(`${data.id}/copy`).then(response => {
-                                                    Webiny.Growl.success(this.i18n('Notification copied successfully!'));
-                                                    Webiny.Router.goToRoute('NotificationManager.Notification.Edit', {
-                                                        id: response.getData('entity').id
+                                            <Ui.List.Table.Action
+                                                label={this.i18n(`Copy`)}
+                                                icon="fa-files-o"
+                                                onClick={({data, actions}) => {
+                                                    actions.api.post(`${data.id}/copy`).then(response => {
+                                                        Webiny.Growl.success(this.i18n('Notification copied successfully!'));
+                                                        Webiny.Router.goToRoute('NotificationManager.Notification.Edit', {
+                                                            id: response.getData('entity').id
+                                                        });
                                                     });
-                                                });
-                                            }}/>
+                                                }}/>
                                             <Ui.Dropdown.Divider />
                                             <Ui.List.Table.EditAction route="NotificationManager.Notification.Edit"/>
                                             <Ui.List.Table.DeleteAction/>
