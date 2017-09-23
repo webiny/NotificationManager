@@ -21,7 +21,7 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
         return (
             <Modal.Dialog>
                 <Form {...formProps}>
-                    {(model, form) => (
+                    {({form}) => (
                         <Modal.Content>
                             <Form.Loader/>
                             <Modal.Header title="New Notification" onClose={this.hide}/>

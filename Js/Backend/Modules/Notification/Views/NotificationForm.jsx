@@ -81,7 +81,7 @@ NotificationForm.defaultProps = {
 
         return (
             <Form {...formProps}>
-                {(model, form) => (
+                {({model, form}) => (
                     <View.Form>
                         <View.Header title="Notification"/>
                         <View.Body noPadding={true}>
@@ -119,7 +119,7 @@ NotificationForm.defaultProps = {
                                             )}
                                         </Dynamic.Header>
                                         <Dynamic.Row>
-                                            {(record, actions) => {
+                                            {({data, actions}) => {
                                                 return (
                                                     <Grid.Row>
                                                         <Grid.Col all={2}>
@@ -133,10 +133,8 @@ NotificationForm.defaultProps = {
                                                         </Grid.Col>
                                                         <Grid.Col all={3}>
                                                             <ButtonGroup>
-                                                                <Button type="primary" label="Add"
-                                                                        onClick={actions.add(record)}/>
-                                                                <Button type="secondary" label="x"
-                                                                        onClick={actions.remove(record)}/>
+                                                                <Button type="primary" label="Add"  onClick={actions.add(data)}/>
+                                                                <Button type="secondary" label="x" onClick={actions.remove(data)}/>
                                                             </ButtonGroup>
                                                         </Grid.Col>
                                                     </Grid.Row>
@@ -144,7 +142,7 @@ NotificationForm.defaultProps = {
                                             }}
                                         </Dynamic.Row>
                                         <Dynamic.Empty>
-                                            {(actions) => {
+                                            {({actions}) => {
                                                 return (
                                                     <Grid.Row>
                                                         <Grid.Col all={12}>

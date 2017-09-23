@@ -50,7 +50,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         return (
             <Modal.Dialog onHide={() => this.setState({response: null})}>
                 <Form onSubmit={this.submit}>
-                    {(model, form) => (
+                    {({model, form}) => (
                         <Modal.Content>
                             {this.state.loading ? <Loader/> : null}
                             <Modal.Header title="Preview Notification"/>

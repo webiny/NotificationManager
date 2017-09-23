@@ -38,13 +38,13 @@ NotificationList.defaultProps = {
                         <Ui.View.Body>
                             <Ui.List {...listProps}>
                                 <Ui.List.FormFilters>
-                                    {(applyFilters, resetFilters) => (
+                                    {({apply, reset}) => (
                                         <Ui.Grid.Row>
                                             <Ui.Grid.Col all={10}>
-                                                <Ui.Input {...searchProps} onEnter={applyFilters()}/>
+                                                <Ui.Input {...searchProps} onEnter={apply()}/>
                                             </Ui.Grid.Col>
                                             <Ui.Grid.Col all={2}>
-                                                <Ui.Button type="secondary" align="right" label="Reset Filter" onClick={resetFilters()}/>
+                                                <Ui.Button type="secondary" align="right" label="Reset Filter" onClick={reset()}/>
                                             </Ui.Grid.Col>
                                         </Ui.Grid.Row>
                                     )}
@@ -52,7 +52,7 @@ NotificationList.defaultProps = {
                                 <Ui.List.Table>
                                     <Ui.List.Table.Row>
                                         <Ui.List.Table.Field align="left" label="Title" sort="title" route="NotificationManager.Notification.Edit">
-                                            {data => (
+                                            {({data}) => (
                                                 <span>
                                                     <strong>{data.title}</strong>
                                                     <br/>{data.slug}<br/>
@@ -63,8 +63,8 @@ NotificationList.defaultProps = {
                                         <Ui.List.Table.Field name="description" align="left" label="Description" sort="description"/>
                                         <Ui.List.Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
                                         <Ui.List.Table.Actions>
-                                            <Ui.List.Table.Action label={this.i18n(`Copy`)} icon="fa-files-o" onClick={row => {
-                                                new Webiny.Api.Endpoint(listProps.api).post(`/${row.id}/copy`).then(response => {
+                                            <Ui.List.Table.Action label={this.i18n(`Copy`)} icon="fa-files-o" onClick={({data, actions}) => {
+                                                actions.api.post(`${data.id}/copy`).then(response => {
                                                     Webiny.Growl.success(this.i18n('Notification copied successfully!'));
                                                     Webiny.Router.goToRoute('NotificationManager.Notification.Edit', {
                                                         id: response.getData('entity').id

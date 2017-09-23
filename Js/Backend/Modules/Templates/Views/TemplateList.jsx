@@ -35,13 +35,13 @@ TemplateList.defaultProps = {
                 <View.Body>
                     <List {...listProps}>
                         <List.FormFilters>
-                            {(applyFilters, resetFilters) => (
+                            {({apply, reset}) => (
                                 <Grid.Row>
                                     <Grid.Col all={10}>
-                                        <Input {...searchProps} onEnter={applyFilters()}/>
+                                        <Input {...searchProps} onEnter={apply()}/>
                                     </Grid.Col>
                                     <Grid.Col all={2}>
-                                        <Button type="secondary" align="right" label="Reset Filter" onClick={resetFilters()}/>
+                                        <Button type="secondary" align="right" label="Reset Filter" onClick={reset()}/>
                                     </Grid.Col>
                                 </Grid.Row>
                             )}

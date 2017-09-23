@@ -49,16 +49,16 @@ ActivityList.defaultProps = {
         return (
             <Ui.List {...listProps}>
                 <Ui.List.FormFilters>
-                    {(applyFilters, resetFilters) => (
+                    {({apply, reset}) => (
                         <Ui.Grid.Row>
                             <Ui.Grid.Col all={5}>
-                                <Ui.Input {...searchProps} onEnter={applyFilters()}/>
+                                <Ui.Input {...searchProps} onEnter={apply()}/>
                             </Ui.Grid.Col>
                             <Ui.Grid.Col all={5}>
-                                <Ui.Date {...dateProps} onChange={applyFilters()}/>
+                                <Ui.Date {...dateProps} onChange={apply()}/>
                             </Ui.Grid.Col>
                             <Ui.Grid.Col all={2}>
-                                <Ui.Button type="secondary" align="right" label="Reset Filters" onClick={resetFilters()}/>
+                                <Ui.Button type="secondary" align="right" label="Reset Filters" onClick={reset()}/>
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
                     )}
@@ -95,7 +95,7 @@ ActivityList.defaultProps = {
                         <Ui.List.Table.Field name="email" align="left" label="Email" sort="email"/>
                         <Ui.List.Table.Field name="subject" align="left" label="Subject" sort="subject"/>
                         <Ui.List.Table.Field align="right">
-                            {data => <Ui.Button type="default" label="Show Content" onClick={() => this.showContent(data.id)}/>}
+                            {({data}) => <Ui.Button type="default" label="Show Content" onClick={() => this.showContent(data.id)}/>}
                         </Ui.List.Table.Field>
                     </Ui.List.Table.Row>
                 </Ui.List.Table>

@@ -28,7 +28,7 @@ TemplateForm.defaultProps = {
 
         return (
             <Ui.Form {...formProps}>
-                {(model, form) => (
+                {({model, form}) => (
                     <Ui.View.Form>
                         <Ui.View.Header title="Template"/>
                         <Ui.View.Body>
