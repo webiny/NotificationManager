@@ -15,7 +15,7 @@ SettingsForm.defaultProps = {
         const {Settings, View, Tabs, Button} = this.props;
         return (
             <Settings api="/entities/notification-manager/settings">
-                {(model, form) => (
+                {({model, form}) => (
                     <View.Form>
                         <View.Header
                             title="Notification Manager Settings"
