@@ -5,6 +5,8 @@ namespace Apps\NotificationManager\Php\Entities;
 use Apps\Webiny\Php\Lib\Api\ApiContainer;
 use Apps\Webiny\Php\Lib\Entity\AbstractEntity;
 use Apps\NotificationManager\Php\Lib\AbstractNotificationHandler;
+use Apps\Webiny\Php\Lib\Entity\Indexes\IndexContainer;
+use Webiny\Component\Mongo\Index\CompoundIndex;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
@@ -105,6 +107,12 @@ class Notification extends AbstractEntity
         });
     }
 
+    protected static function entityIndexes(IndexContainer $indexes)
+    {
+        parent::entityIndexes($indexes);
+        $indexes->add(new CompoundIndex('title', ['title', 'deletedOn'], false, true));
+        $indexes->add(new CompoundIndex('slug', ['slug', 'deletedOn'], false, true));
+    }
 
     /**
      * Used for incrementing various stats for handlers (eg. email could have 'read' and 'bounced').
