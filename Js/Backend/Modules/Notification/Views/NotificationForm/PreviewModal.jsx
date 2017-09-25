@@ -11,7 +11,7 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
         this.bindMethods('submit');
     }
 
-    submit(preview) {
+    submit({model: preview}) {
         const api = new Webiny.Api.Endpoint('/entities/notification-manager/notifications');
         this.setState({loading: true});
         this.request = api.post(Webiny.Router.getParams('id') + '/preview', preview).then(apiResponse => {

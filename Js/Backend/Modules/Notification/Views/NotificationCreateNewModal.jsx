@@ -7,7 +7,7 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
         const formProps = {
             api: '/entities/notification-manager/notification',
             fields: 'id,title',
-            onSubmitSuccess: (apiResponse) => {
+            onSubmitSuccess: ({apiResponse}) => {
                 const id = apiResponse.getData('entity.id');
                 if (id) {
                     Webiny.Router.goToRoute('NotificationManager.Notification.Edit', {id});
