@@ -63,7 +63,7 @@ NotificationForm.defaultProps = {
             valueAttr: 'class',
             minimumResultsForSearch: 5,
             options: this.state.entityOptions,
-            optionRenderer: option => {
+            optionRenderer: ({option}) => {
                 return (
                     <div>
                         <strong>{option.data.name}</strong>
@@ -72,7 +72,7 @@ NotificationForm.defaultProps = {
                     </div>
                 );
             },
-            selectedRenderer: option => {
+            selectedRenderer: ({option}) => {
                 return option.data.name;
             }
         };
