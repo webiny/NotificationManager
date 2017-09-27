@@ -13,9 +13,9 @@ class Templates extends Webiny.App.Module {
         const role = 'notification-manager';
 
         this.registerMenus(
-            <Menu label={this.i18n('Marketing Tools')} icon="fa-bell">
-                <Menu label={this.i18n('Notification Manager')} role={role}>
-                    <Menu label={this.i18n('Templates')} route="NotificationManager.Templates"/>
+            <Menu label={Webiny.I18n('Marketing Tools')} icon="fa-bell">
+                <Menu label={Webiny.I18n('Notification Manager')} role={role}>
+                    <Menu label={Webiny.I18n('Templates')} route="NotificationManager.Templates"/>
                 </Menu>
             </Menu>
         );
