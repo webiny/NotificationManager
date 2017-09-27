@@ -1,6 +1,9 @@
 import React from 'react';
 import Webiny from 'webiny';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Notification.PreviewModal
+ */
 class PreviewModal extends Webiny.Ui.ModalComponent {
 
     constructor(props) {
@@ -53,13 +56,13 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
                     {({model, form}) => (
                         <Modal.Content>
                             {this.state.loading ? <Loader/> : null}
-                            <Modal.Header title="Preview Notification"/>
+                            <Modal.Header title={this.i18n('Preview Notification')}/>
                             <Modal.Body noPadding={!this.state.response}>
                                 {this.renderContent(model, form)}
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button type="default" label="Close" onClick={this.hide}/>
-                                <Button type="primary" label="Send Preview" onClick={form.submit}/>
+                                <Button type="default" label={this.i18n('Close')} onClick={this.hide}/>
+                                <Button type="primary" label={this.i18n('Send Preview')} onClick={form.submit}/>
                             </Modal.Footer>
                         </Modal.Content>
                     )}

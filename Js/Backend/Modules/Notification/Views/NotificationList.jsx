@@ -2,6 +2,9 @@ import React from 'react';
 import Webiny from 'webiny';
 import NotificationCreateNewModal from './NotificationCreateNewModal';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Notification.PreviewModal
+ */
 class NotificationList extends Webiny.Ui.View {
     constructor(props) {
         super(props);
@@ -28,7 +31,7 @@ NotificationList.defaultProps = {
             <Webiny.Ui.LazyLoad modules={['View', 'Button', 'Icon', 'List', 'Grid', 'Input', 'Dropdown', 'Label']}>
                 {(Ui) => (
                     <Ui.View.List>
-                        <Ui.View.Header title="Notifications">
+                        <Ui.View.Header title={this.i18n('Notifications')}>
                             <Ui.Button type="primary" align="right" onClick={() => this.notificationCreateNewModal.show()}>
                                 <Ui.Icon icon="icon-plus-circled"/>
                                 Create notification
@@ -44,7 +47,7 @@ NotificationList.defaultProps = {
                                                 <Ui.Input {...searchProps} onEnter={apply()}/>
                                             </Ui.Grid.Col>
                                             <Ui.Grid.Col all={2}>
-                                                <Ui.Button type="secondary" align="right" label="Reset Filter" onClick={reset()}/>
+                                                <Ui.Button type="secondary" align="right" label={this.i18n('Reset Filter')} onClick={reset()}/>
                                             </Ui.Grid.Col>
                                         </Ui.Grid.Row>
                                     )}
@@ -53,7 +56,7 @@ NotificationList.defaultProps = {
                                     <Ui.List.Table.Row>
                                         <Ui.List.Table.Field
                                             align="left"
-                                            label="Title"
+                                            label={this.i18n('Title')}
                                             sort="title"
                                             route="NotificationManager.Notification.Edit">
                                             {({data}) => (
@@ -64,11 +67,11 @@ NotificationList.defaultProps = {
                                                 </span>
                                             )}
                                         </Ui.List.Table.Field>
-                                        <Ui.List.Table.Field name="description" align="left" label="Description" sort="description"/>
-                                        <Ui.List.Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
+                                        <Ui.List.Table.Field name="description" align="left" label={this.i18n('Description')} sort="description"/>
+                                        <Ui.List.Table.TimeAgoField name="createdOn" align="left" label={this.i18n('Created')} sort="createdOn"/>
                                         <Ui.List.Table.Actions>
                                             <Ui.List.Table.Action
-                                                label="Copy"
+                                                label={this.i18n('Copy')}
                                                 icon="fa-files-o"
                                                 onClick={({data, actions}) => {
                                                     actions.api.post(`${data.id}/copy`).then(response => {

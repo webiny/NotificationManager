@@ -1,6 +1,9 @@
 import React from 'react';
 import Webiny from 'webiny';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Templates.TemplateList
+ */
 class TemplateList extends Webiny.Ui.View {
     constructor(props) {
         super(props);
@@ -26,7 +29,7 @@ TemplateList.defaultProps = {
 
         return (
             <View.List>
-                <View.Header title="Templates">
+                <View.Header title={this.i18n('Templates')}>
                     <Link type="primary" align="right" route="NotificationManager.Template.Create">
                         <Icon icon="icon-plus-circled"/>
                         Create new Template
@@ -41,7 +44,7 @@ TemplateList.defaultProps = {
                                         <Input {...searchProps} onEnter={apply()}/>
                                     </Grid.Col>
                                     <Grid.Col all={2}>
-                                        <Button type="secondary" align="right" label="Reset Filter" onClick={reset()}/>
+                                        <Button type="secondary" align="right" label={this.i18n('Reset Filter')} onClick={reset()}/>
                                     </Grid.Col>
                                 </Grid.Row>
                             )}
@@ -51,10 +54,10 @@ TemplateList.defaultProps = {
                                 <List.Table.Field
                                     name="name"
                                     align="left"
-                                    label="Name"
+                                    label={this.i18n('Name')}
                                     sort="name"
                                     route="NotificationManager.Template.Edit"/>
-                                <List.Table.TimeAgoField name="createdOn" align="left" label="Created" sort="createdOn"/>
+                                <List.Table.TimeAgoField name="createdOn" align="left" label={this.i18n('Created')} sort="createdOn"/>
                                 <List.Table.Actions>
                                     <List.Table.EditAction route="NotificationManager.Template.Edit"/>
                                     <List.Table.DeleteAction/>

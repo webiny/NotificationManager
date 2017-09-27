@@ -1,6 +1,9 @@
 import React from 'react';
 import Webiny from 'webiny';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Settings.SettingsForm
+ */
 class SettingsForm extends Webiny.Ui.View {
     registerTabs(model, form) {
         return this.props.plugins.map((pl, index) => {
@@ -18,7 +21,7 @@ SettingsForm.defaultProps = {
                 {({model, form}) => (
                     <View.Form>
                         <View.Header
-                            title="Notification Manager Settings"
+                            title={this.i18n('Notification Manager Settings')}
                             description="Set your notification settings here"/>
                         <View.Body noPadding>
                             <Tabs size="large" position="left">
@@ -26,7 +29,7 @@ SettingsForm.defaultProps = {
                             </Tabs>
                         </View.Body>
                         <View.Footer align="right">
-                            <Button type="primary" onClick={form.submit} label="Save settings"/>
+                            <Button type="primary" onClick={form.submit} label={this.i18n('Save settings')}/>
                         </View.Footer>
                     </View.Form>
                 )}

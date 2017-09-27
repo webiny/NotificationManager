@@ -1,6 +1,9 @@
 import React from 'react';
 import Webiny from 'webiny';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Templates.TemplateForm
+ */
 class TemplateForm extends Webiny.Ui.View {
 
     constructor(props) {
@@ -30,16 +33,16 @@ TemplateForm.defaultProps = {
             <Ui.Form {...formProps}>
                 {({model, form}) => (
                     <Ui.View.Form>
-                        <Ui.View.Header title="Template"/>
+                        <Ui.View.Header title={this.i18n('Template')}/>
                         <Ui.View.Body>
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={8}>
-                                    <Ui.Section title="Template"/>
-                                    <Ui.Input label="Name" name="name" validate="required"/>
-                                    <Ui.CodeEditor label="Content" name="content" description="Enter plain text or HTML content"/>
+                                    <Ui.Section title={this.i18n('Template')}/>
+                                    <Ui.Input label={this.i18n('Name')} name="name" validate="required"/>
+                                    <Ui.CodeEditor label={this.i18n('Content')} name="content" description="Enter plain text or HTML content"/>
                                 </Ui.Grid.Col>
                                 <Ui.Grid.Col all={4}>
-                                    <Ui.Section title="System Tags"/>
+                                    <Ui.Section title={this.i18n('System Tags')}/>
                                     <dl>
                                         <dt>&#123;_hostName_&#125;</dt>
                                         <dd>Website address,&nbsp;
