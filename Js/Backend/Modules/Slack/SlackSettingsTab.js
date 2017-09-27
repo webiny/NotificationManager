@@ -13,12 +13,12 @@ export default () => Webiny.import(['Tabs', 'Grid', 'Input']).then(Ui => {
                         <Ui.Input
                             label={this.i18n('Token')}
                             name="slack.token"
-                            description={
+                            description={(
                                 <span>
-                                Bot token to use when sending notifications.&nbsp;
-                                    <a target="_blank" href="https://api.slack.com/bot-users">Create your Slack bot here.</a>
-                            </span>
-                            }/>
+                                    {this.i18n('Bot token to use when sending notifications.')}
+                                    <a target="_blank" href="https://api.slack.com/bot-users">{this.i18n('Create your Slack bot here.')}</a>
+                                </span>
+                            )}/>
                         <Ui.Input label={this.i18n('Team')} name="slack.team"/>
                         <Ui.Input label={this.i18n('Username')} name="slack.username"/>
                     </Ui.Grid.Col>

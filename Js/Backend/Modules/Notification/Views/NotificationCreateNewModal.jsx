@@ -38,7 +38,7 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
                                             label={this.i18n('Slug')}
                                             name="slug"
                                             placeholder={this.i18n('Leave blank for automatic slug')}
-                                            description="WARNING: This cannot be changed later."/>
+                                            description={this.i18n('WARNING: This cannot be changed later.')}/>
                                     </Grid.Col>
                                     <Grid.Col all={12}>
                                         <Textarea label={this.i18n('Description')} name="description"/>

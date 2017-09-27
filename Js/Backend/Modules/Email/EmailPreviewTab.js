@@ -19,7 +19,7 @@ export default () => {
                             name="email.email"
                             label={this.i18n('Email recipient')}
                             validate="email"
-                            placeholder={`Leave empty to use ${Webiny.Model.get('User').email}`}/>
+                            placeholder={this.i18n(`Leave empty to use {usersEmail}`, {usersEmail: Webiny.Model.get('User').email})}/>
                     )}
                 </Ui.Tabs.Tab>
             );

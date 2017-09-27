@@ -21,7 +21,7 @@ TemplateList.defaultProps = {
         };
 
         const searchProps = {
-            placeholder: 'Search by name',
+            placeholder: this.i18n('Search by name'),
             name: '_searchQuery'
         };
 
@@ -32,7 +32,7 @@ TemplateList.defaultProps = {
                 <View.Header title={this.i18n('Templates')}>
                     <Link type="primary" align="right" route="NotificationManager.Template.Create">
                         <Icon icon="icon-plus-circled"/>
-                        Create new Template
+                        {this.i18n('Create new Template')}
                     </Link>
                 </View.Header>
                 <View.Body>

@@ -51,7 +51,7 @@ export default () => {
                                                     variables={model.variables}
                                                     label={this.i18n('Content')}
                                                     name="handlers.email.content"
-                                                    description="You can use Smarty syntax for your email content."/>
+                                                    description={this.i18n('You can use Smarty syntax for your email content.')}/>
                                             </Ui.Grid.Col>
                                         </Ui.Grid.Row>
                                     </Ui.Tabs.Tab>

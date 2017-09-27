@@ -22,12 +22,18 @@ export default () => Webiny.import(modules).then(Ui => {
                                 label={this.i18n('Channel/User')}
                                 name="handlers.slack.channel"
                                 validate="required"
-                                description="Specify a channel or username: #general or @mark"/>
-                                <Ui.Textarea
-                                    label={this.i18n('Message')}
-                                    name="handlers.slack.message"
-                                    validate="required"
-                                    description={<span>Read about <a href={slackMessages} target="_blank">Slack messages</a> and how to compose them</span>}/>
+                                description={this.i18n('Specify a channel or username: #general or @mark')}/>
+                            <Ui.Textarea
+                                label={this.i18n('Message')}
+                                name="handlers.slack.message"
+                                validate="required"
+                                description={(
+                                    <span>
+                                        {this.i18n('Read about {link} and how to compose them', {
+                                            link: <a href={slackMessages} target="_blank">Slack messages</a>
+                                        })}
+                                    </span>
+                                )}/>
                         </Ui.Logic.Hide>
                     </Ui.Grid.Col>
                 </Ui.Grid.Row>

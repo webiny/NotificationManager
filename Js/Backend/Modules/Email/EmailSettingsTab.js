@@ -43,22 +43,22 @@ export default () => {
                                 <Ui.Grid.Col all={6}>
                                     <Ui.Section title={this.i18n('AWS SNS Settings')}/>
                                     <Ui.Alert title={this.i18n('AWS SES')} close={false}>
-                                        If you are using AWS SES to send emails, please check the setup guide in the next tab.
+                                        {this.i18n('If you are using AWS SES to send emails, please check the setup guide in the next tab.')}
                                     </Ui.Alert>
                                     <dl>
-                                        <dt>SNS Bounce Endpoint</dt>
+                                        <dt>{this.i18n('SNS Bounce Endpoint')}</dt>
                                         <dd>
                                             <Ui.Copy.Input
                                                 value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/bounce`}/>
                                         </dd>
 
-                                        <dt>SNS Complaint Endpoint</dt>
+                                        <dt>{this.i18n('SNS Complaint Endpoint')}</dt>
                                         <dd>
                                             <Ui.Copy.Input
                                                 value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/complaint`}/>
                                         </dd>
 
-                                        <dt>SNS Delivery Endpoint (optional)</dt>
+                                        <dt>{this.i18n('SNS Delivery Endpoint (optional)')}</dt>
                                         <dd>
                                             <Ui.Copy.Input
                                                 value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/delivery`}/>
@@ -93,6 +93,7 @@ export default () => {
                                     <a href="https://aws.amazon.com/" target="_blank">aws.amazon.com</a>
                                     ).
                                 </li>
+
                                 <li>Once you have your account go to
                                     <strong> Services </strong>
                                     &gt;

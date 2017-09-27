@@ -34,7 +34,7 @@ NotificationList.defaultProps = {
                         <Ui.View.Header title={this.i18n('Notifications')}>
                             <Ui.Button type="primary" align="right" onClick={() => this.notificationCreateNewModal.show()}>
                                 <Ui.Icon icon="icon-plus-circled"/>
-                                Create notification
+                                {this.i18n('Create notification')}
                             </Ui.Button>
                             <NotificationCreateNewModal ref={ref => this.notificationCreateNewModal = ref}/>
                         </Ui.View.Header>

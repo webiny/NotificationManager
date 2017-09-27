@@ -22,7 +22,7 @@ SettingsForm.defaultProps = {
                     <View.Form>
                         <View.Header
                             title={this.i18n('Notification Manager Settings')}
-                            description="Set your notification settings here"/>
+                            description={this.i18n('Set your notification settings here')}/>
                         <View.Body noPadding>
                             <Tabs size="large" position="left">
                                 {this.registerTabs(model, form)}

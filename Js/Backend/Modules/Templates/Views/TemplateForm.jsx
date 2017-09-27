@@ -39,37 +39,42 @@ TemplateForm.defaultProps = {
                                 <Ui.Grid.Col all={8}>
                                     <Ui.Section title={this.i18n('Template')}/>
                                     <Ui.Input label={this.i18n('Name')} name="name" validate="required"/>
-                                    <Ui.CodeEditor label={this.i18n('Content')} name="content" description="Enter plain text or HTML content"/>
+                                    <Ui.CodeEditor
+                                        label={this.i18n('Content')}
+                                        name="content"
+                                        description={this.i18n('Enter plain text or HTML content')}/>
                                 </Ui.Grid.Col>
                                 <Ui.Grid.Col all={4}>
                                     <Ui.Section title={this.i18n('System Tags')}/>
                                     <dl>
                                         <dt>&#123;_hostName_&#125;</dt>
-                                        <dd>Website address,&nbsp;
-                                            <strong>{window.location.origin}</strong>
+                                        <dd>
+                                            {this.i18n('Website address, {origin}', <strong>{window.location.origin}</strong>)}
                                         </dd>
                                     </dl>
                                     <dl>
                                         <dt>&#123;_content_&#125;</dt>
-                                        <dd>Variable containing notification content.</dd>
+                                        <dd>{this.i18n('Variable containing notification content.')}</dd>
                                     </dl>
                                     <dl>
                                         <dt>&#123;_subject_&#125;</dt>
-                                        <dd>Variable containing notification subject.</dd>
+                                        <dd>{this.i18n('Variable containing notification subject.')}</dd>
                                     </dl>
                                     <dl>
-                                        <dt>Notification variables</dt>
-                                        <dd>Additionally you can include any of the variables that are available inside your
-                                            notification, that will be using this template.
+                                        <dt>{this.i18n('Notification variables')}</dt>
+                                        <dd>{this.i18n(`Additionally you can include any of the variables that are available inside your
+                                            notification, that will be using this template.`)}
                                         </dd>
                                     </dl>
                                 </Ui.Grid.Col>
                             </Ui.Grid.Row>
                         </Ui.View.Body>
                         <Ui.View.Footer>
-                            <Ui.Button align="right" type="primary" onClick={form.submit}>Save Changes</Ui.Button>
-                            <Ui.Button align="right" type="secondary" onClick={() => this.previewTemplate(model.content)}>Preview Template</Ui.Button>
-                            <Ui.Button align="left" type="default" onClick={form.cancel}>Go Back</Ui.Button>
+                            <Ui.Button align="right" type="primary" onClick={form.submit}>{this.i18n('Save Changes')}</Ui.Button>
+                            <Ui.Button align="right" type="secondary" onClick={() => this.previewTemplate(model.content)}>
+                                {this.i18n('Preview Template')}
+                            </Ui.Button>
+                            <Ui.Button align="left" type="default" onClick={form.cancel}>{this.i18n('Go Back')}</Ui.Button>
                         </Ui.View.Footer>
                     </Ui.View.Form>
                 )}

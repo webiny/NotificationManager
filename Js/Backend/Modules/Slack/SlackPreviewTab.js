@@ -39,7 +39,7 @@ export default () => {
                                     label={this.i18n('Channel/User')}
                                     name="slack.channel"
                                     placeholder={this.i18n('Leave empty to use Slack message channel')}
-                                    description="Specify a channel or username: #general or @mark"/>
+                                    description={this.i18n('Specify a channel or username: #general or @mark')}/>
                             )}
                         </Ui.Grid.Col>
                     </Ui.Grid.Row>
