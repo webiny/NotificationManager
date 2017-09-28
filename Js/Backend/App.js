@@ -17,12 +17,6 @@ class NotificationManager extends Webiny.App {
             new Templates(this)
         ];
     }
-
-    onInstalled() {
-        return (
-            <div>Bok!</div>
-        );
-    }
 }
 
 Webiny.registerApp(new NotificationManager());
