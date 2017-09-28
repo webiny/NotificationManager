@@ -19,6 +19,7 @@ use Webiny\Component\TemplateEngine\TemplateEngineException;
  */
 class EmailNotificationHandler extends AbstractNotificationHandler
 {
+    protected static $i18nNamespace = 'NotificationManager.Lib.EmailNotificationHandler';
     protected $emailContent = '';
     protected $emailSubject = '';
     /**
@@ -162,7 +163,7 @@ class EmailNotificationHandler extends AbstractNotificationHandler
     {
 
         if (count($this->recipients) < 1) {
-            throw new ApiException('An email notification has to have at least 1 recipient.');
+            throw new ApiException($this->wI18n('An email notification has to have at least 1 recipient.'));
         }
 
         /* @var $r Email */
