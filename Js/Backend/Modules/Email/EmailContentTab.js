@@ -4,6 +4,9 @@ import Webiny from 'webiny';
 import Editor from './Editor';
 import ActivityList from './ActivityList';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Email.EmailContentTab
+ */
 export default () => {
     return Webiny.import(['Tabs', 'Section', 'Checkbox', 'Logic', 'Grid', 'Input', 'Select']).then(Ui => {
         return (model, form) => {
@@ -16,28 +19,28 @@ export default () => {
             };
 
             return (
-                <Ui.Tabs.Tab label="Email content" icon="fa-envelope">
+                <Ui.Tabs.Tab label={this.i18n('Email content')} icon="fa-envelope">
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
-                            <Ui.Section title={form.bindTo(<Ui.Checkbox name="handlers.email.send" label="Send email"/>)}/>
+                            <Ui.Section title={form.bindTo(<Ui.Checkbox name="handlers.email.send" label={this.i18n('Send email')}/>)}/>
                             <Ui.Logic.Hide if={!_.get(model, 'handlers.email.send')}>
                                 <Ui.Tabs>
-                                    <Ui.Tabs.Tab label="Content">
+                                    <Ui.Tabs.Tab label={this.i18n('Content')}>
                                         <Ui.Grid.Row>
                                             <Ui.Grid.Col all={4}>
                                                 <Ui.Input
-                                                    label="Subject"
+                                                    label={this.i18n('Subject')}
                                                     name="handlers.email.subject"
                                                     validate="required"/>
                                                 <Ui.Input
-                                                    label="From Address"
+                                                    label={this.i18n('From Address')}
                                                     name="handlers.email.fromAddress"
                                                     validate="email"
-                                                    placeholder="Leave blank to use the default sender"/>
+                                                    placeholder={this.i18n('Leave blank to use the default sender')}/>
                                                 <Ui.Input
-                                                    label="From Name"
+                                                    label={this.i18n('From Name')}
                                                     name="handlers.email.fromName"
-                                                    placeholder="Leave blank to use the default sender"/>
+                                                    placeholder={this.i18n('Leave blank to use the default sender')}/>
                                                 <Ui.Select
                                                     {...templateSelect}
                                                     validate="required"
@@ -46,13 +49,13 @@ export default () => {
                                             <Ui.Grid.Col all={8}>
                                                 <Editor
                                                     variables={model.variables}
-                                                    label="Content"
+                                                    label={this.i18n('Content')}
                                                     name="handlers.email.content"
-                                                    description="You can use Smarty syntax for your email content."/>
+                                                    description={this.i18n('You can use Smarty syntax for your email content.')}/>
                                             </Ui.Grid.Col>
                                         </Ui.Grid.Row>
                                     </Ui.Tabs.Tab>
-                                    <Ui.Tabs.Tab label="Activity">
+                                    <Ui.Tabs.Tab label={this.i18n('Activity')}>
                                         <ActivityList notification={model}/>
                                     </Ui.Tabs.Tab>
                                 </Ui.Tabs>

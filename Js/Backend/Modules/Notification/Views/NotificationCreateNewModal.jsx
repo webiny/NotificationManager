@@ -1,6 +1,9 @@
 import React from 'react';
 import Webiny from 'webiny';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Notification.PreviewModal
+ */
 class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
 
     renderDialog() {
@@ -24,27 +27,27 @@ class NotificationCreateNewModal extends Webiny.Ui.ModalComponent {
                     {({form}) => (
                         <Modal.Content>
                             <Form.Loader/>
-                            <Modal.Header title="New Notification" onClose={this.hide}/>
+                            <Modal.Header title={this.i18n('New Notification')} onClose={this.hide}/>
                             <Modal.Body>
                                 <Grid.Row>
                                     <Grid.Col all={12}>
-                                        <Input label="Title" name="title" validate="required"/>
+                                        <Input label={this.i18n('Title')} name="title" validate="required"/>
                                     </Grid.Col>
                                     <Grid.Col all={12}>
                                         <Input
-                                            label="Slug"
+                                            label={this.i18n('Slug')}
                                             name="slug"
-                                            placeholder="Leave blank for automatic slug"
-                                            description="WARNING: This cannot be changed later."/>
+                                            placeholder={this.i18n('Leave blank for automatic slug')}
+                                            description={this.i18n('WARNING: This cannot be changed later.')}/>
                                     </Grid.Col>
                                     <Grid.Col all={12}>
-                                        <Textarea label="Description" name="description"/>
+                                        <Textarea label={this.i18n('Description')} name="description"/>
                                     </Grid.Col>
                                 </Grid.Row>
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button type="default" label="Cancel" onClick={this.hide}/>
-                                <Button type="primary" label="Add Notification" onClick={form.submit}/>
+                                <Button type="default" label={this.i18n('Cancel')} onClick={this.hide}/>
+                                <Button type="primary" label={this.i18n('Add Notification')} onClick={form.submit}/>
                             </Modal.Footer>
                         </Modal.Content>
                     )}

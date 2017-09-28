@@ -16,6 +16,7 @@ use Apps\Webiny\Php\Lib\Entity\AbstractEntity;
 class Template extends AbstractEntity
 {
     protected static $classId = 'NotificationManager.Entities.Template';
+    protected static $i18nNamespace = 'NotificationManager.Entities.Template';
     protected static $collection = 'NotificationManagerTemplate';
     protected static $mask = '{name}';
 

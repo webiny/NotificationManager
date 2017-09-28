@@ -2,6 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import Webiny from 'webiny';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Email.EmailPreviewTab
+ */
 export default () => {
     return Webiny.import(['Input', 'Tabs']).then(Ui => {
         return (model, form, notification) => {
@@ -10,13 +13,13 @@ export default () => {
             }
 
             return (
-                <Ui.Tabs.Tab label="Email content" icon="fa-envelope">
+                <Ui.Tabs.Tab label={this.i18n('Email content')} icon="fa-envelope">
                     {form.bindTo(
                         <Ui.Input
                             name="email.email"
-                            label="Email recipient"
+                            label={this.i18n('Email recipient')}
                             validate="email"
-                            placeholder={`Leave empty to use ${Webiny.Model.get('User').email}`}/>
+                            placeholder={this.i18n(`Leave empty to use {usersEmail}`, {usersEmail: Webiny.Model.get('User').email})}/>
                     )}
                 </Ui.Tabs.Tab>
             );

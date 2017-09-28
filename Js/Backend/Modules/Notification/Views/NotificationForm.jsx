@@ -3,6 +3,9 @@ import _ from 'lodash';
 import Webiny from 'webiny';
 import PreviewModal from './NotificationForm/PreviewModal';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Notification.PreviewModal
+ */
 class NotificationForm extends Webiny.Ui.View {
     constructor(props) {
         super(props);
@@ -58,7 +61,7 @@ NotificationForm.defaultProps = {
 
         const entitySelect = {
             name: 'entity',
-            placeholder: 'Select Entity',
+            placeholder: this.i18n('Select Entity'),
             allowClear: true,
             valueAttr: 'class',
             minimumResultsForSearch: 5,
@@ -83,37 +86,37 @@ NotificationForm.defaultProps = {
             <Form {...formProps}>
                 {({model, form}) => (
                     <View.Form>
-                        <View.Header title="Notification"/>
-                        <View.Body noPadding={true}>
+                        <View.Header title={this.i18n('Notification')}/>
+                        <View.Body noPadding>
                             <PreviewModal ref={ref => this.previewModal = ref} model={model} form={form}/>
                             <Tabs size="large">
-                                <Tabs.Tab label="General" icon="icon-settings">
+                                <Tabs.Tab label={this.i18n('General')} icon="icon-settings">
                                     <Grid.Row>
                                         <Grid.Col all={12}>
-                                            <Section title="Notification Settings"/>
-                                            <Input label="Title" name="title" validate="required"/>
-                                            <Input label="Slug" name="slug"/>
-                                            <Textarea label="Description" name="description"/>
-                                            <Tags label="Labels" name="labels" placeholder="Add Label"/>
+                                            <Section title={this.i18n('Notification Settings')}/>
+                                            <Input label={this.i18n('Title')} name="title" validate="required"/>
+                                            <Input label={this.i18n('Slug')} name="slug"/>
+                                            <Textarea label={this.i18n('Description')} name="description"/>
+                                            <Tags label={this.i18n('Labels')} name="labels" placeholder={this.i18n('Add Label')}/>
                                         </Grid.Col>
                                     </Grid.Row>
                                 </Tabs.Tab>
-                                <Tabs.Tab label="Variables" icon="icon-menu">
-                                    <Alert title="About">
-                                        This is a list of variables that you can use in your notification content.
-                                        The list also defines the data source from where the variable value will be pulled.
+                                <Tabs.Tab label={this.i18n('Variables')} icon="icon-menu">
+                                    <Alert title={this.i18n('About')}>
+                                        {this.i18n(`This is a list of variables that you can use in your notification content.
+                                        The list also defines the data source from where the variable value will be pulled.`)}
                                     </Alert>
-                                    <Alert title="Important" type="warning">
-                                        Changes you make to the variables are not saved until you save the notification!
+                                    <Alert title={this.i18n('Important')} type="warning">
+                                        {this.i18n('Changes you make to the variables are not saved until you save the notification!')}
                                     </Alert>
                                     <Dynamic.Fieldset name="variables">
                                         <Dynamic.Header>
                                             {() => (
                                                 <Grid.Row>
-                                                    <Grid.Col all={2}><Section title="Variable name"/></Grid.Col>
+                                                    <Grid.Col all={2}><Section title={this.i18n('Variable name')}/></Grid.Col>
                                                     <Grid.Col all={4}><Section
-                                                        title="Entity (leave blank for custom variables)"/></Grid.Col>
-                                                    <Grid.Col all={3}><Section title="Description"/></Grid.Col>
+                                                        title={this.i18n('Entity (leave blank for custom variables)')}/></Grid.Col>
+                                                    <Grid.Col all={3}><Section title={this.i18n('Description')}/></Grid.Col>
                                                     <Grid.Col all={3}/>
                                                 </Grid.Row>
                                             )}
@@ -123,18 +126,22 @@ NotificationForm.defaultProps = {
                                                 return (
                                                     <Grid.Row>
                                                         <Grid.Col all={2}>
-                                                            <Input placeholder="Key" name="key" validate="required"/>
+                                                            <Input placeholder={this.i18n('Key')} name="key" validate="required"/>
                                                         </Grid.Col>
                                                         <Grid.Col all={4}>
                                                             <Select {...entitySelect} label={null}/>
                                                         </Grid.Col>
                                                         <Grid.Col all={3}>
-                                                            <Input placeholder="Description" name="description"/>
+                                                            <Input placeholder={this.i18n('Description')} name="description"/>
                                                         </Grid.Col>
                                                         <Grid.Col all={3}>
                                                             <ButtonGroup>
-                                                                <Button type="primary" label="Add"  onClick={actions.add(data)}/>
-                                                                <Button type="secondary" label="x" onClick={actions.remove(data)}/>
+                                                                <Button
+                                                                    type="primary" label={this.i18n('Add')}
+                                                                    onClick={actions.add(data)}/>
+                                                                <Button
+                                                                    type="secondary" label={this.i18n('x')}
+                                                                    onClick={actions.remove(data)}/>
                                                             </ButtonGroup>
                                                         </Grid.Col>
                                                     </Grid.Row>
@@ -146,10 +153,12 @@ NotificationForm.defaultProps = {
                                                 return (
                                                     <Grid.Row>
                                                         <Grid.Col all={12}>
-                                                            <h5>You have not defined any variables yet. Click "Add variable" to
-                                                                define your
-                                                                first variable!</h5>
-                                                            <Button type="primary" label="Add variable" onClick={actions.add()}/>
+                                                            <h5>
+                                                                {this.i18n(`You have not defined any variables yet. Click "Add variable" to
+                                                                define your first variable!`)}
+                                                            </h5>
+                                                            <Button type="primary" label={this.i18n('Add variable')}
+                                                                    onClick={actions.add()}/>
                                                         </Grid.Col>
                                                     </Grid.Row>
                                                 );
@@ -161,11 +170,11 @@ NotificationForm.defaultProps = {
                             </Tabs>
                         </View.Body>
                         <View.Footer>
-                            <Button align="right" type="primary" onClick={form.submit}>Save Changes</Button>
+                            <Button align="right" type="primary" onClick={form.submit}>{this.i18n('Save Changes')}</Button>
                             <Button align="right" type="secondary" onClick={() => this.saveAndPreview(model, form)}>
-                                Save &amp; Send Preview
+                                {this.i18n('Save & Send Preview')}
                             </Button>
-                            <Button align="left" type="default" onClick={form.cancel}>Go Back</Button>
+                            <Button align="left" type="default" onClick={form.cancel}>{this.i18n('Go Back')}</Button>
                         </View.Footer>
                     </View.Form>
                 )}

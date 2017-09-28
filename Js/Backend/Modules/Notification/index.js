@@ -2,6 +2,9 @@ import React from 'react';
 import Webiny from 'webiny';
 import Views from './Views/Views';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Notification
+ */
 class Notification extends Webiny.App.Module {
 
     init() {
@@ -10,9 +13,9 @@ class Notification extends Webiny.App.Module {
         const role = 'notification-manager';
 
         this.registerMenus(
-            <Menu label="Marketing Tools" icon="fa-bell">
-                <Menu label="Notification Manager" role={role}>
-                    <Menu label="Notifications" route="NotificationManager.Notifications"/>
+            <Menu label={Webiny.I18n('Marketing Tools')} icon="fa-bell">
+                <Menu label={Webiny.I18n('Notification Manager')} role={role}>
+                    <Menu label={Webiny.I18n('Notifications')} route="NotificationManager.Notifications"/>
                 </Menu>
             </Menu>
         );

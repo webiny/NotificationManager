@@ -1,6 +1,9 @@
 import React from 'react';
 import Webiny from 'webiny';
 
+/**
+ * @i18n.namespace NotificationManager.Backend.Email.ActivityList
+ */
 class ActivityList extends Webiny.Ui.View {
     constructor(props) {
         super(props);
@@ -35,12 +38,12 @@ ActivityList.defaultProps = {
         };
 
         const searchProps = {
-            placeholder: 'Search by name, email or subject',
+            placeholder: this.i18n('Search by name, email or subject'),
             name: '_searchQuery'
         };
 
         const dateProps = {
-            placeholder: 'Search by date',
+            placeholder: this.i18n('Search by date'),
             name: 'createdOn'
         };
 
@@ -58,44 +61,44 @@ ActivityList.defaultProps = {
                                 <Ui.Date {...dateProps} onChange={apply()}/>
                             </Ui.Grid.Col>
                             <Ui.Grid.Col all={2}>
-                                <Ui.Button type="secondary" align="right" label="Reset Filters" onClick={reset()}/>
+                                <Ui.Button type="secondary" align="right" label={this.i18n('Reset Filters')} onClick={reset()}/>
                             </Ui.Grid.Col>
                         </Ui.Grid.Row>
                     )}
                 </Ui.List.FormFilters>
                 <Ui.List.Table>
                     <Ui.List.Table.Row>
-                        <Ui.List.Table.CaseField name="status" label="Status" align="left">
+                        <Ui.List.Table.CaseField name="status" label={this.i18n('Status')} align="left">
                             <case value="pending">
-                                <Ui.Label type="default">Pending</Ui.Label>
+                                <Ui.Label type="default">{this.i18n('Pending')}</Ui.Label>
                             </case>
                             <case value="error">
-                                <Ui.Label type="error">Error</Ui.Label>
+                                <Ui.Label type="error">{this.i18n('Error')}</Ui.Label>
                             </case>
                             <case value="sent">
-                                <Ui.Label type="info">Sent</Ui.Label>
+                                <Ui.Label type="info">{this.i18n('Sent')}</Ui.Label>
                             </case>
                             <case value="delivered">
-                                <Ui.Label type="success">Delivered</Ui.Label>
+                                <Ui.Label type="success">{this.i18n('Delivered')}</Ui.Label>
                             </case>
                             <case value="hard-bounce">
-                                <Ui.Label type="error">Hard Bounce</Ui.Label>
+                                <Ui.Label type="error">{this.i18n('Hard Bounce')}</Ui.Label>
                             </case>
                             <case value="soft-bounce">
-                                <Ui.Label type="warning">Soft Bounce</Ui.Label>
+                                <Ui.Label type="warning">{this.i18n('Soft Bounce')}</Ui.Label>
                             </case>
                             <case value="complaint">
-                                <Ui.Label type="error">Complaint</Ui.Label>
+                                <Ui.Label type="error">{this.i18n('Complaint')}</Ui.Label>
                             </case>
                             <case value="read">
-                                <Ui.Label type="success">Read</Ui.Label>
+                                <Ui.Label type="success">{this.i18n('Read')}</Ui.Label>
                             </case>
                         </Ui.List.Table.CaseField>
-                        <Ui.List.Table.TimeAgoField name="createdOn" align="left" label="Date Sent" sort="createdOn"/>
-                        <Ui.List.Table.Field name="email" align="left" label="Email" sort="email"/>
-                        <Ui.List.Table.Field name="subject" align="left" label="Subject" sort="subject"/>
+                        <Ui.List.Table.TimeAgoField name="createdOn" align="left" label={this.i18n('Date Sent')} sort="createdOn"/>
+                        <Ui.List.Table.Field name="email" align="left" label={this.i18n('Email')} sort="email"/>
+                        <Ui.List.Table.Field name="subject" align="left" label={this.i18n('Subject')} sort="subject"/>
                         <Ui.List.Table.Field align="right">
-                            {({data}) => <Ui.Button type="default" label="Show Content" onClick={() => this.showContent(data.id)}/>}
+                            {({data}) => <Ui.Button type="default" label={this.i18n('Show Content')} onClick={() => this.showContent(data.id)}/>}
                         </Ui.List.Table.Field>
                     </Ui.List.Table.Row>
                 </Ui.List.Table>

@@ -32,6 +32,7 @@ class EmailLog extends AbstractEntity
     const STATUS_READ = 'read';
 
     protected static $classId = 'NotificationManager.Entities.EmailLog';
+    protected static $i18nNamespace = 'NotificationManager.Entities.EmailLog';
     protected static $collection = 'NotificationManagerEmailLog';
     protected static $mask = '{messageId}';
 
