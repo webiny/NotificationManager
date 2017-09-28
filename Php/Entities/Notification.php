@@ -23,6 +23,7 @@ use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 class Notification extends AbstractEntity
 {
     protected static $classId = 'NotificationManager.Entities.Notification';
+    protected static $i18nNamespace = 'NotificationManager.Entities.Notification';
     protected static $collection = 'NotificationManagerNotifications';
     protected static $mask = '{title}';
 
