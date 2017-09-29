@@ -54,32 +54,35 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
             );
         }
 
-        return (
-            <div>
-                <Alert>{this.i18n('Currently there are no plugins available for preview.')}</Alert>
-            </div>
-        );
+        return null;
     }
 
     renderDialog() {
-        const {Modal, Form, Button, Loader} = this.props;
+        const {Modal, Form, Button, Loader, Alert} = this.props;
 
         return (
             <Modal.Dialog onHide={() => this.setState({response: null})}>
                 <Form onSubmit={this.submit}>
-                    {({model, form}) => (
-                        <Modal.Content>
-                            {this.state.loading ? <Loader/> : null}
-                            <Modal.Header title={this.i18n('Preview Notification')}/>
-                            <Modal.Body noPadding={!this.state.response}>
-                                {this.renderContent(model, form)}
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button type="default" label={this.i18n('Close')} onClick={this.hide}/>
-                                <Button type="primary" label={this.i18n('Send Preview')} onClick={form.submit}/>
-                            </Modal.Footer>
-                        </Modal.Content>
-                    )}
+                    {({model, form}) => {
+                        const content = this.renderContent(model, form);
+                        return (
+                            <Modal.Content>
+                                {this.state.loading ? <Loader/> : null}
+                                <Modal.Header title={this.i18n('Preview Notification')}/>
+                                <Modal.Body noPadding={!this.state.response}>
+                                    {content || (
+                                        <div>
+                                            <Alert>{this.i18n('Currently there are no plugins available for preview.')}</Alert>
+                                        </div>
+                                    )}
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button type="default" label={this.i18n('Close')} onClick={this.hide}/>
+                                    <Button disabled={!content} type="primary" label={this.i18n('Send Preview')} onClick={form.submit}/>
+                                </Modal.Footer>
+                            </Modal.Content>
+                        )
+                    }}
                 </Form>
             </Modal.Dialog>
         );
