@@ -13,8 +13,10 @@ class TemplateForm extends Webiny.Ui.View {
     }
 
     previewTemplate(content) {
-        window.open('data:text/html,' + encodeURIComponent(content), '_blank', 'width=800,height=600').focus();
+        const newWindow = window.open("about:blank", "_blank", 'width=800,height=600');
+        newWindow.document.write(content);
     }
+
 }
 
 TemplateForm.defaultProps = {
