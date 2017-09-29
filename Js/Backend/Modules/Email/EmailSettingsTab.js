@@ -14,31 +14,23 @@ export default () => {
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={6}>
                                     <Ui.Section title={Webiny.I18n('SMTP Settings')}/>
-                                    {form.bindTo(
-                                        <Ui.Input
-                                            label={Webiny.I18n('Server Name')}
-                                            name="email.serverName"
-                                            validate="required"
-                                            description="For example: email-smtp.us-east-1.amazonaws.com"/>
-                                    )}
-                                    {form.bindTo(
-                                        <Ui.Input
-                                            label={Webiny.I18n('Username')}
-                                            name="email.username"
-                                            validate="required"/>
-                                    )}
-                                    {form.bindTo(
-                                        <Ui.Password
-                                            label={Webiny.I18n('Password')}
-                                            name="email.password"
-                                            validate="required"/>
-                                    )}
-                                    {form.bindTo(
-                                        <Ui.Input
-                                            label={Webiny.I18n('Send limit (emails per second)')}
-                                            name="email.sendLimit"
-                                            validate="required"/>
-                                    )}
+                                    <Ui.Input
+                                        label={Webiny.I18n('Server Name')}
+                                        name="email.serverName"
+                                        validate="required"
+                                        description="For example: email-smtp.us-east-1.amazonaws.com"/>
+                                    <Ui.Input
+                                        label={Webiny.I18n('Username')}
+                                        name="email.username"
+                                        validate="required"/>
+                                    <Ui.Password
+                                        label={Webiny.I18n('Password')}
+                                        name="email.password"
+                                        validate="required"/>
+                                    <Ui.Input
+                                        label={Webiny.I18n('Send limit (emails per second)')}
+                                        name="email.sendLimit"
+                                        validate="required"/>
                                 </Ui.Grid.Col>
                                 <Ui.Grid.Col all={6}>
                                     <Ui.Section title={Webiny.I18n('AWS SNS Settings')}/>
@@ -69,18 +61,14 @@ export default () => {
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={6}>
                                     <Ui.Section title={Webiny.I18n('Default Sender')}/>
-                                    {form.bindTo(
-                                        <Ui.Input
-                                            label={Webiny.I18n('Sender Name')}
-                                            name="email.senderName"
-                                            validate="required"/>
-                                    )}
-                                    {form.bindTo(
-                                        <Ui.Input
-                                            label={Webiny.I18n('Sender email')}
-                                            name="email.senderEmail"
-                                            validate="required,email"/>
-                                    )}
+                                    <Ui.Input
+                                        label={Webiny.I18n('Sender Name')}
+                                        name="email.senderName"
+                                        validate="required"/>
+                                    <Ui.Input
+                                        label={Webiny.I18n('Sender email')}
+                                        name="email.senderEmail"
+                                        validate="required,email"/>
                                 </Ui.Grid.Col>
                             </Ui.Grid.Row>
                         </Ui.Tabs.Tab>
@@ -325,7 +313,8 @@ export default () => {
                             <p>
                                 The cron should be configured so it executes the following script every minute:
                             </p>
-                            <Ui.Copy.Input context="cron-job" value={Webiny.Config.ApiUrl + '/services/notification-manager/mail-queue/send'}/>
+                            <Ui.Copy.Input context="cron-job"
+                                           value={Webiny.Config.ApiUrl + '/services/notification-manager/mail-queue/send'}/>
                         </Ui.Tabs.Tab>
                     </Ui.Tabs>
                 </Ui.Tabs.Tab>

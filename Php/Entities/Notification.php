@@ -43,7 +43,7 @@ class Notification extends AbstractEntity
 
         $this->attr('description')->char()->setToArrayDefault();
 
-        $this->attr('slug')->char()->setToArrayDefault()->setValidators('required,unique')->setValidationMessages([
+        $this->attr('slug')->char()->setToArrayDefault()->setValidators('unique')->setValidationMessages([
             'unique' => 'A notification with the same slug already exists.'
         ])->onSet(function ($val) {
             return $this->str($val)->slug()->val();
