@@ -19,28 +19,28 @@ export default () => {
             };
 
             return (
-                <Ui.Tabs.Tab label={this.i18n('Email content')} icon="fa-envelope">
+                <Ui.Tabs.Tab label={Webiny.I18n('Email content')} icon="fa-envelope">
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
-                            <Ui.Section title={form.bindTo(<Ui.Checkbox name="handlers.email.send" label={this.i18n('Send email')}/>)}/>
+                            <Ui.Section title={form.bindTo(<Ui.Checkbox name="handlers.email.send" label={Webiny.I18n('Send email')}/>)}/>
                             <Ui.Logic.Hide if={!_.get(model, 'handlers.email.send')}>
                                 <Ui.Tabs>
-                                    <Ui.Tabs.Tab label={this.i18n('Content')}>
+                                    <Ui.Tabs.Tab label={Webiny.I18n('Content')}>
                                         <Ui.Grid.Row>
                                             <Ui.Grid.Col all={4}>
                                                 <Ui.Input
-                                                    label={this.i18n('Subject')}
+                                                    label={Webiny.I18n('Subject')}
                                                     name="handlers.email.subject"
                                                     validate="required"/>
                                                 <Ui.Input
-                                                    label={this.i18n('From Address')}
+                                                    label={Webiny.I18n('From Address')}
                                                     name="handlers.email.fromAddress"
                                                     validate="email"
-                                                    placeholder={this.i18n('Leave blank to use the default sender')}/>
+                                                    placeholder={Webiny.I18n('Leave blank to use the default sender')}/>
                                                 <Ui.Input
-                                                    label={this.i18n('From Name')}
+                                                    label={Webiny.I18n('From Name')}
                                                     name="handlers.email.fromName"
-                                                    placeholder={this.i18n('Leave blank to use the default sender')}/>
+                                                    placeholder={Webiny.I18n('Leave blank to use the default sender')}/>
                                                 <Ui.Select
                                                     {...templateSelect}
                                                     validate="required"
@@ -49,13 +49,13 @@ export default () => {
                                             <Ui.Grid.Col all={8}>
                                                 <Editor
                                                     variables={model.variables}
-                                                    label={this.i18n('Content')}
+                                                    label={Webiny.I18n('Content')}
                                                     name="handlers.email.content"
-                                                    description={this.i18n('You can use Smarty syntax for your email content.')}/>
+                                                    description={Webiny.I18n('You can use Smarty syntax for your email content.')}/>
                                             </Ui.Grid.Col>
                                         </Ui.Grid.Row>
                                     </Ui.Tabs.Tab>
-                                    <Ui.Tabs.Tab label={this.i18n('Activity')}>
+                                    <Ui.Tabs.Tab label={Webiny.I18n('Activity')}>
                                         <ActivityList notification={model}/>
                                     </Ui.Tabs.Tab>
                                 </Ui.Tabs>

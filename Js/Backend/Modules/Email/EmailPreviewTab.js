@@ -13,13 +13,13 @@ export default () => {
             }
 
             return (
-                <Ui.Tabs.Tab label={this.i18n('Email content')} icon="fa-envelope">
+                <Ui.Tabs.Tab label={Webiny.I18n('Email content')} icon="fa-envelope">
                     {form.bindTo(
                         <Ui.Input
                             name="email.email"
-                            label={this.i18n('Email recipient')}
+                            label={Webiny.I18n('Email recipient')}
                             validate="email"
-                            placeholder={this.i18n(`Leave empty to use {usersEmail}`, {usersEmail: Webiny.Model.get('User').email})}/>
+                            placeholder={Webiny.I18n(`Leave empty to use {usersEmail}`, {usersEmail: Webiny.Model.get('User').email})}/>
                     )}
                 </Ui.Tabs.Tab>
             );

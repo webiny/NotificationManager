@@ -13,33 +13,33 @@ export default () => {
             }
 
             return (
-                <Ui.Tabs.Tab label={this.i18n('Slack message')} icon="fa-slack">
+                <Ui.Tabs.Tab label={Webiny.I18n('Slack message')} icon="fa-slack">
                     <Ui.Grid.Row>
                         <Ui.Grid.Col all={12}>
                             {form.bindTo(
                                 <Ui.Input
-                                    label={this.i18n('Token')}
+                                    label={Webiny.I18n('Token')}
                                     name="slack.token"
-                                    placeholder={this.i18n('Leave empty to use Slack settings')}/>
+                                    placeholder={Webiny.I18n('Leave empty to use Slack settings')}/>
                             )}
                             {form.bindTo(
                                 <Ui.Input
-                                    label={this.i18n('Team')}
+                                    label={Webiny.I18n('Team')}
                                     name="slack.team"
-                                    placeholder={this.i18n('Leave empty to use Slack settings')}/>
+                                    placeholder={Webiny.I18n('Leave empty to use Slack settings')}/>
                             )}
                             {form.bindTo(
                                 <Ui.Input
-                                    label={this.i18n('Username')}
+                                    label={Webiny.I18n('Username')}
                                     name="slack.username"
-                                    placeholder={this.i18n('Leave empty to use Slack settings')}/>
+                                    placeholder={Webiny.I18n('Leave empty to use Slack settings')}/>
                             )}
                             {form.bindTo(
                                 <Ui.Input
-                                    label={this.i18n('Channel/User')}
+                                    label={Webiny.I18n('Channel/User')}
                                     name="slack.channel"
-                                    placeholder={this.i18n('Leave empty to use Slack message channel')}
-                                    description={this.i18n('Specify a channel or username: #general or @mark')}/>
+                                    placeholder={Webiny.I18n('Leave empty to use Slack message channel')}
+                                    description={Webiny.I18n('Specify a channel or username: #general or @mark')}/>
                             )}
                         </Ui.Grid.Col>
                     </Ui.Grid.Row>
