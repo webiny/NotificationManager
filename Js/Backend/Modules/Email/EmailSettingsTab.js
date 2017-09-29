@@ -8,57 +8,57 @@ export default () => {
     return Webiny.import(['Tabs', 'Grid', 'Section', 'Input', 'Password', 'Alert', 'Copy']).then(Ui => {
         return (model, form) => {
             return (
-                <Ui.Tabs.Tab label={this.i18n('Email')} icon="fa-envelope">
+                <Ui.Tabs.Tab label={Webiny.I18n('Email')} icon="fa-envelope">
                     <Ui.Tabs>
-                        <Ui.Tabs.Tab label={this.i18n('General')} icon="icon-settings">
+                        <Ui.Tabs.Tab label={Webiny.I18n('General')} icon="icon-settings">
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={6}>
-                                    <Ui.Section title={this.i18n('SMTP Settings')}/>
+                                    <Ui.Section title={Webiny.I18n('SMTP Settings')}/>
                                     {form.bindTo(
                                         <Ui.Input
-                                            label={this.i18n('Server Name')}
+                                            label={Webiny.I18n('Server Name')}
                                             name="email.serverName"
                                             validate="required"
                                             description="For example: email-smtp.us-east-1.amazonaws.com"/>
                                     )}
                                     {form.bindTo(
                                         <Ui.Input
-                                            label={this.i18n('Username')}
+                                            label={Webiny.I18n('Username')}
                                             name="email.username"
                                             validate="required"/>
                                     )}
                                     {form.bindTo(
                                         <Ui.Password
-                                            label={this.i18n('Password')}
+                                            label={Webiny.I18n('Password')}
                                             name="email.password"
                                             validate="required"/>
                                     )}
                                     {form.bindTo(
                                         <Ui.Input
-                                            label={this.i18n('Send limit (emails per second)')}
+                                            label={Webiny.I18n('Send limit (emails per second)')}
                                             name="email.sendLimit"
                                             validate="required"/>
                                     )}
                                 </Ui.Grid.Col>
                                 <Ui.Grid.Col all={6}>
-                                    <Ui.Section title={this.i18n('AWS SNS Settings')}/>
-                                    <Ui.Alert title={this.i18n('AWS SES')} close={false}>
-                                        {this.i18n('If you are using AWS SES to send emails, please check the setup guide in the next tab.')}
+                                    <Ui.Section title={Webiny.I18n('AWS SNS Settings')}/>
+                                    <Ui.Alert title={Webiny.I18n('AWS SES')} close={false}>
+                                        {Webiny.I18n('If you are using AWS SES to send emails, please check the setup guide in the next tab.')}
                                     </Ui.Alert>
                                     <dl>
-                                        <dt>{this.i18n('SNS Bounce Endpoint')}</dt>
+                                        <dt>{Webiny.I18n('SNS Bounce Endpoint')}</dt>
                                         <dd>
                                             <Ui.Copy.Input
                                                 value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/bounce`}/>
                                         </dd>
 
-                                        <dt>{this.i18n('SNS Complaint Endpoint')}</dt>
+                                        <dt>{Webiny.I18n('SNS Complaint Endpoint')}</dt>
                                         <dd>
                                             <Ui.Copy.Input
                                                 value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/complaint`}/>
                                         </dd>
 
-                                        <dt>{this.i18n('SNS Delivery Endpoint (optional)')}</dt>
+                                        <dt>{Webiny.I18n('SNS Delivery Endpoint (optional)')}</dt>
                                         <dd>
                                             <Ui.Copy.Input
                                                 value={`${Webiny.Config.ApiUrl}/services/notification-manager/feedback/email/delivery`}/>
@@ -68,16 +68,16 @@ export default () => {
                             </Ui.Grid.Row>
                             <Ui.Grid.Row>
                                 <Ui.Grid.Col all={6}>
-                                    <Ui.Section title={this.i18n('Default Sender')}/>
+                                    <Ui.Section title={Webiny.I18n('Default Sender')}/>
                                     {form.bindTo(
                                         <Ui.Input
-                                            label={this.i18n('Sender Name')}
+                                            label={Webiny.I18n('Sender Name')}
                                             name="email.senderName"
                                             validate="required"/>
                                     )}
                                     {form.bindTo(
                                         <Ui.Input
-                                            label={this.i18n('Sender email')}
+                                            label={Webiny.I18n('Sender email')}
                                             name="email.senderEmail"
                                             validate="required,email"/>
                                     )}
@@ -85,8 +85,8 @@ export default () => {
                             </Ui.Grid.Row>
                         </Ui.Tabs.Tab>
 
-                        <Ui.Tabs.Tab label={this.i18n('AWS SES Setup Guide')} icon="icon-info-circle">
-                            <Ui.Section title={this.i18n('Step 1: Sign up for AWS and get your access credentials')}/>
+                        <Ui.Tabs.Tab label={Webiny.I18n('AWS SES Setup Guide')} icon="icon-info-circle">
+                            <Ui.Section title={Webiny.I18n('Step 1: Sign up for AWS and get your access credentials')}/>
 
                             <ol>
                                 <li>Create an AWS Console account (
@@ -148,7 +148,7 @@ export default () => {
                                 </li>
                             </ol>
 
-                            <Ui.Section title={this.i18n('Step 2: Setup AWS SES (Simple Email Service)')}/>
+                            <Ui.Section title={Webiny.I18n('Step 2: Setup AWS SES (Simple Email Service)')}/>
                             <ol>
                                 <li>In the top menu click
                                     <strong> Services </strong>
@@ -209,7 +209,7 @@ export default () => {
                                 </li>
                             </ol>
 
-                            <Ui.Section title={this.i18n('Step 3: Setup AWS SNS (Simple Notification Service)')}/>
+                            <Ui.Section title={Webiny.I18n('Step 3: Setup AWS SNS (Simple Notification Service)')}/>
                             <ol>
                                 <li>
                                     At this point you are already able to send emails,
@@ -278,7 +278,7 @@ export default () => {
                                 </li>
                             </ol>
 
-                            <Ui.Section title={this.i18n('Step 4: Configure notifications')}/>
+                            <Ui.Section title={Webiny.I18n('Step 4: Configure notifications')}/>
 
                             <ol>
                                 <li>
@@ -308,8 +308,8 @@ export default () => {
 
                         </Ui.Tabs.Tab>
 
-                        <Ui.Tabs.Tab label={this.i18n('Cron Setup Guide')} icon="icon-info-circle">
-                            <Ui.Section title={this.i18n('About')}/>
+                        <Ui.Tabs.Tab label={Webiny.I18n('Cron Setup Guide')} icon="icon-info-circle">
+                            <Ui.Section title={Webiny.I18n('About')}/>
 
                             <p>
                                 Notification manager sends all the emails in a background process,

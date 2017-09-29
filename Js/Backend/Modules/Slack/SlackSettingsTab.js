@@ -7,20 +7,20 @@ import Webiny from 'webiny';
 export default () => Webiny.import(['Tabs', 'Grid', 'Input']).then(Ui => {
     return (model, form) => {
         return (
-            <Ui.Tabs.Tab label={this.i18n('Slack')} icon="fa-slack">
+            <Ui.Tabs.Tab label={Webiny.I18n('Slack')} icon="fa-slack">
                 <Ui.Grid.Row>
                     <Ui.Grid.Col all={12}>
                         <Ui.Input
-                            label={this.i18n('Token')}
+                            label={Webiny.I18n('Token')}
                             name="slack.token"
                             description={(
                                 <span>
-                                    {this.i18n('Bot token to use when sending notifications.')}
-                                    <a target="_blank" href="https://api.slack.com/bot-users">{this.i18n('Create your Slack bot here.')}</a>
+                                    {Webiny.I18n('Bot token to use when sending notifications.')}&nbsp;
+                                    <a target="_blank" href="https://api.slack.com/bot-users">{Webiny.I18n('Create your Slack bot here.')}</a>
                                 </span>
                             )}/>
-                        <Ui.Input label={this.i18n('Team')} name="slack.team"/>
-                        <Ui.Input label={this.i18n('Username')} name="slack.username"/>
+                        <Ui.Input label={Webiny.I18n('Team')} name="slack.team"/>
+                        <Ui.Input label={Webiny.I18n('Username')} name="slack.username"/>
                     </Ui.Grid.Col>
                 </Ui.Grid.Row>
             </Ui.Tabs.Tab>
