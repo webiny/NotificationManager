@@ -86,7 +86,6 @@ NotificationForm.defaultProps = {
             <Form {...formProps}>
                 {({model, form}) => (
                     <View.Form>
-                        {console.log(model)}
                         <View.Header title={this.i18n('Notification')}/>
                         <View.Body noPadding>
                             <PreviewModal ref={ref => this.previewModal = ref} model={model} form={form}/>
