@@ -37,13 +37,27 @@ class PreviewModal extends Webiny.Ui.ModalComponent {
             });
         }
 
+        let hasContent = false;
+        const content = plugins.map((pl, index) => {
+            const tab = pl(model, form, this.props.model);
+            if (React.isValidElement(tab)) {
+                hasContent = true;
+            }
+            return React.isValidElement(tab) ? React.cloneElement(tab, {key: index}) : null;
+        });
+
+        if (hasContent) {
+            return (
+                <Tabs position="left">
+                    {content}
+                </Tabs>
+            );
+        }
+
         return (
-            <Tabs position="left">
-                {plugins.map((pl, index) => {
-                    const tab = pl(model, form, this.props.model);
-                    return React.isValidElement(tab) ? React.cloneElement(tab, {key: index}) : null;
-                })}
-            </Tabs>
+            <div>
+                <Alert>{this.i18n('Currently there are no plugins available for preview.')}</Alert>
+            </div>
         );
     }
 
