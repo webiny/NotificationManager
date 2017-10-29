@@ -2,6 +2,7 @@
 
 namespace Apps\NotificationManager\Php\Lib;
 
+use Apps\NotificationManager\Php\Lib\Recipients\RecipientInterface;
 use Apps\Webiny\Php\Lib\WebinyTrait;
 use Apps\Webiny\Php\Lib\Entity\AbstractEntity;
 use Webiny\Component\StdLib\StdLibTrait;
@@ -33,24 +34,25 @@ class Notification
     /**
      * Set one or more recipients
      *
-     * @param mixed   $recipient
-     * @param boolean $append Append to the list of existing recipients
+     * @param RecipientInterface $recipient
+     * @param boolean            $append Append to the list of existing recipients
      *
      * @return $this
+     * @throws NotificationException
      */
-    public function setRecipient($recipient, $append = true)
+    public function setRecipient(RecipientInterface $recipient, $append = false)
     {
+        if (isset($this->recipients[$recipient->getId()])) {
+            throw new NotificationException('Unable to set recipient as the give recipient is already in the list: ' . $recipient->getId());
+        }
+
         if (!$append) {
-            $this->recipients = is_array($recipient) ? $recipient : [$recipient];
+            $this->recipients = [$recipient->getId() => $recipient];
 
             return $this;
         }
 
-        if (is_array($recipient)) {
-            $this->recipients = array_merge($this->recipients, $recipient);
-        } else {
-            $this->recipients[] = $recipient;
-        }
+        $this->recipients[$recipient->getId()] = $recipient;
 
         return $this;
     }
@@ -117,7 +119,8 @@ class Notification
             throw new NotificationException(sprintf('Unable to load notification "%s".', $this->slug));
         }
 
-        $handlers = $this->wService()->getServicesByTag('notification-manager-handler', AbstractNotificationHandler::class);
+        $handlers = $this->wService()
+                         ->getServicesByTag('notification-manager-handler', AbstractNotificationHandler::class);
 
         /* @var $handler AbstractNotificationHandler */
         foreach ($handlers as $handler) {
