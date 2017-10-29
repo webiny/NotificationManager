@@ -23,6 +23,8 @@ class Notification
     protected $customVars = [];
     protected $attachments = [];
 
+    private $isSent = false;
+
     /**
      * @param string $slug Notification slug.
      */
@@ -111,6 +113,10 @@ class Notification
      */
     public function send()
     {
+        if ($this->isSent) {
+            throw new NotificationException('You cannot call "send" multiple times on the same notification. You need to create a new class instance.');
+        }
+
         /**
          * @var NotificationEntity $notification
          */
@@ -133,6 +139,8 @@ class Notification
                 $handler->send();
             }
         }
+
+        $this->isSent = true;
 
         return true;
     }
