@@ -1,4 +1,5 @@
 <?php
+
 namespace Apps\NotificationManager\Php\Services;
 
 set_time_limit(0);
@@ -36,6 +37,8 @@ class MailQueue extends AbstractService
 
         $minuteLimit = $settings['sendLimit'] * 60;
         $sleepTime = (1 / $settings['sendLimit']) * 1000000; // in microseconds
+        $userLimit = isset($settings['userSendLimit']) ? $settings['userSendLimit'] : 2;
+        $userLimitLog = [];
 
         // get the max number of email we can send within 1 min limit
         // we want to keep the process active for the full minute, so we don't wait 60s to get the email
@@ -53,9 +56,18 @@ class MailQueue extends AbstractService
             } else {
                 // update all those emails to status SENT, in case if another cron runs in meantime so we don't send some emails twice
                 // this can happen because we sleep between sending emails to stay within the send limit
-                foreach ($emails as $e) {
-                    $e->status = EmailLog::STATUS_SENT;
-                    $e->save();
+                foreach ($emails as $k => $e) {
+                    if (!isset($userLimitLog[$e->email])) {
+                        $userLimitLog[$e->email] = 0;
+                    }
+
+                    if ($userLimitLog[$e->email] < $userLimit) {
+                        $e->status = EmailLog::STATUS_SENT;
+                        $e->save();
+                        $userLimitLog[$e->email]++;
+                    } else {
+                        unset($emails[$k]);
+                    }
                 }
             }
 
