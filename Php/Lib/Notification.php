@@ -7,6 +7,7 @@ use Apps\Webiny\Php\DevTools\Entity\AbstractEntity;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\Storage\File\File;
 use Apps\NotificationManager\Php\Entities\Notification as NotificationEntity;
+use Apps\NotificationManager\Php\Lib\Recipients\RecipientInterface;
 
 /**
  * Class Notification
@@ -22,6 +23,8 @@ class Notification
     protected $customVars = [];
     protected $attachments = [];
 
+    private $isSent = false;
+
     /**
      * @param string $slug Notification slug.
      */
@@ -33,24 +36,25 @@ class Notification
     /**
      * Set one or more recipients
      *
-     * @param mixed   $recipient
-     * @param boolean $append Append to the list of existing recipients
+     * @param RecipientInterface $recipient
+     * @param boolean            $append Append to the list of existing recipients
      *
      * @return $this
+     * @throws NotificationException
      */
-    public function setRecipient($recipient, $append = true)
+    public function setRecipient(RecipientInterface $recipient, $append = false)
     {
+        if (isset($this->recipients[$recipient->getId()])) {
+            throw new NotificationException('Unable to set recipient as the give recipient is already in the list: ' . $recipient->getId());
+        }
+
         if (!$append) {
-            $this->recipients = is_array($recipient) ? $recipient : [$recipient];
+            $this->recipients = [$recipient->getId() => $recipient];
 
             return $this;
         }
 
-        if (is_array($recipient)) {
-            $this->recipients = array_merge($this->recipients, $recipient);
-        } else {
-            $this->recipients[] = $recipient;
-        }
+        $this->recipients[$recipient->getId()] = $recipient;
 
         return $this;
     }
@@ -109,6 +113,10 @@ class Notification
      */
     public function send()
     {
+        if ($this->isSent) {
+            throw new NotificationException('You cannot call "send" multiple times on the same notification. You need to create a new class instance.');
+        }
+
         /**
          * @var NotificationEntity $notification
          */
@@ -131,6 +139,8 @@ class Notification
                 $handler->send();
             }
         }
+
+        $this->isSent = true;
 
         return true;
     }

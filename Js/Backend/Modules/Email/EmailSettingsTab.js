@@ -79,6 +79,15 @@ export default () => {
                                             validate="required,email"/>
                                     )}
                                 </Ui.Grid.Col>
+                                <Ui.Grid.Col all={6}>
+                                    <Ui.Section title={Webiny.I18n('SPAM Protection')}/>
+                                    <Ui.Input
+                                        label="Number of emails per interval"
+                                        name="email.userSendLimit"
+                                        validate="required,integer"
+                                        description="Maximum number of emails that can be sent to a specific email address within 60 seconds. This is used to protect you against accidentally spamming your users. Unsent emails will wait for the next interval."
+                                    />
+                                </Ui.Grid.Col>
                             </Ui.Grid.Row>
                         </Ui.Tabs.Tab>
 
@@ -321,7 +330,8 @@ export default () => {
                             <p>
                                 The cron should be configured so it executes the following script every minute:
                             </p>
-                            <Ui.Copy.Input context="cron-job" value={Webiny.Config.ApiPath + '/services/notification-manager/mail-queue/send'}/>
+                            <Ui.Copy.Input context="cron-job"
+                                           value={Webiny.Config.ApiPath + '/services/notification-manager/mail-queue/send'}/>
                         </Ui.Tabs.Tab>
                     </Ui.Tabs>
                 </Ui.Tabs.Tab>
