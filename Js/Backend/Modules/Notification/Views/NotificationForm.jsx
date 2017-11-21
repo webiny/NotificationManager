@@ -20,7 +20,7 @@ class NotificationForm extends Webiny.Ui.View {
 
     componentDidMount() {
         super.componentDidMount();
-        new Webiny.Api.Endpoint('/services/webiny/entities').get('/', {_fields: 'class,name'}).then(apiResponse => {
+        new Webiny.Api.Endpoint('/services/webiny/entities').get('/', {_fields: 'class,classId'}).then(apiResponse => {
             this.setState({entityOptions: apiResponse.getData()});
         });
     }
@@ -69,14 +69,14 @@ NotificationForm.defaultProps = {
             optionRenderer: ({option}) => {
                 return (
                     <div>
-                        <strong>{option.data.name}</strong>
+                        <strong>{option.data.classId}</strong>
                         <br/>
                         <span>{option.data.class}</span>
                     </div>
                 );
             },
             selectedRenderer: ({option}) => {
-                return option.data.name;
+                return option.data.classId;
             }
         };
 
