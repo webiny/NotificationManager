@@ -30,7 +30,9 @@ export default () => {
                                     <Ui.Input
                                         label={Webiny.I18n('Send limit (emails per second)')}
                                         name="email.sendLimit"
-                                        validate="required"/>
+                                        validate="required,integer"
+                                        description={Webiny.I18n('Maximum number of emails that can be sent as allowed by your SMTP server.')}
+                                    />
                                 </Ui.Grid.Col>
                                 <Ui.Grid.Col all={6}>
                                     <Ui.Section title={Webiny.I18n('AWS SNS Settings')}/>
@@ -69,6 +71,15 @@ export default () => {
                                         label={Webiny.I18n('Sender email')}
                                         name="email.senderEmail"
                                         validate="required,email"/>
+                                </Ui.Grid.Col>
+                                <Ui.Grid.Col all={6}>
+                                    <Ui.Section title={Webiny.I18n('SPAM Protection')}/>
+                                    <Ui.Input
+                                        label={Webiny.I18n('Number of emails per interval')}
+                                        name="email.userSendLimit"
+                                        validate="required,integer"
+                                        description={Webiny.I18n('Maximum number of emails that can be sent to a specific email address within 60 seconds. This is used to protect you against accidentally spamming your users. Unsent emails will wait for the next interval.')}
+                                    />
                                 </Ui.Grid.Col>
                             </Ui.Grid.Row>
                         </Ui.Tabs.Tab>
