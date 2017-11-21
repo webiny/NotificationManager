@@ -24,12 +24,26 @@ class ActivityList extends Webiny.Ui.View {
             myWindow.focus();
         });
     }
+
+    deleteLog(id) {
+        const api = new Webiny.Api.Endpoint('/entities/notification-manager/email-log');
+
+        api.delete(id).then(response => {
+            if (!response.isError()) {
+                Webiny.Growl.success('Email log deleted successfully!');
+                this.activityList.loadData();
+            } else {
+                Webiny.Growl.danger(response.getError());
+            }
+        });
+    }
 }
 
 ActivityList.defaultProps = {
 
     renderer() {
         const listProps = {
+            ref: ref => this.activityList = ref,
             api: '/entities/notification-manager/email-log',
             query: {notification: this.props.notification.id},
             fields: 'id,status,email,name,subject,createdOn',
@@ -97,9 +111,10 @@ ActivityList.defaultProps = {
                         <Ui.List.Table.TimeAgoField name="createdOn" align="left" label={this.i18n('Date Sent')} sort="createdOn"/>
                         <Ui.List.Table.Field name="email" align="left" label={this.i18n('Email')} sort="email"/>
                         <Ui.List.Table.Field name="subject" align="left" label={this.i18n('Subject')} sort="subject"/>
-                        <Ui.List.Table.Field align="right">
-                            {({data}) => <Ui.Button type="default" label={this.i18n('Show Content')} onClick={() => this.showContent(data.id)}/>}
-                        </Ui.List.Table.Field>
+                        <Ui.List.Table.Actions>
+                            <Ui.List.Table.Action icon="fa-search" label={this.i18n('Show Content')} onClick={({data}) => this.showContent(data.id)}/>
+                            <Ui.List.Table.DeleteAction onClick={({data}) => this.deleteLog(data.id)}/>
+                        </Ui.List.Table.Actions>
                     </Ui.List.Table.Row>
                 </Ui.List.Table>
                 <Ui.List.Pagination/>
